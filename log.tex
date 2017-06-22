@@ -1,0 +1,1102 @@
+\documentclass{amsart}
+
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{mathrsfs}
+\usepackage{tikz-cd}
+\usepackage{amssymb}
+
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\scriptsize\color{red}\sffamily}
+
+\input{macros.tex}
+
+\DeclareMathOperator{\DC}{DC} % differential characters
+
+\title{Math log}
+\author{Nilay Kumar}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{June 6, 2017}
+
+\subsection{Differential cohomology}
+Cheeger and Simons \cite{cheeger-simons} define the group of differential characters
+of degree $k$ (for $k>0$) as follows (let's shift the grading, following most other sources):
+\begin{equation*}
+    \DC^k(M; \Z) = \{h \in \Hom(Z_{k-1}(M; \Z), U(1)) \mid h\circ\partial \in \Omega^k(M) \}.
+\end{equation*}
+Here $Z_{k-1}(M)$ is the free abelian group of smooth singular cycles,
+\marginnote{\cite{cheeger-simons} take normalized cubic chains. Is this necessary?}
+and the condition
+that $h\circ\partial \in \Omega^k(M)$ means that there exists an $\omega\in\Omega^k(M)$ such
+that for any $c\in C_k(M)$,
+\begin{equation*}
+    h(\partial c) = \exp\left(2\pi i\int_c \omega\right) \in U(1),
+\end{equation*}
+i.e. the action of $h$ on boundaries is given by integration of some differential
+form. \marginnote{What is integration against smooth singular chains?}
+Notice that differential characters form an abelian group under pointwise multiplication
+in the target $U(1)$.
+
+Let's consider the simplest case where $k=1$. We claim that
+\begin{equation*}
+    \DC^1(M; \Z) \cong C^\infty(M, U(1))
+\end{equation*}
+Notice first that an integral 0-cycle of $M$ is just an integral-linear combination of points
+in $M$, so $h$ is completely determined by its values on points of $M$. Hence we obtain
+a function $\bar h:M\to U(1)$, which we wish to show is smooth. Fix some $p\in M$ -- let
+us show that $\bar h$ is smooth at $p$. Let $U$ be a chart at $p$ and consider a 
+ball $B\subset U$ centered at $p$. For each $q\in B$, consider the straight-line path
+from $p$ to $q$ given $\gamma_q(t)=p + t(q-p)$. Since $\gamma_q\in C_1(M; \Z)$, we have
+that
+\begin{equation*}
+    h(\partial\gamma_q) = h(\gamma_q(1)-\gamma_q(0)) = h(q - p) = h(q)h(p)^{-1}
+\end{equation*}
+but also that there exists $\omega\in \Omega^1(M)$ with (for all $q$)
+\begin{equation*}
+    h(\partial\gamma_q) = \exp\left( 2\pi i\int_{\gamma_q} \omega\right).
+\end{equation*}
+We conclude that for all $q\in B$
+\begin{equation*}
+    h(q) = h(p)\exp(2\pi i\int_{\gamma_q}\omega) =h(p)\exp(2\pi i\int_0^1\omega(\gamma_q(t)) dt),
+\end{equation*}
+which varies smooth with $q$.
+
+Conversely suppose we are given a smooth function
+$f:M\to U(1)$. This induces a map $h:Z_0(M;\Z)\to U(1)$ in the obvious way:
+$h(\sum_ja_jp_j) = \sum_j a_j f(p_j)$. To construct the associated differential form $\omega$
+choose, locally, a smooth real-valued lift $\bar f$ of $f$. Applying the exterior derivative
+yields $\omega=d\bar f$ a global one-form on $X$.
+Now given any $c\in C_1(M;\Z)$ we can write
+$\partial c = \sum_ja_jp_j$ whence
+\begin{equation*}
+    h(\partial c) = \sum_j a_j f(p_j) = \int_{\partial c} \bar f \mod\Z= \int_c d\bar f\mod \Z,
+\end{equation*}
+so $h$ is a degree 1 differential character with associated 1-form $d\bar f$.
+This completes the characterization of the first differential cohomology group.
+
+One of the desirable features of differential characters is that the degree two group
+classifies isomorphism classes of complex line bundles together with connection:
+\begin{equation}
+    \DC^2(M;\Z) \cong \{(L,\nabla)\to M\}.
+    \label{classification}
+\end{equation}
+This is, in a sense, a geometric refinement of the cohomological classification
+\marginnote{Write these two results out in some detail!}
+\begin{equation*}
+    \HH^2(M;\Z) \cong \{L\to M\}.
+\end{equation*}
+This latter classification follows from the representability of singular cohomology
+by $[M, K(\Z, 2)]$ and of complex line bundles by $[M, BU(1)]$, and the fact that
+\begin{equation*}
+    K(\Z,2) \simeq BU(1) \simeq \C P^\infty.
+\end{equation*}
+
+There are various other definitions/viewpoints of differential characters. For convenience
+and future reference I'll list them here:
+\begin{enumerate}[(a)]
+    \item there is an approach via smooth Deligne cohomology (c.f. \cite{brylinski} as well
+        as Bunke's notes) that
+        involves sheaves. Sean outlined to me some sort of modified \v Cech-de Rham complex
+        that is likely coming from this Deligne story. I'd like to work that out soon.
+        \marginnote{Work out this bicomplex that Sean mentioned.}
+        I guess technically these aren't differential characters but an instance of differential
+        cohomology -- see the mention of the axiomatic approach below.
+    \item Hopkins and Singer in \cite{hopkins-singer}
+        define the differential characters as the cohomology of a certain
+        chain complex. I like this chain-level refinement because one asks the rather intuitive
+        question: how can I combine of closed differential forms with integer periods
+        (geometric data) with singular chains (topological data)? In particular, what is the
+        (homotopy) pullback of the diagram
+        \marginnote{What, roughly, is the relevance of closed differential forms with integral
+        periods? This should be motivated from the Kostant/Souriau picture.}
+        \begin{equation*}
+            \begin{tikzcd}
+                ?\rar\dar & \Omega^\bullet_\text{cl}(M)\dar\\
+                C^\bullet(M;\Z)\rar & C^\bullet(M;\R)
+            \end{tikzcd}
+        \end{equation*}
+        From the resulting chain complex(es), one can compute differential characters.
+        Actually one can categorify slightly (not really adding much new information) and
+        instead of working with the cohomology, work with certain categories of cochains.
+        This allows us to access the groupoid of line bundles (with extra data) and not just
+        the isomorphism classes. This is apparently important for geometric applications
+        (involving, for instance, determinant lines).
+        In fact, Hopkins and Singer go further by defining ``differential function spaces.''
+        \marginnote{What, roughly, is HS's topological/physical reason for studying these objects?}
+    \item Harvey and Lawson (c.f. \cite{hlz} and related papers)
+        have an infinite-dimensional approach to defining differential characters. This seems rather
+        complicated so perhaps (especially since I'm not familiar with currents) I'll save this for
+        later, unless it's more clearly related to determinant lines, etc.
+    \item Simons and Sullivan demonstrate in \cite{simons-sullivan} that differential characters
+        satisfy certain axiomatic properties analogous to the Eilenberg-Steenrod axioms. In
+        this sense, differential characters are a particular construction of ``ordinary
+        differential cohomology.''
+    \item towards more extreme generality, Bunke and company in \cite{bnv} analyse sheaves
+        on the category of manifolds valued in nice stable $\infty$-categories and show that
+        the structures of differential cohomology arise naturally\ldots or at least that's
+        what the MathSciNet reviewer says. I'll perhaps ask Elden about the philosophy here,
+        though it certainly won't be concretely useful to me.
+\end{enumerate}
+
+There is of course some story about differential refinements of generalized cohomology
+theories (I believe there is some of this in \cite{hopkins-singer}) but I'll look into this
+once I'm more familiar with spectra and complex K-theory.
+
+\subsection{Eilenberg-Maclane spaces}
+This talk of line bundles and second cohomology groups leads to a natural question: what
+topological/geometric data do third cohomology groups classify? Apparently these objects
+are called gerbes or 2-bundles, etc. There are a number of things to understand here. Maybe
+it's first a good idea to understand what $K(\Z, 3)$ is. Sean pointed me to a webpage by
+John Baez, ``Classifying spaces made easy'', which describes a way to describe $K(\Z, 2)$
+and $K(\Z, 3)$, at least, using Hilbert spaces. Also: what is the intuition behind gerbes
+and where do they appear in physics/geometry?
+
+
+\section{June 7, 2017}
+
+\subsection{Hopkins-Singer}
+Today Sam and I worked through the basic constructions of differential cochains from
+\cite{hopkins-singer}. One defines the chain complex $\check C(q)^\bullet(M)$ to be
+the homotopy pullback:
+\begin{equation*}
+    \begin{tikzcd}
+        \check C(q)^\bullet(M) \rar\dar & \Omega^{\bullet\geq q}(M)\dar \\
+        C^\bullet(M;\Z) \rar & C^\bullet(M;\R)
+    \end{tikzcd}
+\end{equation*}
+Sam wasn't sure off the top of his head why the given explicit formulas for this homotopy
+pullback are correct, but he thought they seemed very reasonable given his intuition
+for homotopy pullbacks in the category of spaces. I'll leave this for later, seeing
+as the explicit formulae seem to be reasonable as we'll see below.
+\marginnote{Understand the homotopy pullback of chain complexes.}
+
+We checked explicitly that the map taking cohomology classes of differential cocycles to
+differential characters,
+\begin{equation*}
+    (c^q, h^{q-1}, \omega) \mapsto (h^{q-1}\text{ mod }\Z, \omega)
+\end{equation*}
+% TODO renewcommand the mod in macros.tex without the spacing
+is injective and surjective. This required nothing more than tracing through the
+definitions of the relevant objects, so I won't reproduce it here (for the record,
+surjectivity is immediate via taking a lift and injectivity requires using a bit
+carefully the differential in the homotopy pullback). We conclude that the
+Hopkins-Singer construction of this pullback cochain complex does indeed compute
+differential cohomology:
+\begin{equation*}
+    \HH^q(\check C(q)^\bullet(M)) \cong \DC^q(M;\Z).
+\end{equation*}
+
+Actually, it is worth noting that in Hopkins-Singer
+they think of differential characters as pairs $(\chi,\omega)$ so we had to
+check that given a differential character $\chi$ there is a unique corresponding
+closed integral-period form $\omega$. Let's check uniqueness. Suppose we a differential
+character $\chi$ of degree $k$ (i.e. it eats things in $Z_{k-1}(M;\Z)$) associated to
+two $k$-forms $\omega,\eta$. Then for any chain $c\in C_k(M;\Z)$,
+\begin{equation*}
+    0 = \chi(\partial c) - \chi(\partial c) = \int_c \omega-\eta \mod\Z.
+\end{equation*}
+We now have a differential form $\omega-\eta$ whose integral over any chain
+(with $\Z$ coefficients) is an integer.\footnote{Beware of the distinction between
+chain and cycle here! Periods of a form are its integrals over cycles!}
+But if we
+shrink any chain smoothly smaller and smaller we see that the integral must be zero
+(measure theoretically clear),
+but since these integrals take discrete values they must all be zero. 
+Now since the map 
+\begin{equation*}
+    \Omega^\bullet(M) \hookrightarrow C^\bullet(M;\R).
+\end{equation*}
+is injective, it follows that $\omega=\eta$.
+\marginnote{Does this argument work if we replaced $\Z$ with any proper subring of $\R$?}
+The injectivity of this map is more or less clear: the integral locally is just given
+as the integral of a smooth function on $\R^k$ but a continuous function is zero if every
+integral is zero. If it were positive at a point there'd be a small neighborhood where it
+was positive which would force the integral over that neighborhood to be positive.
+We conclude that $\omega$ is uniquely associated to $\chi$.
+
+That $\omega$ has integral periods is easy to see. Then
+since for any chain in $c\in C_k(M;\Z)$ we have that the integral of $\omega$ modulo $\Z$
+along the chain is $\chi(\partial c)$ it follows that if the chain is in fact a cycle
+then $\partial c=0$ whence $\omega$ has integral periods.
+That $\omega$ is closed is now an immediate consequence of Stokes' theorem:
+\begin{equation*}
+    \int_c d\omega \mod \Z= \int_{\partial c}\omega \mod\Z= \chi(\partial^2 c)=0.
+\end{equation*}
+Hence the integral of $d\omega$ along every $(k+1)$-chain is an integer whence by the argument
+above $d\omega=0$.
+
+Now recall that differential
+characters form an abelian group by multiplication in the target. We think of
+this as the addition in differential cohomology (hence the reason people write
+$\R/\Z$ instead of $U(1)$ I think\ldots) but the multiplication is much more complicated,
+it seems. In particular, the injection of forms into real cochains is not a ring
+homomorphism. At the level of cohomology it is (this is part of the de Rham theorem)
+but at the level of forms and chains one needs to choose some explicit homotopies
+to write down a product. Maybe I'll come back to this later.
+\marginnote{Come back to the ring structure on differential cohomology.}
+
+% TODO determinants and theta characteristics
+% TODO integration over smooth singular cycles
+% TODO Thom forms/classes and orientations
+
+As a side remark: Sean asked the following question. A differential character
+is a map from some free abelian group to $U(1)$. Do we get anything interesting by
+applying the classifying space functor $B$ to the character? We get a line bundle on
+$BZ_k(M;\Z)$\ldots
+
+\section{June 8, 2017}
+
+\subsection{Principal bundles}
+Let's return to some basics about vector/principal bundles, connections, and holonomy.
+I'm familiar with connections on vector bundles, but not so much with parallel transport
+and holonomy in the non-Riemannian case (and also with the apparently equivalent story
+for principal bundles). This should be fairly straightforward (but lengthy) for me now,
+though I remember as an undergrad Kobayashi/Nomizu was too intense.
+
+If $G$ is a Lie group then a principal $G$-bundle $\pi:P\to M$ is a manifold $P$
+equipped with a free right $G$-action such that $\pi$ is the quotient map and
+$\pi$ is moreover locally $G$-trivial. A map $P\to P'$ of principal bundles over $M$
+is a $G$-equivariant map lifting the identity map on $M$. This defines the category
+of principal $G$-bundles over $M$.
+
+Let's list a few facts with brief explanations.
+\begin{enumerate}[(a)]
+    \item Every map of principal $G$-bundles over $M$ is an isomorphism, whence the category
+        is a groupoid. This is easily seen by writing an inverse for a map locally, using
+        the inverse on $G$, and then globalizing (the inverse agree on overlaps as
+        the original map does).
+    \item If $\pi$ admits a global section $s:M\to P$ then $P$ is trivial, $P=M\times G$.
+        Indeed, the map $(x,g)\mapsto g\cdot s(x)$ provides the desired diffeomorphism.
+    \item By local triviality we have an open cover $U_\alpha$ and local trivializations
+        $\phi_\alpha:P|_{U_\alpha}\to U_\alpha\times G$. On overlaps $U_\alpha\cap U_\beta$
+        we obtain $\tau_{\beta\alpha}=\phi_\beta\circ\phi_\alpha^{-1}:U_\alpha\cap U_\beta G$.
+        Notice that the maps $\tau$ satisfy a coycle condition. Conversely, given an
+        open cover an a coycle $\tau$ as above we principal $G$-bundle.
+        \marginnote{How do we think of a principal bundle as some sort of \v Cech data?
+        When are two chains equivalent, and can we construct a groupoid like we have of
+        principal bundles?}
+    \item Let's recall the notion of an associated bundle. Let $\rho:G\to\GL_k V$ be a
+        rank $k$ representation of $G$. Then we quotient $P\times V$ by the equivalence
+        relation $(pg, v)\sim (p,\rho(g)v)$. We write the resulting space as $P\times_G V$,
+        which is a rank $k$ vector bundle over $M$. Conversely, given a vector bundle
+        one obtains a principal bundle by taking the frame bundle.
+    \item The $G$-action on $P$ induces an assignment to each $\xi\in\fr g$ a vertical
+        vector field $\hat \xi$ on $P$.
+\end{enumerate}
+
+A connection on $P$ is a $G$-equivariant splitting $TP = T(P/M) \oplus H$, i.e. the data
+of a horizontal distribution $H$ such that $H_pg=(R_g)_*H_p$. Given this data we obtain
+a global Lie algebra valued one-form on $P$ as follows. Define $\omega\in\Omega^1(P; \fr g)$
+such that $\omega(X)$, for a vector field $X$ on $P$, is the unique $\xi\in\fr g$
+with $\hat\xi=X^\text{v}$ where $X^\text{v}$ is the vertical component of $X$ (here
+uniqueness follows from the fact that the induced vector vertical vector field is
+nonvanishing since the $G$-action is free).
+Notice that $\omega(X)=0$ if and only if $X$ is horizontal.
+The connection one-form $\omega$ satisfies the following properties:
+\begin{enumerate}[(a)]
+    \item identity: $\omega(\hat \xi) = \xi$;
+    \item equivariance: $R_g^*\omega = \Ad(g^{-1})\omega$
+\end{enumerate}
+Conversely, any $\fr g$-valued one-form satisfying these properties yields a connection
+on $P$, by taking $H=\ker\omega$. Notice that we can pullback a connection along an
+isomorphism of principal bundles -- this gives us a notion of an isomorphism of
+principal bundles with connection.
+
+
+\section{June 12, 2017}
+
+\subsection{Singular cohomology}
+Suppose we wanted to prove that \v Cech cohomology with coefficients in the constant
+sheaf $\underline A$ for $A$ an abelian group computes the singular cohomology with
+coefficients in $A$. One approach that I was thinking of is given by 
+the following sketch (let's assume our space is reasonable, maybe the homotopy type
+of a CW complex). Given an open cover
+$\mathcal{U}$ we can construct a simplicial space called the \v Cech nerve of $\mathcal{U}$,
+which I will denote by $\mathcal{U}_\bullet$.
+\marginnote{We can probably understand \v Cech techniques more generally/categorically\ldots}
+The $n$-simplices are the $n$-fold intersections of $n+1$ open sets of the cover. The
+face maps are given by removing an open from the intersection and the degeneracy maps
+are given by duplicating an open. I would like to claim that
+\begin{equation*}
+    \HH^\bullet(|\mathcal{U}_\bullet|;A) \cong \check\HH^\bullet(\mathcal{U}, \underline{A}).
+\end{equation*}
+From here, probably we can take colimits over refinements to obtain the result, because
+the geometric realization will become homotopy equivalent to $X$ (this is a nontrivial
+result).
+\marginnote{Look at Segal's paper or HTT where this might be proved.}
+I'm not exactly sure how to prove this isomorphism, but Piotr gave the following idea:
+consider the Moore complex associated to $\mathcal{U}_\bullet$. Dualizing and taking
+cohomology, we probably obtain the left hand side, though I'm not sure how to prove this.
+% https://math.stackexchange.com/questions/1241500/homology-of-a-simplicial-set
+What is clearer, however, is that the dual of the Moore complex yields the \v Cech
+complex for $\mathcal{U}$ with coefficients in the constant sheaf $\underline A$.
+Actually, I see why it gives coefficients in the constant presheaf, but I'm not sure
+how to deal with the cases of disconnected intersections\ldots Perhaps this is only
+true after passing to cohomology and then colimits (intuitively I would take as an
+analogy the case of manifolds: in the colimit the opens become contractible).
+\marginnote{How do we deal with this issue?}
+
+
+\section{June 13, 2017}
+
+\subsection{Sheaves}
+Recall that a presheaf $\mathcal{F}$ of objects in a category $\sf C$ on a space
+$X$ is a contravariant functor
+from the category of open sets and inclusions on $X$ to $\sf C$.
+Notice that it does not necessarily follow that $\mathcal{F}$ takes the empty
+set to a final object in $\sf C$ -- indeed, a final object need not exist in
+$\sf C$!
+A sheaf is a presheaf satisfying a ``descent'' condition. Let's restrict to sheaves
+of sets (or abelian groups, etc.).
+\marginnote{Where does the terminology ``descent'' come from?}
+In particular, given an open set $U\subset X$ and an open cover $\{U_\alpha\}$ of $U$,
+and sections $s_\alpha$ over $U_\alpha$ such that the restriction of $s_\alpha$ to
+$U_\alpha\cap U_\beta$ equals the restriction of $s_\beta$ to $U_\alpha\cap U_\beta$,
+there exists a unique $s$ over $U$ restricting to the $s_\alpha$.
+More categorically, we ask that the diagram
+\begin{equation*}
+    \begin{tikzcd}
+        \mathcal{F}(U) \rar & \prod_\alpha \mathcal{F}(U_\alpha)
+        \rar[shift left=3] \rar[shift right=3] & \prod_{\beta,\gamma}\mathcal{F}(U_\beta\cap U_\gamma)
+    \end{tikzcd}
+\end{equation*}
+be an equalizer diagram in $\sf Set$ for all $\beta,\gamma$. Here the first map
+is induced by the universal property of products and by the restriction maps. The
+two parallel maps are given similarly but passing through restriction to $U_\beta$
+and $U_\gamma$, respectively. For this diagram to be an equalizer in the category
+of sets says precisely a global section is exactly the data of local sections that
+agree on overlaps. I think when one generalizes to sheaves valued in higher categories
+this diagram continues to the right\ldots
+
+Given any presheaf $\mathcal{F}$, there is a universal sheaf
+$\mathcal{F}\to \mathcal{F}^+$ associated to it, which is the sheaf of continuous
+sections of the corresponding ``\'espace \'etal\'e'' (if I remember correctly from
+Hartshorne). In other words one considers sections $X\to\sqcup_{x\in X}\mathcal{F}_x$
+of a ``bundle of stalks'' that are locally given as the germ of a section of $\mathcal{F}$.
+It is easy to see that this is a sheaf and it turns out that it has the same stalks
+as $\mathcal{F}$ and maps from $\mathcal{F}$ into any sheaf factor uniquely through
+$\mathcal{F}^+$. This construction is important, as many operations on sheaves
+yield only presheaves in general (such as image, tensor product, etc).
+
+
+\section{June 14, 2017}
+
+\subsection{Presheaves on/as manifolds}
+I've started to work through the paper of Freed and Hopkins, which has a few
+long and very readable expository sections detailing presheaves, simplicial sets,
+and weak equivalences.
+Their main goal is to construct a universal $G$-connection on a universal
+principal $G$-bundle $E_\nabla G\to B_\nabla G$ and then to compute
+the de Rham complex of $B_\nabla G$. In particular, they interpret the
+differential forms on $B_\nabla G$ as the universal characteristic forms
+for principal bundles with connection. Their constructions take place
+in a slight generalization of the category of manifolds. Let's look at
+how this works.
+
+A presheaf of sets on the category of manifolds is a functor $\sf{Man}^\text{op}\to\sf Set$.
+Given any manifold $X$ we can associate to it the presheaf
+\begin{equation*}
+    F_X:M\mapsto \textsf{Man}(M, X),
+\end{equation*}
+where the right side is a set.  In this way the category of manifolds is a
+subcategory of the category of set-valued presheaves on manifolds. This map
+of categories is in fact fully faithful -- this is the Yoneda lemma/embedding,
+which tells us that
+\begin{equation*}
+    \textsf{Psh}(F_X, F) \cong F(X).
+\end{equation*}
+We thus think of presheaves as generalized manifolds. This raise the question:
+what are some presheaves that don't come from manifolds?  Consider, for instance,
+the functor $\Omega^q$, which assigns to a manifold its degree $q$ differential
+forms. In the setting of presheaves we consider $\Omega^q$ as a generalized
+manifold, independent of any given manifold. Notice that the Yoneda lemma tells
+us that
+\begin{equation*}
+    \textsf{Psh}(F_X,\Omega^q) \cong \Omega^q(X).
+\end{equation*}
+In other words, any differential $q$-form on a manifold $M$ is obtained by
+pulling back the identity natural transformation on $\Omega^q$ along a natural
+transformation $F_X\to\Omega^q$. With this in mind we think of the set of
+$q$-forms on a generalized manifold $F$ as the set of maps of presheaves
+from $F$ to $\Omega^q$.
+In fact we have a ``complex'' of generalized manifolds $\Omega^\bullet$ 
+where the differential is given by the differential on each manifold.
+Notice that the differential is given by postcomposition by the exterior
+derivative.
+Notice that since $\Omega^\bullet(M)$ is cdga for
+any manifold $M$, the set $\textsf{Psh}(F,\Omega^\bullet)$ is also a cdga.
+
+The example Freed and Hopkins give is that of the de Rham complex of the
+generalized manifold $\Omega^1$, i.e. the cdga $\textsf{Psh}(\Omega^1, \Omega^\bullet)$.
+In other words, the degree $q$ elements of the complex are natural assignments
+of a $q$-form to a 1-form (on any manifold! hence the naturality). Thinking
+about this naively, there is only one way to do this: if $q$ is even,
+take the exterior differential of the 1-form and then take the $q/2$th
+wedge power, and if $q$ is odd, do take the $(q/2-1)$th wedge power and
+wedge with the 1-form. Naturality is clear from the fact that wedge products
+commute with pullbacks.
+\marginnote{Is there an elementary proof that this is the only assignment
+that works? Freed and Hopkins didn't see one.}
+
+All this is to get to the presheaf definition of $B_\nabla G$. The obvious
+definition is to assign to a manifold the set of isomorphism classes of
+principal $G$-bundles with connection. The problem is that the resulting
+presheaf is not a sheaf (unlike the more straightforward examples like
+differential forms, function spaces, etc.) as can be seen in the example
+of the circle covered by the two stereographic opens.
+\marginnote{Understand why any connection on a principal bundle over the
+interval is isomorphic to the trivial connection.}
+
+\section{June 15, 2017}
+
+\subsection{Functional analysis review}
+Recall that a Banach space is a complete normed vector space. A common
+example is that of $C^k(M)$ for $M$ a compact Riemannian manifold. The
+norm on this vector space is defined as follows: choose any $N$ smooth
+vector fields $Z_i$ on $M$ that span $T_pM$ for each $p$ (notice
+$N\geqslant\dim M$). Then define
+\begin{equation*}
+    \lVert f\rVert_{C^k} = \sum_{l\leqslant k}\lVert Z_{j_1}\cdots Z_{j_l}f\rVert_\text{sup}.
+\end{equation*}
+It is easy to check that this defines a norm, and it turns out that
+it is in fact complete (due to uniform convergence of all derivatives).
+Notice that if we had picked a different set of such vector fields,
+we'd obtain a different norm. Apparently, however, the topology on the
+resulting space is independent of this choice.
+\marginnote{Understand these details better.}
+
+Another standard class of Banach spaces is that of $L^p$-spaces. Let
+$(X,\mu)$ be a measure space and $L^p(X,\mu)$, for $p\in[1,\infty)$,
+to be the space of functions $f$ (defined only almost everywhere, so
+really these are equivalence classes, in order to actually obtain a
+norm) with
+\begin{equation*}
+    \left( \int_X |f(x)|^p d\mu(x) \right)^{1/p}<\infty.
+\end{equation*}
+It is nontrivial to verify that these are indeed Banach spaces. By
+convention we define $L^\infty(X,\mu)$ to be the (equivalence classes of)
+bounded measurable functions on $X$ with the sup norm (where we take
+a function in the equivalence class with the smallest sup).
+
+Suppose we have a Banach space $V$ and a closed linear subspace
+$W\subset V$. Then $W$ is again a Banach space: the norm of $V$ yields
+a norm on $W$, and the completeness of $V$ together with $W$ being
+closed implies completeness of $W$. In this case the quotient $V/W$
+is naturally a Banach space with the norm
+\begin{equation*}
+    \lVert [v]\rVert = \inf_v \lVert v\rVert,
+\end{equation*}
+where the infimum is taken over all lifts of the class $[v]$. One checks
+that this defines a norm (it's useful to rewrite it as the infimum over
+all $w\in W$ of $\lVert v-w\rVert$ for a fixed lift $v$). It takes a bit
+more work to show that under this norm the quotient is complete.
+
+Let's turn to Hilbert spaces, which are complete inner product spaces,
+hence a special class of Banach spaces, as the square of the inner product
+of an element with itself defines a norm. One particularly nice property
+of Hilbert spaces is that they have orthogonal projections. In particular,
+if $H$ is a Hilbert space and $K\subset H$ is a closed linear subspace then
+for $x\in H$ there exists a unique point $P_Kx\in K$ closest to $x$. To
+prove this we use the parallelogram law
+\begin{equation*}
+    \lVert u+v\rVert^2 + \lVert u-v\rVert^2 = 2\lVert u\rVert^2 + 2\lVert v\rVert^2,
+\end{equation*}
+proved by expanding the right-hand side, and the following lemma.
+\begin{lemma}
+    If $K\subset H$ is a closed convex set then for each $x\in H$
+    there is a unique $z\in K$ such that
+    \begin{equation*}
+        \lVert x-z\rVert = \inf_{y\in K}\lVert x-y\rVert.
+    \end{equation*}
+\end{lemma}
+\begin{proof}
+    There is a sequence $y_n\in K$ such that
+    $\lVert y_n-x\rVert\to d=\inf_{y\in K}\lVert x-y\rVert$, and it is
+    enough to show that this sequence is Cauchy. Using the parallelogram
+    identity with $u=y_m-x$ and $v=x-y_n$, we get
+    \begin{equation*}
+        \lVert y_m-y_n\rVert^2 = 2\lVert y_n-x\rVert^2 + 2\lVert y_m-x\rVert^2
+        - 4\lVert x-(y_n+y_m)/2\rVert^2.
+    \end{equation*}
+    The convexity of $K$ implies that $(y_n+y_m)/2\in K$ whence the last
+    term is greater than or equal to $4d^2.$ Taking $m$ and $n$ large
+    we find that $\lim_{m,n\to\infty}\lVert y_m-y_n\rVert^2\leqslant0$,
+    which implies convergence.
+\end{proof}
+Applying the lemma to our case of $K$ a closed subspace, we can write
+\begin{equation*}
+    x = P_Kx + (x-P_Kx).
+\end{equation*}
+Let us check that $P_Kx$ is orthogonal to $K$. We notice that for any
+$v\in K$ the quantity $\Delta(t) = \lVert x-P_Kx-tv\rVert^2$ is
+minimized at $t=0$ by definition of $P_Kx$. Hence $\Delta'(0)=0$,
+which implies that the real part of $(x-P_Kx, v)$ is zero for all
+$v\in K$. Replacing $v$ with $iv$ shows that the imaginary part is zero,
+from which we obtain the result. Hence we obtain a splitting
+\begin{equation*}
+    H = K\oplus K^\perp.
+\end{equation*}
+
+An easy corollary of the existence of orthogonal projections is the
+Riesz representation theorem.
+\begin{proposition}
+    If $\phi:H\to\C$ is a continuous linear map then there exists a
+    unique $f\in H$ such that
+    \begin{equation*}
+        \phi(v) = (v, f)
+    \end{equation*}
+    for all $v\in H$.
+\end{proposition}
+\begin{proof}
+    Let $K=\ker \phi$, which is a closed subspace of $H$, by continuity of $\phi$.
+    If $K=H$ then take $v=0$.
+    Otherwise, $K^\perp\neq0$ so we can choose a nonzero $x_0\in K^\perp$ such that
+    $\phi(x_0)=1$. We claim that $K^\perp$ is one-dimensional. Given any $y\in K^\perp$
+    clearly $\phi$ sends $y-\phi(y)x_0$ to zero. This implies that $y-\phi(y)x_0$
+    is both in $K$ and $K^\perp$, whence zero. Hence $K^\perp$ is spanned by $x_0$.
+    The result now follows by setting $f=x_0/(x_0,x_0)$.
+\end{proof}
+This yields a conjugate linear isomorphism from the dual of $H$ to $H$.
+
+\subsection{Thom isomorphism}
+Hopkins and Singer refine Thom classes to the differential cohomology case.
+I am, incidentally familiar with (or at least worked through at one point) the
+Thom form construction of Mathai and Quillen, but unfortunately I don't know
+the big picture related to Thom forms, Thom isomorphism, orientation, etc.
+Sam said at some point that pushforwards in differential cohomology might
+be useful in his work (since he thinks a lot about surface bundles, etc.)
+so I should try to get a sense of the story.
+
+Actually, Yajit just spent a good hour or so explaining to me the proof of
+the Thom isomorphism theorem, which was probably good practice for his qual.
+The statement in Milnor-Stasheff is as follows (up to notation).
+\begin{theorem}[Thom isomorphism]
+    Let $\pi:E\to M$ be an oriented rank $k$ vector bundle over $M$. Then
+    $\HH^i(E, E\setminus M;\Z)$ is zero for $i<k$ and there is a unique class
+    $u\in\HH^k(E,E\setminus M;\Z)$ called the Thom class, whose restriction
+    to each fiber $F$, in $\HH^k(F, F\setminus 0;\Z)$ is equal to the
+    preferred (according to the orientation) generator. Moreover, taking the
+    cup product with the Thom class yields an isomorphism
+    \begin{equation*}
+        -\smile u : \HH^n(E;\Z) \xrightarrow{\sim} \HH^{n+k}(E,E\setminus M;\Z)
+    \end{equation*}
+    for each $n$.
+\end{theorem}
+The proof that Yajit outlined to me was for more or less the same theorem, just
+stated slightly differently (using Thom spaces), and consisted of proving the theorem first for
+trivial bundles (using some sort of relative K\"unneth formula) and then
+using Mayer-Vietoris and the five lemma to extend it to locally trivial vector
+bundles in general.
+
+\section{June 16, 2017}
+
+\subsection{The spin group}
+Mike and I spent some time reviewing the basic definitions of Clifford algebras.
+Our goal was to get to the definition of the group Spin, but we didn't quite get
+there. We got stuck on the following proposition. Let $V$ be a real vector
+space with inner product $Q$.
+\begin{proposition}
+    The image in the Clifford algebra $C(V,Q)$ of the degree two differential
+    forms is a Lie subalgebra isomorphic to $\fr{so}(V,Q)$.
+\end{proposition}
+\begin{proof}
+    First one checks that the image $C^2(V)$ is closed under commutator.
+    This follows from the fact that if $c_i$ is the image of an orthonormal
+    basis of $V$ (with respect to $Q$) then
+    \begin{equation*}
+        c_ic_j + c_jc_i + 2\delta_{ij} = 0.
+    \end{equation*}
+    Now the map $C^2(V)\to\fr{so}(V,Q)$ is defined by sending $a\mapsto[a,-]$.
+    Let us write $\tau(a)$ for the endomorphism sending $v\mapsto \tau(a)v$.
+    A similar argument as above shows that $\tau(a)$ takes $C^1(V)$ to $C^1(V)$,
+    and moreover $\tau(a)$ is in $\fr{so}(V,Q)$ because
+    \begin{equation*}
+        Q(\tau(a)v,w) + Q(v,\tau(a) w) = 0
+    \end{equation*}
+    using the Clifford relation together with the Jacobi identity (in particular
+    the expression reduces to $-[a,[v,w]]/2$ but $[v,w]$ is by the Clifford relation
+    a scalar). This map is an isomorphism because it is injective and because
+    the source and target are vector spaces of the same dimension $n(n-1)/2$.
+\end{proof}
+There are two things we didn't understand: where did we use positivity as opposed
+to just nondegeneracy of $Q$, and why is the map injective?
+\marginnote{Understand this! It shouldn't be difficult.}
+If we understand this result then the spin group $\Spin(V,Q)$ is obtained by
+exponentiating the finite-dimensional Lie algebra $C^2(V)$ inside the Clifford
+algebra $C(V)$. We were unclear exactly what this meant -- as a set one can
+consider all symbols of the form $\exp(t a)$, but what is the Lie group structure
+on this set?
+\marginnote{Understand this! Find a reference or ask someone?}
+One thing left to do is to understand the anti-automorphism on the Clifford
+algebra (and self-adjointness in the context of Clifford modules) and how
+this relates to the double covering of $\Spin(V,Q)\to \SO(V,Q)$.
+
+\subsection{Pushforward bundle}
+Aaron Naber was in the common room for a few minutes so I took the chance to ask
+him this issue I've been confused about for a while (and that both Aaron and Steve
+brought up during my qual) about the definition of $\pi_*E$. Recall the setup: we have a
+smooth proper map $\pi:M\to B$ and a finite-rank vector bundle $E\to M$. We would
+like to define a infinite-dimensional vector bundle $\pi_*E\to B$ whose fibers
+are given, above $z$,
+\begin{equation*}
+    {\pi_*E}_z = \Gamma(\pi^{-1}(z), E|_{\pi^{-1}(z)}).
+\end{equation*}
+Of course we can define this object fiberwise\ldots but why is there a locally
+trivial space with these fibers? Aaron suggested doing the following: choose a
+small enough $U\subset B$ over which $M$ is trivialized, with model fiber $F$.
+The fibers are identified, via this trivialization, with the model fiber $F$,
+and this identification should yields identifications of the spaces of sections
+of $E$ restricted to these fibers.
+
+\subsection{Differential Thom cocycles}
+Hopkins and Singer are concerned with families in the following sense: they
+take $E\to S$ to be a smooth proper map of manifolds. In fact, this is not quite
+true. They work with manifolds with corners in general, and so they work with
+``neat'' maps, but I'll ignore this technicality for now. The motivation for
+this Thom business is that we would like to formulate a notion of fiber integration
+for (ordinary) differential cohomology.
+
+\section{June 19, 2017}
+
+\subsection{Thom forms}
+Let $\pi:E\to M$ be an oriented vector bundle of rank $k$ over a compact oriented
+manifold $M$.
+\begin{definition}
+    A Thom form for $E$ is a closed, compactly supported, differential form
+    $U\in \mathcal{A}^k_c(E)$ such that
+    \begin{equation*}
+        (2\pi)^{-k/2}\int_{E/M} U = 1 \in \mathcal{A}^0(M).
+    \end{equation*}
+\end{definition}
+The following Thom isomorphism theorem justifies the name ``Thom form.''
+\begin{theorem}
+    With $\pi$ and $U$ as above, the maps
+    \begin{align*}
+        \HH^\bullet_c(E) & \to \HH^{\bullet-k}(M)\\
+        \beta \mapsto & (2\pi)^{-k/2}\pi_*\beta
+    \end{align*}
+    and
+    \begin{align*}
+        \HH^\bullet(M) &\to \HH^{\bullet+k}_c(E)\\
+        \alpha \mapsto & U\wedge \pi^*\alpha
+    \end{align*}
+    are inverses.
+\end{theorem}
+
+This theorem is not particularly difficult to prove, but I'll come back to it
+later.
+\marginnote{Come back and prove this theorem!}
+For now I want to work through the construction (due to Mathai and Quillen
+in \cite{mq}, though I am following the exposition of \cite{bgv}) of the Thom form.
+The Thom form is given by the formula
+\begin{equation*}
+    U = \varepsilon(k) Te^{-|x|^2/2+i\nabla x+F}.
+\end{equation*}
+which we now explain.
+
+Given any oriented Riemannian vector bundle $E$ of rank $k$ over $M$, we have
+the Berezin integral
+\begin{equation*}
+    T: \mathcal{A}(M, \Lambda E)\to \mathcal{A}(M)
+\end{equation*}
+which returns the coefficient of the top degree element of $\Lambda E$ that is
+determined by the orientation. One has the following useful formula.
+\begin{lemma}
+    If $\nabla$ is a connection on $E$ compatible with the metric then for any
+    $\alpha\in \mathcal{A}(M,\Lambda E)$ we have
+    \begin{equation*}
+        dT(\alpha) = T(\nabla \alpha).
+    \end{equation*}
+\end{lemma}
+\begin{proof}
+    Fix, locally, an oriented orthonormal frame $e^i$ for $E^*$. Then $T$ is
+    given by pairing against $e^1\wedge\cdots\wedge e^k$. Using the definition
+    of the dual connection,
+    \begin{equation*}
+        dT(\alpha) = (\nabla T)(\alpha) + T(\nabla \alpha).
+    \end{equation*}
+    The first term vanishes,
+    \begin{equation*}
+        \nabla T = \sum e^1\wedge\cdots \nabla e^i\wedge\cdots\wedge e^k = 0
+    \end{equation*}
+    since the connection is compatible with the metric (the connection one-form
+    matrix is traceless, in particular antisymmetric).
+\end{proof}
+
+Consider now $\pi: E\to M$ as before, where we equip $E$ with a metric $(\cdot,\cdot)$
+and compatible connection $\nabla^E$. We may pull back $E$ along $\pi$
+\begin{equation*}
+    \begin{tikzcd}
+        \pi^*E \rar\dar & E\dar\\
+        E\rar & M
+    \end{tikzcd}
+\end{equation*}
+as well as the connection $\nabla^{\pi^*E}=\pi^*\nabla^E$.
+We obtain a bigraded algebra
+\begin{equation*}
+    \mathcal{A}^{i,j} = \mathcal{A}^i(E, \Lambda^j(\pi^*E))
+\end{equation*}
+of multivector-valued forms on the left-hand side of the diagram. The connection
+defines a linear map $\nabla: \mathcal{A}^{i,j}\to \mathcal{A}^{i+1,j}$.
+We have a few distinguished elements of the algebra $\mathcal{A}$. The first
+is $x\in \mathcal{A}^{0,1}$, which denotes the tautological section. This
+is the smooth section assigning to a point $(p,v)$ the vector $v$ itself.
+Using the metric and the connection we obtain elements $|x|^2\in \mathcal{A}^{0,0}$
+and $\nabla x\in \mathcal{A}^{1,1}$.
+Notice that we can identify antisymmetric matrices (elements of $\fr{so}(E)$)
+with $\Lambda^2E$ under the map
+\begin{equation*}
+    A\in\fr{so}(V) \mapsto \sum_{i<j} (Ae_i, e_j)e_i\wedge e_j.
+\end{equation*}
+Here $e_i$ is a oriented orthonormal local frame for $E$.
+\marginnote{Why is this assignment global?}
+That this map is injective is clear.
+Then the curvature $(\nabla^E)^2\in \mathcal{A}^2(M,\fr{so}(E))$
+pulls back to an element, under this identification, $F\in \mathcal{A}^{2,2}$.
+
+We will also need the contraction $a(s):\mathcal{A}^{i,j}\to \mathcal{A}^{i,j-1}$
+for any $s\in \mathcal{A}^{0,1}$,
+\begin{equation*}
+    a(s)(\alpha\otimes(s_1\wedge\cdots\wedge s_j)) = \sum_{m=1}^j(-1)^{|\alpha|+m-1}(s,s_k)\alpha
+    \otimes(s_1\wedge\cdots\wedge \hat s_k\wedge\cdots\wedge s_j)
+\end{equation*}
+for $\alpha\in \mathcal{A}(E)$ homogeneous and $s_k\in \mathcal{A}^{0,1}$.
+Notice that for any $s\in \mathcal{A}^{0,1}$ and $\alpha\in \mathcal{A}$, we have
+$T(a(s)\alpha)=0$, since $a(s)\alpha$ has no component in $\mathcal{A}^{\bullet, k}$.
+Hence
+\begin{equation*}
+    dT(\alpha) = T( (\nabla + a(s))\alpha).
+\end{equation*}
+
+\begin{lemma}
+    Write
+    \begin{equation*}
+        \Omega = \frac{|x|^2}{2} + i\nabla x + f \in \mathcal{A}.
+    \end{equation*}
+    Then
+    \begin{equation*}
+        (\nabla - ia(x))\Omega = 0.
+    \end{equation*}
+    Moreover, for any smooth $\rho\in C^\infty(\R)$, define $\rho(\Omega)\in \mathcal{A}$
+    by the formula
+    \begin{equation*}
+        \rho(\Omega) = \sum_{m=0}^k \frac{\rho^{(m)}(|x|^2/2)}{m!}(i\nabla x+F)^m.
+    \end{equation*}
+    Then $(\nabla-ia(x))\rho(\Omega)=0$.
+\end{lemma}
+\begin{proof}
+    First note that $a(x)x=|x|^2$ and $a(x)|x|^2=0$. Compatibility gives us that
+    $\nabla |x|^2=2(\nabla x, x)=-2a(x)\nabla x$, where the second equality follows
+    from the definition of $a$. The Bianchi identity yields $\nabla F=0$ and the
+    definition of the curvature yields $\nabla(\nabla x)=a(x)F$. These computations
+    together show that $(\nabla-ia(x))\Omega=0$. The rest of the proposition follows
+    from the fact that $\nabla-ia(x)$ is a derivation of the algebra $\mathcal{A}$.
+\end{proof}
+
+Since $\Omega\in\sum_{0\leq m\leq 2}\mathcal{A}^{m,m}$ we see that
+$\rho(\Omega)\in\sum_{0\leq m\leq k}\mathcal{A}^{k,k}.$ Thus $T\rho(\Omega)\in \mathcal{A}^k(E)$
+and we have that
+\begin{equation*}
+    dT(\rho(\Omega)) = T( (\nabla-ia(x))\rho(\Omega)) = 0.
+\end{equation*}
+We conclude that $T(\rho(\Omega))$ is a closed $k$-form on $E$.
+The Thom form is now defined by taking $\rho(x)=\varepsilon(k)e^{-x}$
+where $\varepsilon(k)=1$ if $k$ is even and $i$ if $k$ is odd:
+\begin{equation*}
+    U = \varepsilon(k)Te^{-\Omega} = \varepsilon(k) Te^{-|x|^2+i\nabla x+F}.
+\end{equation*}
+Note that the Thom form depends on the orientation (through $T$), metric,
+and connection.
+
+\begin{proposition}
+    The form $(2\pi)^{-k/2}U$ has integral 1 over each fiber.
+\end{proposition}
+\begin{proof}
+    We compute by restricting to the fiber above a point $p\in M$, so we work
+    on $\pi^*E_p\to E_p\to \{p\}$. Now $x$ is the identity map $V\to V$, thought
+    of as an element $\mathcal{A}^0(V,V)$. The pullback connection on $\pi^*E_p$
+    is now the trivial connection (since the base of $E_p\to\{p\}$ is a point),
+    whence the Thom form over $p$ is given $\varepsilon(k)T\exp(-|x|^2/2-idx)$.
+    Noting that $dx=\sum dx^i\otimes e_i$ once we have chosen an (oriented orthonormal)
+    basis, we obtain the result.
+    \marginnote{Does this really makes sense? Work through in detail!}
+\end{proof}
+
+
+\section{June 20, 2017}
+
+I met with Sam today for a few hours and I sketched to him this Mathai-Quillen
+construction of a Thom form. Then he described to me the Deligne cohomology
+model and briefly mentioned another model that uses differential forms on
+simplicial manifolds (this approach is apparently useful in the study of flat
+surface bundles\ldots). We then briefly thought about the product structure
+on ordinary differential cohomology but then got pretty confused.
+
+There are a few basic ideas about differential cohomology I'd like to work through
+in detail soon:
+\begin{enumerate}[(a)]
+    \item why does $\check\HH^2(M;\Z)$ classify line bundles with connection? What
+        does the abelian group structure correspond to?
+    \item work through the various exact sequences that show up
+    \item what is the product on differential cohomology (in the 3 main models)?
+    \item work through the construction of Deligne cohomology, and understand
+        why it computes differential cohomology
+    \item where and why does differential cohomology arise in the physics literature?
+        What is the connection to index theory?
+    \item what is the definition of differential $K$-theory?
+    \item what are slant products? work through the Pontryagin-Thom construction
+        and understand fiber integration
+\end{enumerate}
+
+\subsection{Differential cohomology}
+
+There is a bit of weirdness going on with the gradings in differential cohomology.
+I quite like the Hopkins-Singer cochain model, so let's work with that. I first
+claim that if $M$ has $r$ connected components then
+\begin{equation*}
+    \DC^0(M;\Z) \cong \Z^r.
+\end{equation*}
+This follows immediately from the definition of the differential cochain complexes
+$C(q)^n(M)$. In particular, recall that
+\begin{equation*}
+    C(q)^q(M) = C^q(M;\Z)\times C^{q-1}(M;\R)\times \Omega^q(M)
+\end{equation*}
+with differential given
+\begin{equation*}
+    d(c,h,\omega) = (\delta c, \omega - c-\delta h, d\omega).
+\end{equation*}
+For $q=0$ the second factor is zero whence the kernel of $d$ is precisely those triples
+$(c,0,\omega)$ for which $\delta c = d\omega = 0$ and $\omega - c=0$. Here $\omega$ is
+a closed zero-form on $M$, i.e. locally constant. The equation $\omega = c$ forces
+$\omega$ and $c$ to be the same locally constant integer. This proves the claim.
+
+We argued above that $\DC^1(M;\Z)$ is the group of $U(1)$-valued functions on $M$ and
+at least motivated that $\DC^2(M;\Z)$ is the group of isomorphism classes of $U(1)$-bundles
+with connection on $M$. If we were to give the graded abelian group $\DC^\bullet(M;\Z)$ the
+structure of a ring, we would for instance have a method of taking two $U(1)$-valued functions
+and producing a $U(1)$-bundle with connection. Similarly one could take a $U(1)$-valued function
+and a $U(1)$-bundle with connection and produce a gerbe. What does this product look like?
+
+It is a straightforward computation that the product given in Hopkins-Singer on cochains
+descends to cohomology, assuming we believe the given statements about the homotopy between
+the cup and wedge products. I can write this out tomorrow. My goal for tomorrow is
+to work out some explicit examples of this product.
+
+More of a stretch goal: understand roughly the picture of anomalies in quantum field theories
+and the relation to differential cohomology and index theory (as well as this paper of Moore
+and Lukic).
+
+\section{June 21, 2017}
+
+\subsection{Sheaves of spectra on manifolds}
+I spent some time with Elden today skimming through \cite{bnv} to get a sense of where
+differential cohomology comes from in the most abstract sense. He explained a lot of the
+scary $\infty$-categorical terminology so I think I got a reasonable idea of what's going
+on. Let me just try to sketch the main idea. Suppose we have a stable $\infty$-category
+$\sf C$ and a $\sf C$-valued (homotopy) sheaf $\hat E$ on $\sf Mfld$ (here we take
+the site with coverings being \'etale maps, and we work with manifolds with corners
+into order to be able to use topological simplices). The authors show that there exist
+endofunctors of $\sf C$-valued sheaves $\mathcal{H}$ and $\mathcal{Z}$ together with maps
+\begin{equation*}
+    \begin{tikzcd}
+        \hat E \rar{R}\dar{I} & \mathcal{Z}(\hat E)\\
+        \mathcal{H}(\hat E)
+    \end{tikzcd}
+\end{equation*}
+which fit into a certain larger diagram involving various other constructions. One
+defines $\mathcal{H}$ as an operator that takes a sheaf and ``homotopifies'' it
+in the sense that its value on $M\times\Delta^1$ are equivalent to its value on $M$.
+In the differential cohomology context $\mathcal{H}$ gets rid of the ``differential''
+part of the differential cohomology theory, which is not homotopy invariant. Hence
+we think of $I$ as the forgetful map assigning the underlying topological class.
+On the other hand, $\mathcal{Z}$ (which is defined as the cofiber of a certain (co)unit
+map in an adjunction) only keeps the geometric data. Thus we think of $R$ as the forgetful
+map assigning the underlying differential form data. It's quite neat that such
+structures arise in this generality and are pretty straightforwardly interpretable in
+the usual case. Another nice result in this paper is a homotopy formula that
+measures, in a sense, the failure of $\hat E$ to be homotopy invariant in a rather
+intuitive way. I'm pleasantly surprised by how interesting this general story is, even though
+it's useful probably only as philosophy when it comes to index theory and physics.
+I think Kyle is also interested in reading this paper, so it'd be nice to learn the
+relevant category theory and topology together as we work through this.
+
+A rough outline of things to work through:
+\begin{enumerate}[(a)]
+    \item sites and Grothendieck topologies;
+    \item basics of $\infty$- and stable $\infty$-categories;
+    \item sheaves on manifolds
+    \item \ldots
+\end{enumerate}
+
+\subsection{Motivation for Mathai-Quillen}
+
+Sam asked me a good question yesterday: where does the formula for the Thom form given
+by Mathai and Quillen come from? The way that the construction is presented in
+\cite{bgv} is pretty much completely unmotivated, with only a passing remark about
+Chern characters and family index.
+
+The original paper of Mathai and Quillen is much more illuminating. In particular,
+let's outline what they do in section 4 (they have an alternate construction later
+that may be related to that of \cite{bgv}?)
+\marginnote{What is this alternate construction?}
+
+Based on skimming the paper here's my guess. Fix a vector bundle of even rank
+$\pi:E\to M$ and suppose $E$ is equipped with a spin structure. 
+They begin by stating in (4.1) some sort of cohomological index theorem:
+if $i:M\to E$ is the zero section then
+\begin{equation*}
+    \ch(i_!1) = \pi^*(\hat A(E)^{-1})i_*1.
+\end{equation*}
+I don't know much about $K$-theory unforunately but $1$ is probably a trivial class
+in the $K$-theory of the base and $i_*$ is some sort of wrong way map. On the right
+we have the pullback of the inverse of the A-hat genus wedged with the Thom class
+in cohomology $i_*1$. Mathai and Quillen cite Atiyah-Bott-Schapiro
+in an explicit representation for the $i_!1$. This representation -- a vector bundle
+over the total space $E$ -- is naturally equipped with a Dirac operator $\sf D$ and
+nn odd endomorphism $L$. This yields a superconnection $\mathsf{D}+L$ on the representative,
+whence the left hand-side of the formula above can be computed as usual, as a supertrace
+of an exponential of the curvature of the superconnection. Carrying out this computation
+we obtain the inverse $\hat A$-genus of $E$ times a certain form. This form thus serves
+as a representative for the Thom class. This construction is where the exponential form
+originates from.
+
+
+\subsection{Products in differential cohomology}
+Let's briefly outline the product in differential cohomology. Obviously the products
+at the level of cochains will be quite different, but we expect them to be
+graded-commutative.
+\subsubsection{Hopkins-Singer}
+Recall that the Hopkins-Singer model for differential cochains was a certain
+homotopy pullback in the (model, $\infty$-, etc.) category of cochain complexes.
+Cochains are triples $(c, h, \omega)$ where the first component is a integral
+cochain, the second component is a real cochain of one degree lower, and $\omega$
+is a differential form. Apparently the fact that the wedge product of forms
+is not to sent to the cup products on cochains by the integration map complicates
+matters.
+\marginnote{What exactly is the complication? Presumably it appears in the descent to
+cohomology?}
+We first are asked to fix a chain homotopy between the cup and wedge products, i.e.
+a map
+\begin{equation*}
+    B: (\Omega^\bullet(Z)\otimes\Omega^\bullet(Z))^n\to C^{n-1}(Z;\R)
+\end{equation*}
+such that
+\begin{equation*}
+    \omega\wedge \eta - \omega\smile\eta = \delta B(\omega,\eta)+B(d\omega,\eta)+(-1)^{|\omega|}B(\omega,d\eta).
+\end{equation*}
+It seems that such a homotopy should arise from a proof of the de Rham theorem. A nice
+place to look might be the book of Dupont, who proves the de Rham theorem using simplicial
+methods. Perhaps Bott and Tu is another good place to look. The product is now defined
+\begin{equation*}
+    (c_1,h_1,\omega_1)(c_2,h_2,\omega_2) = (c_1\smile c_2,(-1)^{|c_1|}c_1\smile h_2+h_1\smile \omega_2 + B(\omega_1,\omega_2), \omega_1\wedge\omega_2).
+\end{equation*}
+There are a few things to check: this product descends to a graded-commutative product
+on the level of cohomology and that the product is independent of our choice of $B$ (apparently
+any two choices are chain homotopic). To check that it descends requires checking that
+the product of cocycles is again a cocycle and that the product with a coboundary is zero.
+I'll try to type this out tomorrow morning if I'm feeling industrious (and maybe save
+the issue about $B$ for later).
+
+\subsubsection{Deligne}
+The product for the Deligne model is relatively straightforward, but since I haven't quite
+worked through that model yet, I'll postpone the discussion for later.
+
+\section{June 22, 2017}
+
+\subsection{Products in Hopkins-Singer}
+I did a few computations this morning in the Hopkins-Singer model, but I ended up
+confused. Recall the product of Hopkins-Singer differential cochains from above.
+They claim that this product
+\begin{equation*}
+    \check C(r)^\bullet \otimes \check C(s)^\bullet \to \check C(r+s)^\bullet
+\end{equation*}
+descends to a graded-commutative product at the level of cohomology
+\begin{equation*}
+    \check \HH(r)^\bullet \otimes \check \HH(s)^\bullet \to \check\HH(r+s)^\bullet.
+\end{equation*}
+Let's just check for now that it descends to a product on the differential cohomology
+groups. Recall that $\DC^p(M;\Z)=\check\HH(p)^p(M)$ which is the cohomology at
+\begin{equation*}
+    \begin{tikzcd}
+        \check C(p)^{p-1}(M) \rar{d^{p-1}} & \check C(p)^p(M) \rar{d^p} & \check C(p)^{p+1}(M).
+    \end{tikzcd}
+\end{equation*}
+In particular we have that
+\begin{align*}
+    \check C(p)^p(M) &= C^p(M;\Z) \oplus C^{p-1}(M;\R) \oplus \Omega^p(M)\\
+    \check C(p)^{p+1}(M) &= C^{p+1}(M;\Z)\oplus C^p(M;\R)\oplus\Omega^{p+1}(M)\\
+    d^p(c,h,\omega) &= (\delta c,c-\omega-\delta h,d\omega)
+\end{align*}
+and
+\begin{align*}
+    \check C(p)^{p-1}(M) &= C^{p-1}(M;\Z) \oplus C^{p-2}(M;\R)\\
+    d^{p-1}(c,h) &= (\delta c,-c-\delta h,0).
+\end{align*}
+Suppose we have two cocycles $(c_1,h_1,\omega_1)$ and $(c_2,h_2,\omega_2)$ in
+$\check C(p)^p(M)$. Then the product is given
+\begin{align*}
+    (c_1,h_1,\omega_1)(c_2,h_2,\omega_2) &= (c_1\smile c_2, (-1)^{|c_1|}c_1\smile h_2+h_1\smile\omega_2+B(\omega_1,\omega_2), \omega_1\wedge\omega_2).
+\end{align*}
+The result should again be a cocycle. Applying $d^{2p}$ we clearly obtain 0 in the first
+and third components since $\delta c_1=\delta c _2=0$ and $d\omega_1=d\omega_2=0$.
+The formula for $d^{2p}$ (in $\check C(2p)^\bullet(M)$) takes the second component to
+\begin{equation*}
+    c_1\smile c_2 - \omega_1\wedge\omega_2 - \delta \left( (-1)^{|c_1|}c_1\smile h_2+h_1\smile \omega_2 + B(\omega_1,\omega_2) \right).
+\end{equation*}
+Recall that
+\begin{equation*}
+    \delta B(\omega_1,\omega_2) = \omega_1\wedge\omega_2-\omega_1\smile\omega_2-B(d\omega_1,\omega_2)+(-1)^{|\omega_1|}B(\omega_1,d\omega_2)
+\end{equation*}
+whence we obtain
+\begin{equation*}
+    c_1\smile c_2 +\omega_1\smile\omega_2-(-1)^{|c_1|}\delta(c_1\smile h_2) - \delta(h_1\smile\omega_2).
+\end{equation*}
+Since our two cochains are cocycles we have that $\delta h_1=c_1-\omega_1$ and $\delta h_2=c_2-\omega_2$.
+Using the Leibniz rule we are now left with
+\begin{equation*}
+    c_1\smile c_2 + \omega_1\smile\omega_2 - c_1\smile (c_2 -\omega_2) - (c_1 - \omega_1)\smile \omega_2.
+\end{equation*}
+This is not zero! Instead it simplifies to
+\begin{equation*}
+    2\omega_1\smile\omega_2 +c_1\smile\omega_2-c_1\smile\omega_2.
+\end{equation*}
+
+\subsection{Deligne cohomology}
+
+Let's look at the smooth Deligne cohomology viewpoint of differential cohomology.
+
+\bibliographystyle{alpha}
+
+\bibliography{references}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+

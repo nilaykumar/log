@@ -1,0 +1,95 @@
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Fonts
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\G}{\mathbb{G}}
+\newcommand{\fr}{\mathfrak}
+%\newcommand{\sf}{\mathsf}
+
+% Topology/geometry
+
+\DeclareMathOperator{\Gr}{Gr}
+\DeclareMathOperator{\Fl}{Fl}
+\DeclareMathOperator{\PP}{\mathbb{P}}
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Lie}{Lie}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\UU}{U}
+\DeclareMathOperator{\OO}{O}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\HH}{H}
+\DeclareMathOperator{\Symp}{Symp}
+\DeclareMathOperator{\Spin}{Spin}
+\DeclareMathOperator{\Td}{Td}
+\DeclareMathOperator{\ind}{ind}
+\DeclareMathOperator{\vect}{Vect}
+\DeclareMathOperator{\Op}{Op}
+
+% Representation theory
+
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Str}{str}
+
+% Algebra
+
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\sHom}{\mathscr{H}\!om}
+\DeclareMathOperator{\sEnd}{\mathscr{E}\!nd}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\irr}{irr}
+\DeclareMathOperator{\Diff}{Diff}
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Specm}{Specm}
+\DeclareMathOperator{\Stab}{Stab}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ch}{ch}
+
+% Category theory
+
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator*{\Map}{Map}
+
+\makeatletter
+\renewcommand\d[1]{\mspace{6mu}\mathrm{d}#1\@ifnextchar\d{\mspace{-3mu}}{}}
+\makeatother
+
+\newcommand{\naturalto}{%
+    \mathrel{\vbox{\offinterlineskip
+        \mathsurround=0pt
+        \ialign{\hfil##\hfil\cr
+            \normalfont\scalebox{1.2}{.}\cr
+                            %      \noalign{\kern-.05ex}
+        $\longrightarrow$\cr}
+    }}%
+}
+
+
+
