@@ -1065,10 +1065,74 @@ This is not zero! Instead it simplifies to
 \begin{equation*}
     2\omega_1\smile\omega_2 +c_1\smile\omega_2-c_1\smile\omega_2.
 \end{equation*}
+I run into similar issues when checking that products with coboundaries are again
+coboundaries.
+\marginnote{What is the problem here?}
 
 \subsection{Deligne cohomology}
 
 Let's look at the smooth Deligne cohomology viewpoint of differential cohomology.
+Let $M$ be a smooth manifold.
+Define, for $p\geq0$ the $p$th smooth Deligne complex $\Z_{p,\infty}^\bullet$ to be
+\begin{equation*}
+    \begin{tikzcd}
+        \underline{\Z} \rar{\iota} & \mathcal{A}^0 \rar{d} & \mathcal{A}^1 \rar{d} & \cdots \rar{d}& \mathcal{A}^{p-1}
+    \end{tikzcd}
+\end{equation*}
+where $\underline{\Z}$ is the constant sheaf for the group $\Z$ and  
+$\mathcal{A}^k$ is the sheaf of $k$-forms on $M$. Recall that we can compute
+cohomology of sheaves as right derived functors of the global sections functor. Similarly we
+can compute the cohomology of a complex of sheaves. This notion is historically known as
+hypercohomology, and goes by the notation $\mathbb{H}$, but I think this is rather silly, so I'll
+just refer to it as usual cohomology. The $p$th Deligne cohomology group $\HH_D^p(M;\Z)$ is
+defined to be the $p$th sheaf cohomology
+\begin{equation*}
+    \HH_D^p(M;\Z) = \HH^p(M; \Z_{p,\infty}^\bullet)
+\end{equation*}
+of the $p$th Deligne complex.
+
+To compute sheaf cohomology recall that we need an acyclic double complex resolution of our
+complex. The $p$th cohomology group is then computed by applying global sections to this
+resolution and computing the $p$th cohomology of the associated total complex. Let's do
+a few simple examples using \v Cech methods. Fix a good open cover $\mathcal{U}$ of $M$
+and assume that $M$ is connected.
+\marginnote{Why are such \v Cech resolutions acyclic? This should follow from the existence
+of partitions of unity.}
+Let's first consider the case $p=0$. Then we obtain the complex
+$\Z_{0,\infty}^\bullet(M)=\underline{\Z}[0]$, i.e. the complex with just the constant sheaf
+$\underline{\Z}$ in degree zero. The 0th Deligne cohomology is thus the 0th sheaf
+cohomology of $M$ with coefficients in the constant sheaf $\underline{\Z}$. This is
+just the global sections $\Z$. OK, let's now look
+at $p=1$. Here we have a two-step complex
+$\Z_{1,\infty}^\bullet=\underline{\Z}\to\mathcal{A}^0$.
+Taking a \v Cech resolution,
+\begin{equation*}
+    \begin{tikzcd}
+        \mathcal{A}^0 \rar & \underline{C}^0(\mathcal{U},\mathcal{A}^0)\rar{\delta} & \underline{C}^1(\mathcal{U},\mathcal{A}^0)\rar & \cdots\\
+        \underline{\Z} \rar\uar{\iota} & \underline{C}^0(\mathcal{U},\underline{\Z}) \rar{\delta}\uar{\iota} & \underline{C}^1(\mathcal{U}, \mathcal{\Z})\rar\uar{\iota} & \cdots
+    \end{tikzcd}
+\end{equation*}
+we drop the first column, calling the result $\check\Z_{1,\infty}^{\bullet,\bullet}$.
+To compute the first cohomology of the complex $\Z_{1,\infty}^\bullet$ it suffices to
+compute the first cohomology of the global sections functor applied to the total
+complex of $\check\Z_{1,\infty}^{\bullet,\bullet}$. This sequence, near degree one, is
+\begin{equation*}
+    \begin{tikzcd}
+        C^0(\mathcal{U},\underline{\Z}) \rar& C^0(\mathcal{U}, \mathcal{A}^0)\oplus C^1(\mathcal{U},\underline{\Z}) \rar & C^1(\mathcal{U},\mathcal{A}^0)\oplus C^2(\mathcal{U}, \underline{\Z})
+    \end{tikzcd}
+\end{equation*}
+where the first map takes $a$ to $(\iota a, \delta a)$
+and the second map takes $(f, a)$ to $(\delta f-\iota a, \delta a)$.
+A 1-cocycle in this total complex is thus the data of smooth real-valued functions on
+each open $U_i$ in the cover which differ on intersections $U_i\cap U_j$ by integers
+that satisfy a cocycle condition. A 1-cocycle is a 1-coboundary when the functions
+values on the opens $U_i$ are integral. It follows that the first Deligne cohomology
+is precisely the group of $\R/\Z$-valued smooth functions on $M$.
+
+Next let's look at $p=2$. Here we have
+$\underline{\Z}_{2,\infty}^\bullet=\underline{\Z}\to\mathcal{A}^0\to\mathcal{A}^1$.
+
+\subsection{Proof of spectral theorem}
 
 \bibliographystyle{alpha}
 
