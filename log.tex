@@ -1129,8 +1129,48 @@ that satisfy a cocycle condition. A 1-cocycle is a 1-coboundary when the functio
 values on the opens $U_i$ are integral. It follows that the first Deligne cohomology
 is precisely the group of $\R/\Z$-valued smooth functions on $M$.
 
+
+
+\section{June 23, 2017}
+
+\subsection{Deligne cohomology (cont)}
 Next let's look at $p=2$. Here we have
 $\underline{\Z}_{2,\infty}^\bullet=\underline{\Z}\to\mathcal{A}^0\to\mathcal{A}^1$.
+Taking a \v Cech resolution as before we take the total complex and look at the
+global sections of the degree 2 term, which looks like
+\begin{equation*}
+    \begin{tikzcd}
+        \check C^0(M;\mathcal{A}^0) \oplus \check C^1(M;\underline{\Z}) \rar &
+        \check C^0(M;\mathcal{A}^1)\oplus \check C^1(M;\mathcal{A}^0)\oplus
+        \check C^2(M;\underline{\Z})\\
+        \;\rar& \check C^1(M;\mathcal{A}^1)\oplus\check C^2(M;\mathcal{A}^0)\oplus
+        \check C^3(M;\underline{\Z})
+    \end{tikzcd}
+\end{equation*}
+The first map sends $(f, n)\mapsto (df, \delta f-\iota n, \delta n)$ and
+the second map sends $(\alpha, f, n)$ to $(\delta\alpha-df,\delta f+\iota a,\delta a)$.
+Hence a coycle is the following data: one-forms $\alpha_i$ on each $U_i$ such that
+$\alpha_j-\alpha_i=df_{ij}$, for functions $f_{ij}$ on $U_i\cap U_j$ satisfying
+$f_{jk}-f_{ik}+f_{ij}=a_{ijk}$, for $a_{ijk}\in\Z$ satisfying a 3-cocycle condition.
+If we exponentiate the conditions on the $f_{ij}$ we obtain nonvanishing complex
+functions which serve as transition functions for a complex line bundle. In
+particular, we fix trivializing sections $s_i$ on the $U_i$ such that $s_i=e^{2\pi if_{ij}}s_j$
+on the overlap. To interpret the one-form data as a connection we write, with
+respect to the trivializing section $s_i$ on $U_i$: $\nabla = d + 2\pi i\alpha_i$.
+We check that these connection glues to a global connection using the condition on
+the $\alpha_i$ above:
+\begin{align*}
+    \nabla s_i &= (d+2\pi i\alpha_i)(e^{2\pi if_{ij}}s_j) = 2\pi i df_{ij} e^{2\pi if_{ij}} s_j + 2\pi i \alpha_is_j\\
+    &= 2\pi i\alpha_j e^{2\pi if_{ij}}s_j = e^{2\pi if_{ij}}\nabla s_j.
+\end{align*}
+A 2-cocycle is thus the data of a complex line bundle with connection. Finally
+let us check that a 2-cocycle yields a trivial line bundle with trivial connection.
+A coboundary, the image of say $(g,m)$, is given by the triple $(dg, \delta g-\iota m,\delta m)$.
+In particular, the transition functions are given $\exp(2\pi i(g_j-g_i))$
+and the local connections are given by multiplication $dg_i$.
+Due to the form of the transition functions we can scale the trivialization over each
+$U_i$ by $e^{2\pi i g_i}$ to obtain a global trivialization of the line bundle.
+\marginnote{What about the connection? Why is it trivial?}
 
 \subsection{Proof of spectral theorem}
 
