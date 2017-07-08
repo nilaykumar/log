@@ -6,6 +6,7 @@
 \usepackage{mathrsfs}
 \usepackage{tikz-cd}
 \usepackage{amssymb}
+\usepackage{centernot}
 
 \usepackage{marginnote}
 \renewcommand*{\marginfont}{\scriptsize\color{red}\sffamily}
@@ -13,6 +14,8 @@
 \input{macros.tex}
 
 \DeclareMathOperator{\DC}{DC} % differential characters
+\DeclareMathOperator{\Del}{Del} % deligne cohomology
+\newcommand{\fsl}[1]{{\centernot{#1}}}
 
 \title{Math log}
 \author{Nilay Kumar}
@@ -1171,6 +1174,277 @@ and the local connections are given by multiplication $dg_i$.
 Due to the form of the transition functions we can scale the trivialization over each
 $U_i$ by $e^{2\pi i g_i}$ to obtain a global trivialization of the line bundle.
 \marginnote{What about the connection? Why is it trivial?}
+
+\section{June 26, 2017}
+
+Sean explained to me briefly today how in certain physical models (string theory
+of pure spinors or something) the grading on a dga somehow comes after the other
+data (in the sense that it can be useful to change it). Sean suggested instead
+taking a differential algebra and endowing it with a ``spectral'' vector field $E$, i.e.
+a derivation whose eigenelements span the algebra (as an algebra), such that
+$E$ commutator the differential is the differential again. This yields a grading
+according to the eigenvalues of the generators. We thought this was a kinda funny
+definition. The $E$ stands for Euler vector field -- if there is a grading already
+then $Ea=|a|a$.
+
+\subsection{Homotopy invariance}
+
+This is a simple formal check.
+In \cite{bnv} a presheaf $F$ (on the site of manifolds, with corners I guess) is called
+homotopy invariant if for each $M$ the map $F(M)\to F(M\times I)$ induced by the
+projection $\pi: M\times I\to M$ is an equivalence. Let's double check that this lines
+up with the name -- suppose $M\simeq N$ is a homotopy equivalence of manifolds $M$
+and $N$, i.e. we have maps $f:M\to N, g:N\to M$ such that $g\circ f\simeq \id_M$
+and $f\circ g\simeq \id_N$.
+In particular we have a homotopy $h:M\times I\to M$ between $\id_M$ and $g\circ f$.
+We will use the following lemma, which shows that homotopic maps induce equal maps
+after applying a homotopy invariant presheaf.
+\begin{lemma}
+    Let $h:M\times I\to N$ be a homotopy between two maps $f,g:M\to N$.
+    Then $Ff=Fg$ if $F$ is homotopy invariant.
+\end{lemma}
+\begin{proof}
+    As above, let $\pi:M\times I\to M$ be the projection and $\iota_0,\iota_1$ be
+    the inclusions $M\to M\times I$. Notice that $\pi\circ\iota_1=\pi\circ\iota_0=\id_M$.
+    By homotopy invariance of $F$ we know there exists an inverse $(F\pi)^{-1}$.
+    Hence $F\iota_0\circ F\pi\circ (F\pi)^{-1}=F\iota_0=(F\pi)^{-1}$ and similarly
+    for $F\iota_1$. Thus
+    \begin{equation*}
+        F\iota_0=F\iota_1=(F\pi)^{-1} : F(M\times I)\to F(M).
+    \end{equation*}
+    We conclude that $Ff=F\iota_0\circ Fh = F\iota_1\circ Fh=Fg$.
+\end{proof}
+Applying this to our case we see that $F(g\circ f)=F\id_M=\id_{F(M)}$ and
+$F(f\circ g)=F\id_N=\id_{F(N)}$. This shows that a homotopy equivalence induces
+isomorphisms after applying a homotopy invariant presheaf.
+
+\subsection{Cochain complexes}
+
+I want to follow Bunke's exposition of the smooth Deligne approach to differential
+cohomology. Before we get to the definitions lets recall some basic operations in
+the category of cochain complexes (of abelian groups). The first is the shift functor $[-1]$, which 
+takes a cochain complex $C^\bullet$ and returns the complex $C^\bullet[-1]$ given
+by $C^\bullet[-1] = (C^{p-1}, -d)$. It shifts maps of complexes in the corresponding
+manner.  Notice that the shift functor shifts cohomology correspondingly as well.
+It is useful to remember the following slogan
+(at least given our convention here):
+the shift functor shifts the complex to the right and negates the differential.
+Of course, the shift has an inverse functor $[1]$ that shifts to the left. Iterated
+compositions of these functors will be written $[p]$, $p\in\Z$.
+We will write $\sigma$ for the brutal truncation functors. For instance, $\sigma^{\geq p}$
+sets all groups in degree lower than $q$ to zero.
+
+Another useful construction we will need is the mapping cone. Let $f:B^\bullet\to C^\bullet$
+be a map of cochain complexes. Then we define $\cone(f)$ as
+\begin{align*}
+    \cone(f)^p &= B^{p+1}\oplus C^p\\
+    d(b,c) &= (-db, dc -f(b)).
+\end{align*}
+
+\section{June 27, 2017}
+
+\subsection{Cochain complexes (cont)}
+Notice that we have a short exact sequence
+\begin{equation*}
+    \begin{tikzcd}
+        0\rar& C\rar& \cone(f)\rar& B[1]\rar& 0
+    \end{tikzcd}
+\end{equation*}
+where the maps are inclusion and minus the projection respectively. The minus seems to
+be purely conventional. This short exact sequence yields a long exact sequence in
+cohomology
+\begin{equation*}
+    \begin{tikzcd}
+        \HH^{n-1}\cone(f) \rar& \HH^nB\rar& \HH^nC\rar& \HH^n\cone(f)\rar& \HH^{n+1}B
+    \end{tikzcd}
+\end{equation*}
+Our main example will be the following. Considering $\underline{\Z}$ as a complex
+of sheaves concentrated in degree zero, consider the direct sum
+$\underline{\Z}\oplus\sigma^{\geq n}\Omega$.
+Define a map
+\begin{equation*}
+    \begin{tikzcd}
+        \psi:\underline{\Z}\oplus\sigma^{\geq n}\Omega_\C \rar& \Omega_\C
+    \end{tikzcd}
+\end{equation*}
+sending $n\mapsto n\in\Omega_\C$ and $\alpha\mapsto -\alpha\in\Omega_\C$.
+The $n$th Deligne complex is defined as a shift to the left of the cone,
+\begin{equation*}
+    \mathcal{D}(n) = \cone(\psi)[-1],
+\end{equation*}
+and the $n$th Deligne cohomology is defined as the sheaf (hyper)cohomology
+\begin{equation*}
+    \Del^n(M;\Z) = \HH^n(M;\mathcal{D}(n)) = \HH^{n-1}(M;\cone\psi).
+\end{equation*}
+
+\subsection{The conformal anomaly}
+I spent a good part of last quarter studying the determinant line bundle constructions
+of Bismut-Freed, but I don't have a good understanding of why they're important.
+I only have the rough idea that they are used in making sense of certain path integrals.
+There seems to be a somewhat understandable exposition in section 2 of \cite{dts} in
+the context of bosonic string theory. These computations are often referred to as the
+conformal or Weyl anomaly.
+
+Suppose our goal is to compute the partition function for the Polyakov formulation
+of bosonic string theory in a flat Euclidean spacetime $\R^d$.
+The partition function is defined naively to be the formal integral
+\begin{equation*}
+    \mathcal{Z}(X) = \sum_{\text{genus}(\Sigma)=h} \int_{g\in\text{Met}(\Sigma)} [Dg]
+        \int_{\phi\in\Map(\Sigma, X)} [d\phi] \exp\left( -\frac{1}{2}\int_\Sigma (d\phi,d\phi)_g \right).
+\end{equation*}
+The integral over maps $\phi$ can apparently be evaluated in a standard manner,
+and yields something. The outer integral, however, is not really what we want --
+for whatever reason, we wish to integrate only over the moduli space of genus $h$
+surfaces. Hence one has to check that the integrand and the measure descend to
+the quotient of the space of metrics by diffeomorphism and conformal group actions.
+Apparently the integrand is naturally viewed as a section of a determinant line
+bundle over $\text{Met}(\Sigma)$, so the question becomes twofold: does this 
+determinant line bundle (together with its metric and connection) descend to the quotient,
+and is does the connection trivialize it there? If not, we say that we have an anomaly.
+It turns out in this case of the (perturbative) bosonic string there is no anomaly
+if our target has dimension $d=26$ (this comes from some computation using the
+curvature of the Bismut-Freed connection).
+
+I'd really like to understand the details of what's going on here, but that would
+involve understanding the computational details say in the paper of D'Hoker and Phong,
+so I'll probably put that off for another day. Perhaps a slightly easier computation
+to understand would be the chiral anomaly.
+
+
+\section{June 28, 2017}
+
+\subsection{Deligne cohomology}
+From the definitions above we obtain a long exact sequence in which Deligne cohomology
+sits neatly:
+the short exact sequence for $\cone\psi$ (for some fixed $n$) is written
+\begin{equation*}
+    \begin{tikzcd}
+        0\rar& \Omega_\C \rar& \cone\psi \rar& (\underline{\Z}\oplus\sigma^{\geq n}\Omega_\C)[1] \rar& 0
+    \end{tikzcd}
+\end{equation*}
+whence we obtain a long exact sequence
+\begin{equation*}
+    \begin{tikzcd}
+        \cdots\rar&\HH^{k-1}(M;\Omega_\C) \rar& \HH^{k-1}(M;\cone\psi) \rar& \HH^k(M;\underline{\Z}\oplus\sigma^{\geq n}\Omega_\C) \rar& \cdots
+    \end{tikzcd}
+\end{equation*}
+We can simplify this using the definition of Deligne cohomology and the natural isomorphism
+of various cohomologies. In particular, for $k<n$ we have
+\begin{equation*}
+    \begin{tikzcd}
+        \cdots\rar&\HH^{k-1}_\text{dR}(M;\C) \rar& \HH^k(M;\mathcal{D}(n)) \rar& \HH^k(M;\Z) \rar& \cdots
+    \end{tikzcd}
+\end{equation*}
+for $k=n$ we have,
+\begin{equation*}
+    \begin{tikzcd}
+        \cdots\rar&\HH^{n-1}_\text{dR}(M;\C) \rar& \Del^n(M;\Z) \rar& \HH^n(M;\Z)\oplus\Omega^n_\text{cl}(M;\C) \rar& \cdots
+    \end{tikzcd}
+\end{equation*}
+and for $k>n$ we have
+\begin{equation*}
+    \begin{tikzcd}
+        \cdots\rar&\HH^{k-1}_\text{dR}(M;\C) \rar& \HH^k(M;\mathcal{D}(n)) \rar& \HH^k(M;\Z)\oplus\HH^k_\text{dR}(M;\C) \rar& \cdots
+    \end{tikzcd}
+\end{equation*}
+%Notice that the boundary map $\HH^k(M;\underline{\Z}\oplus\sigma^{\geq n}\Omeag_\C)\to\HH^k(M;\Omega_\C)$
+%is just the map induced by $\psi$.
+
+We obtain from this sequence, at $k=n$, the maps
+\begin{align*}
+    a:& \HH^{n-1}_\text{dR}(M;\C) \to \Del^n(M;\Z)\\
+    I:& \Del^n(M;\Z) \to \HH^n(M;\Z)\\
+    R:& \Del^n(M;\Z) \to \Omega^n_\text{cl}(M;\C)
+\end{align*}
+which we will call the ??, underlying class, and curvature maps, respectively.
+\marginnote{What is $a$, intuitively? It should measure somehow the failure of homotopy invariance
+and/or be related to transgression.}
+Indeed these are the sorts of structure maps that arise from any sheaf valued in stable
+$\infty$-categories on the \'etale site of manifolds (c.f. \cite{bnv}).
+
+
+\section{July 7, 2017}
+
+\subsection{Anomalies and determinant lines}
+
+Anomalies are a key part of quantum field theories and are essentially obstructions to the
+well-definedness of the path integral (even more so than usual). This obstruction is geometric
+in nature and consists of the choice of a unit-norm trivialization of a certain geometric
+``determinant line bundle'' associated to the qft.
+The mathematical content of this note is a detailed sketch of the construction of this
+geometric line bundle, but there will be some physical motivation interspersed.
+Indeed, as a motivation for studying families of differential operators, I will first
+briefly (and vaguely) mention how determinants appear in path integrals
+that involve both bosons and fermions. After defining the determinant line bundle
+we will look at two more concrete examples.
+The first is that of the conformal anomaly for bosonic
+string theory, which leads to the requirement that spacetime be 26-dimensional.
+The second example is the determinant line bundle which arises naturally in the geometric
+quantization of Chern-Simons theory, as described by Witten.
+
+\subsubsection{Determinants from path integrals}
+
+Suppose we are interested in a qft with a gauge boson that couples to a fermion (a physical
+example is that of qed where we have photons and electrons, respectively) on a spacetime $(X,g)$.
+In this case our action can be written as a sum of bosonic and fermionic pieces
+\begin{equation*}
+    S = S_b + S_f.
+\end{equation*}
+I will be deliberately vague about where our fields live other than to say that their
+configuration spaces are roughly: the bosonic field is an element $(P,A)$ of the the space of
+principal $G$-bundles with connection, and the fermionic field $\psi$ is an element of some
+associated bundle (with the fibers parity shifted, in the sense of supermanifolds). 
+Making this more precise takes a significant amount of work and is not particularly relevant
+for us. Neither is the form of $S_b$, but we will suppose that the fermionic action is given
+\begin{equation*}
+    S_f = \int_X \langle \psi, \fsl D \psi\rangle.
+\end{equation*}
+Here $\langle-,-\rangle$ is an inner product on the fermionic bundle and the integral
+is taken against the volume form (we assume our spacetime is oriented). The operator
+$\fsl D$ is a differential operator on the fermionic bundle defined using the connection
+$A$. The key point when it comes to the path integral is that the fermionic action
+depends on the state of the boson through the covariant derivative $\fsl D$.
+
+The path integral is a functional integral over the space of configurations of the fields
+$\phi\in\mathcal{F}$,
+\begin{equation*}
+    \mathcal{Z} = \int_{\phi\in\mathcal{F}} [d\phi] \; e^{-iS[\phi]/\hbar}.
+\end{equation*}
+We notice that $\mathcal{F}$ splits as a product $\mathcal{F}=\mathcal{F}_b\times \mathcal{F}_f$
+of bosonic and fermionic states whence the integral becomes an iterated integral
+\begin{equation*}
+    \int_{(P,A)\in \mathcal{F}_b} [d(P,A)]\; e^{-iS[(P,A)]/\hbar} \int_{\psi\in\mathcal{F}_f} [d\psi]\; e^{-i/\hbar\cdot\int_X\langle\psi,\fsl D\psi\rangle}
+\end{equation*}
+Formally evaluating the fermionic integral, which one treats as a Berezin integral,
+one obtains
+\begin{equation*}
+    \int_{(P,A)\in \mathcal{F}_b} [d(P,A)]\; e^{-iS[(P,A)]/\hbar} \det\fsl D.
+\end{equation*}
+Recall that this is justified in analogy to the following finite-dimensional argument.
+\marginnote{Write this up!}
+
+Of course, we haven't defined what we mean by $\det\fsl D$, and indeed the goal of this note
+is to understand $\det\fsl D$ mathematically. Let us first note the difficulties. The most
+obvious difficulty is that the product of the eigenvalues of $\fsl D$ need not converge,
+and so we must regularize in some consistent manner. Slightly more subtle is that in
+many cases fermions are sections of $\Z/2$-graded bundles and $\fsl D$ exchanges parity.
+In this situation, we have an operator mapping from one vector space to another, so the
+notion of determinant or eigenvalue is no longer clear. Finally, and most importantly,
+recall that $\fsl D$ is not a single operator but a family of operators parameterized
+by the space $\mathcal{F}_b$ of bosonic states. Thus we are forced to work with families
+of differential operators.
+
+\subsubsection{Families of Dirac operators}
+
+\subsubsection{The determinant line bundle}
+
+\subsubsection{Curvature and holonomy}
+
+\subsubsection{The conformal anomaly}
+
+\subsubsection{Geometric quantization of Chern-Simons theory}
+
+\section{July 8, 2017}
 
 \subsection{Proof of spectral theorem}
 
