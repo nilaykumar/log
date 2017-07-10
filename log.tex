@@ -16,6 +16,7 @@
 \DeclareMathOperator{\DC}{DC} % differential characters
 \DeclareMathOperator{\Del}{Del} % deligne cohomology
 \newcommand{\fsl}[1]{{\centernot{#1}}}
+\renewcommand\d{\mathsf{D}}
 
 \title{Math log}
 \author{Nilay Kumar}
@@ -1371,12 +1372,12 @@ Anomalies are a key part of quantum field theories and are essentially obstructi
 well-definedness of the path integral (even more so than usual). This obstruction is geometric
 in nature and consists of the choice of a unit-norm trivialization of a certain geometric
 ``determinant line bundle'' associated to the qft.
-The mathematical content of this note is a detailed sketch of the construction of this
+The mathematical content of this note is a sketch of the construction of this
 geometric line bundle, but there will be some physical motivation interspersed.
 Indeed, as a motivation for studying families of differential operators, I will first
 briefly (and vaguely) mention how determinants appear in path integrals
 that involve both bosons and fermions. After defining the determinant line bundle
-we will look at two more concrete examples.
+we will sketch two more concrete examples.
 The first is that of the conformal anomaly for bosonic
 string theory, which leads to the requirement that spacetime be 26-dimensional.
 The second example is the determinant line bundle which arises naturally in the geometric
@@ -1421,30 +1422,283 @@ one obtains
     \int_{(P,A)\in \mathcal{F}_b} [d(P,A)]\; e^{-iS[(P,A)]/\hbar} \det\fsl D.
 \end{equation*}
 Recall that this is justified in analogy to the following finite-dimensional argument.
-\marginnote{Write this up!}
+Let $\theta_1,\bar\theta_1,\ldots,\theta_n,\bar\theta_n$ be an oriented real basis of
+$\C^n$. Recall that the Berezin integral takes an element of $\Lambda^\bullet\C^n$ and
+returns the coefficient of the orientation form
+$\theta_1\wedge\bar\theta_1\wedge\cdots\wedge\theta_n\wedge\bar\theta_n$. Let $A$ be
+Hermitian matrix, and consider the Berezin integral
+\begin{equation*}
+    \int \exp -\langle\bar\theta, A\theta\rangle \; d\theta_1\bar d\theta_1\cdots d\theta_n\bar d\theta_n
+\end{equation*}
+Performing a unitary change of variables we may assume that $A$ is diagonal with
+eigenvalues $\lambda_i$. The integral then becomes
+\begin{equation*}
+    \int (-\sum_{i=1}^n\lambda_i\theta_i\bar\theta_i)^n d\theta_1\bar d\theta_1\cdots d\theta_n\bar d\theta_n
+    =\prod_i\lambda_i = \det A.
+\end{equation*}
+Whatever we mean by $\det\fsl D$, it should certainly vary with the bosonic data $(P,A)$,
+and if we wish to compute the remaining path integral, the integrand should be a function.
+It turns out that $\det\fsl D$ is naturally viewed as a section of a certain line bundle
+over the bosonic fields known as the determinant line bundle. The key question is thus:
+is the determinant line bundle trivial? Physicists refer to this problem as the anomaly problem.
+If in a theory the determinant $\det\fsl D$ cannot be interpreted as a section of a trivial
+line bundle over the space of bosonic fields, we say that the theory has an anomaly. 
+When either the determinant line bundle is trivial or the full integrand can be interpreted
+as a trivial line bundle (i.e. the bosonic integrand is a section of some bundle whose
+topology is dual to that of the determinant line bundle), we say that the theory is anomaly-free
+or that we have anomaly cancellation.\footnote{In this heuristic sketch we are completely
+ignoring the presence of gauge symmetry.}
 
-Of course, we haven't defined what we mean by $\det\fsl D$, and indeed the goal of this note
-is to understand $\det\fsl D$ mathematically. Let us first note the difficulties. The most
+The goal of this note is to outline the mathematics behind determinant line bundle.
+Let us first note the difficulties in defining $\det\fsl D$. The most
 obvious difficulty is that the product of the eigenvalues of $\fsl D$ need not converge,
 and so we must regularize in some consistent manner. Slightly more subtle is that in
 many cases fermions are sections of $\Z/2$-graded bundles and $\fsl D$ exchanges parity.
 In this situation, we have an operator mapping from one vector space to another, so the
 notion of determinant or eigenvalue is no longer clear. Finally, and most importantly,
 recall that $\fsl D$ is not a single operator but a family of operators parameterized
-by the space $\mathcal{F}_b$ of bosonic states. Thus we are forced to work with families
-of differential operators.
+by the space $\mathcal{F}_b$ of bosonic states. Thus we are forced at the outset
+to work in families.
 
 \subsubsection{Families of Dirac operators}
 
+In the following we will deal with the following geometric setup. Let
+$\pi:M\to B$ be a family of compact oriented Riemannian $2n$-manifolds. In other
+words, $\pi$ is a proper submersion and the vertical tangent bundle $T(M/B)$ is equipped
+with an orientation and a metric. Let $E=E^+\oplus E^-\to M$ be a finite-rank complex superbundle
+on $M$, equipped with a Hermitian metric $g^E$. We thus obtain a family of vector bundles
+$E^z\to M^z$ for each $z\in B$, and a family of Dirac operators is defined to be the data
+of smoothly varying odd-parity
+differential operators $\d^z:\Gamma(M^z, (E^z)^\pm)\to\Gamma(M^z,(E^z)^\mp)$
+such that $(\d^z)^2$ is a generalized Laplacian, i.e. has symbol $\sigma_2(\d^z)^2(x,\xi)=|\xi|^2$.
+We will assume that $\d^z$ is formally self-adjoint. Dirac operators are amenable to
+analysis due to the existence of the heat kernel (in families), which we will use below.
+
+\begin{exercise}
+    Check that $d^z+(d^z)^*$ is a family of formally self-adjoint Dirac operators on the
+    exterior algebra of the cotangent bundle of $M$, where the $\Z/2$-grading is given
+    by even and odd degree forms.
+\end{exercise}
+
+Recall that the determinant of a map $T:V\to V$ of finite dimensional vector spaces is
+the induced map $\det T:\det V\to\det V$, where $\det$ is the top exterior power functor.
+If our vector space
+is $\Z/2$-graded $V=V^+\oplus V^-$ and $T^\pm:V^\pm\to V^\mp$, one adjusts this definition
+slightly:
+\begin{equation*}
+    \det V = (\det V^+)^\vee \otimes \det V^-
+\end{equation*}
+and we define $\det T^+$ to be the top exterior power of the map $T^+$, which is an element
+of $\det V$. Notice that this definition requires that $\dim V^+=\dim V^-$.
+These definitions generalize straightforwardly to finite-rank vector bundles. 
+If we are to take a similar approach to define $\det\d$, we must first realize $\d$ as
+a map of bundles instead of a map of sections. We define the infinite-rank superbundle
+$\pi_*E\to B$ to have fibers
+\begin{equation*}
+    (\pi_*E)_z = \Gamma(M^z, E^z).
+\end{equation*}
+
+\begin{exercise}
+    Make precise the local triviality of $\pi_*E$.
+\end{exercise}
+
+The family $\d$ now provides a map $\d^\pm:\pi_*E^\pm\to\pi_*E^\mp$. Due to the infinite
+rank of $\pi_*E$ the procedure described above does not apply here, but let us argue heuristically
+for a moment. Suppose we could split $\pi_*E=\oplus H_\lambda$ as finite rank vector bundles
+along the spectral subspaces of $\d^2$. Then, since $\d$ commutes with $\d^2$ and $\ker\d=\ker\d^2$
+by self-adjointness, $\d^+:H_\lambda^+\to H_\lambda^-$ is an isomorphism for all $\lambda\neq0$.
+Formally taking the determinant of the superbundle $\pi_*E$ yields
+\begin{equation*}
+    \det\pi_*E\cong(\bigotimes_\lambda\det H_\lambda^+)^\vee\otimes\bigotimes_\lambda\det H_\lambda^-
+\end{equation*}
+Identifying $(\det H_\lambda^+)^\vee\otimes\det H_\lambda^-$ with $\C$ using the isomorphism
+$\d^+$ for all $\lambda\neq0$ we are left with
+\begin{equation*}
+    \det \pi_*E \cong (\det \ker \d^+)^\vee \otimes \det \ker \d^- = \det \ker \d.
+\end{equation*}
+This heuristic argument leads us to expect that the determinant of $\d$ should be a section of a
+line bundle whose fibers are isomorphic to $\det\ker\d^z$.
+
 \subsubsection{The determinant line bundle}
 
-\subsubsection{Curvature and holonomy}
+To make the above argument rigorous, we pass to a certain open cover of $B$, construct
+determinant line bundles on each open in the cover, and then argue that these bundles glue.
+The following result is crucial, and can be proved using heat kernel arguments.
+\begin{lemma}
+    For $\lambda>0$ let $U_\lambda\subset B$ be the set of $z\in B$ for which $\lambda$ is
+    not an eigenvalue of $(\d^z)^2$. Then $\{U_\lambda\}_{\lambda>0}$ is an open cover for
+    $B$. Moreover, if $P[0,\lambda):\pi_*E\to\pi_*E$ is the projection onto the spectral subspace
+    $[0,\lambda)$ of $\d^2$ then
+    \begin{equation*}
+        H[0,\lambda) = \im P[0,\lambda)\subset \pi_*E
+    \end{equation*}
+    is a finite-rank subsuperbundle of $\pi_*E$ over $U_\lambda$.
+\end{lemma}
+Taking determinants over each $U_\lambda$ we obtain line bundles $\det H[0,\lambda)\to U_\lambda$.
+Notice that if $\lambda<\mu$ then over the open set $U_\lambda\cap U_\mu$ we have
+$H[0,\mu)=H[0,\lambda) \oplus H(\lambda,\mu)$ whence
+\begin{equation*}
+    \det H[0,\mu) \cong \det H[0,\lambda) \otimes \det H(\lambda,\mu).
+\end{equation*}
+The bundle $\det H(\lambda,\mu)$ is a trivial line bundle, as it has a nonvanishing global
+section $\det \d^+|_{H(\lambda,\mu)}$. Over $U_\lambda\cap U_\mu$ we thus identify a section
+$s$ of $\det H[0,\lambda)$ with $s\otimes \det \d^+|_{H(\lambda,\mu)}$, a section of
+$\det H[0,\mu)$. This identification satisfies the cocycle condition
+\begin{equation*}
+    \det \d^+|_{H(\lambda,\rho)} = \det\d^+|_{H(\mu,\rho)} \otimes \det \d^+|_{H(\lambda,\mu)}
+\end{equation*}
+on triple overlaps $U_\lambda\cap U_\mu\cap U_\rho$ with $\lambda<\mu<\rho$, so the bundles
+$\det H[0,\lambda)$ glue to a global line bundle that we will denote
+\begin{equation*}
+    \det(\pi_*E,\d^z)\to B.
+\end{equation*}
+This is the desired determinant line bundle. Notice that its fiber can be identified with
+the line that we described heuristically above. We now view the determinant of $\d$ as
+a section of the determinant line bundle.
+\begin{corollary}
+    If $\d$ has index zero there exists a canonical section
+    \begin{equation*}
+        \det \d^+ \in \Gamma(B, \det(\pi_*E,\d)).
+    \end{equation*}
+\end{corollary}
+\begin{proof}
+    The index is defined 
+    \begin{equation*}
+        \ind \d=\dim\ker\d^+-\dim\ker\d^-.
+    \end{equation*}
+    When $\ind\d=0$ then (over $U_\lambda$) the map $\d^+|_{H[0,\lambda)}:H[0,\lambda)^+\to H[0,\lambda)^-$
+    is a map of vector bundles of the same finite rank. Taking top exterior powers, this map yields
+    a section of $\det H[0,\lambda)$ for each $\lambda$. On the overlap $U_\lambda\cap U_\mu$ we have
+    $\det\d^+|_{H[0,\mu)}=\det\d^+|_{H[0,\lambda)}\otimes\det\d^+|_{H(\lambda,\mu)}$, so these sections
+    glue to a global section of $\det(\pi_*E,\d)$.
+\end{proof}
+Notice the condition that $\ind\d=0$ is necessary as taking top exterior powers of a linear map is only
+possible when the source and target have the same dimension.
+
+We now turn to the question of whether $\det(\pi_*E,\d)\to B$ is trivial as a complex line bundle.
+To address this we will introduce some geometry: a Hermitian metric and a compatible connection.
+\marginnote{Finding a unit-norm global section.}
+
+\subsubsection{A metric and connection}
+The Hermitian metric on $E\to M$ induces a metric on the determinant line bundle known as the
+Quillen metric, which we describe now. First we claim that $\pi_*E$ inherits a Hermitian metric
+from the metric $(-,-)_E$ on $E$. Indeed, given $s,t\in(\pi_*E)_z=\Gamma(M^z, E^z)$, we define
+\begin{equation*}
+    \langle s,t\rangle_z = \int_{M^z} (s,t)_E,
+\end{equation*}
+where the integral is taken against the volume form of $M^z$ induced by the fiberwise Riemannian
+metric on $M\to B$. Restricting this metric yields metrics on each $H[0,\lambda)$ and thus
+$\det H[0,\lambda)$. We will call this the $L^2$-metric on $U_\lambda$.
+Notice, however, that this metric differs from that on $\det H[0,\mu)$
+on the overlap $U_\lambda\cap U_\mu$ by the factor
+\begin{equation*}
+    \lVert \det \d^+|_{H(\lambda,\mu)}\rVert = \prod_{i=1}^m \lambda_i^{1/2},
+\end{equation*}
+for $\lambda_i$ the eigenvalues of $\d^-\d^+$ lying between $\lambda<\mu$. The dependence on
+$z$ is suppressed here for clarity.
+
+Quillen suggested the following trick: scale the $L^2$-metric on $U_\lambda$ by the product
+of all (square root of the) eigenvalues of $\d^2$ greater than $\lambda$. In other words,
+for $s\in\Gamma(U_\lambda,\det H[0,\lambda))$, define the Quillen metric on $U_\lambda$
+\begin{equation*}
+    \lVert s\rVert_Q = \lVert s\rVert \cdot \det(P(\lambda,\infty)\d^-\d^+)^{1/2}.
+\end{equation*}
+If we can regularize the infinite product on the right such that
+\begin{equation*}
+    \det(P(\lambda,\infty)\d^-\d^+) = \det(P(\mu,\infty)\d^-\d^+) \cdot \prod_{i=1}^m\lambda_i,
+\end{equation*}
+the Quillen metric on $U_\lambda$ will agree
+with the Quillen metric on $U_\mu$ and we will obtain a Hermitian metric on the determinant
+line bundle. The regularization can be done using the zeta function. In particular, define
+the spectral zeta function
+\begin{equation*}
+    \zeta(s, \d^-\d^+, \lambda, z) = \frac{1}{\Gamma(s)}\int_0^\infty \tr(P(\lambda,\infty)e^{-t\d^-\d^+})t^{s-1}\;dt.
+\end{equation*}
+Here $e^{-t\d^-\d^+}:\pi_*E\to\pi_*E$ is the heat kernel for the family $\d^z$ and $s\in\C$
+is a complex parameter. It can be shown using the small-time asymptotics of the heat kernel
+that the spectral zeta function is meromorphic on $\C$ (the pole set depends in general on
+the dimension of the fiber of $M\to B$) but is holomorphic at $s=0$. Moreover, it turns
+out that $\zeta$ is smooth in $z$. Hence we define
+\begin{equation*}
+    \det(P(\lambda,\infty)\d^-\d^+) := \exp(-\zeta'(0,\d^-\d^+,\lambda,z)).
+\end{equation*}
+\begin{exercise}
+    Consider the analogous definition in the case of an automorphism of a finite-dimensional
+    vector space and conclude that this is a reasonable definition of determinant.
+\end{exercise}
+It is a straightforward computation to see that the equation relating $\lambda$ and $\mu$
+determinants holds, so we obtain the smooth Quillen metric on $\det(\pi_*E,\d)\to B$ which
+locally over $U_\lambda$ is given
+\begin{equation*}
+    \lVert s\rVert_Q = \lVert s\rVert \cdot \exp(-\zeta'(0,\d^-\d^+,\lambda,z)),
+\end{equation*}
+where the unmarked norm is the $L^2$-norm on $U_\lambda$ defined above.
+
+Recall that in the case where $\ind\d=0$, we obtained a section $\det\d^+$ of the determinant
+line bundle. It follows from the definition of this section that
+\begin{equation*}
+    \lVert \det\d^+\rVert_Q = \det(\d^-\d^+)^{1/2} = \exp(-\zeta'(0,\d^-\d^+,0,z)).
+\end{equation*}
+
+\begin{exercise}
+    What is the relation to analytic/Ray-Singer torsion?
+\end{exercise}
+
+Now suppose we had a connection $\nabla^E$ on $E\to M$ and a connection on $M\to B$.
+Recall that the latter is the data of a splitting $TM=H\oplus T(M/B)$. With this data
+we obtain a connection $\nabla^{\pi_*E}$ on $\pi_*E$. Indeed, if
+$s\in\Gamma(B,\pi_*E)=\Gamma(M,E)$, given a vector field $X$ on $B$ we can lift it to a
+vector field on $M$ using the connection and then apply the covariant derivative $\nabla^E_X$.
+One checks that this connection is compatible with the $L^2$-metric on $\pi_*E$.
+If we now define
+\begin{equation*}
+    \nabla^{H[0,\lambda)} = P[0,\lambda)\nabla^{\pi_*E}P[0,\lambda)
+\end{equation*}
+we obtain induced connections $\nabla^{\det H[0,\lambda)}$ compatible with the induced
+$L^2$-metric over $U_\lambda$. Unsurprisingly, these connections do not glue to a connection
+on the determinant line bundle: if $s\in\Gamma(U_\lambda\cap U_\mu,\det H[0,\lambda))$ then
+\begin{align*}
+    \nabla^{\det H[0,\mu)} (s\otimes \det \d^+|_{H(\lambda,\mu)}) &=
+        (\nabla^{\det H[0,\lambda)}\otimes \id + \id\otimes\nabla^{\det H(\lambda,\mu)})
+            (s\otimes\det\d^+|_{H(\lambda,\mu)})\\
+            &= \nabla^{\det H[0,\lambda)}s\otimes\det\d^+|_{H(\lambda,\mu)} + s\otimes\nabla^{\det H(\lambda,\mu)}\det\d^+|_{H(\lambda,\mu)}
+\end{align*}
+Notice that we obtain an extra term involving the covariant derivative of the
+determinant of $\d^+$ when restricted to $H(\lambda,\mu)$.
+As we modified the $L^2$-metric above we must modify the connections $\nabla^{\det H[0,\lambda)}$
+in order to obtain a global connection. In particular, we might add a one-form
+\begin{equation*}
+    \beta_\lambda^+ \in \Omega^1(U_\lambda).
+\end{equation*}
+For the extra term above to disappear we need $\beta_\lambda^+ - \beta_\mu^+=\det\d^+|_{H(\lambda,\mu)}$
+over $U_\lambda\cap U_\mu$. The construction of these one-forms is due to Bismut and Freed
+whence we obtain a connection on $\det(\pi_*E,\d)$ that over $U_\lambda$ is given
+\begin{equation*}
+    \nabla^{BF} = \nabla^{\det H[0,\lambda)} + \beta_\lambda^+.
+\end{equation*}
+
+For the Bismut-Freed connection to provide a trivialization of the determinant line bundle
+it must have zero curvature and trivial holonomy. The curvature is just the square of
+the connection. There is a bit of a miracle that occurs here: the one-forms $\beta_\lambda^+$
+are obtained
+from the degree one components of an inhomogeneous form that appears in the transgression
+formula for the local family index theory.\footnote{Actually this is not true
+unless we require that the connection $\nabla^E$ be a Clifford connection. Incidentally
+this is where we use the even dimension of the fibers $M^z$.}
+The details get rather technical so I will not even define $\beta_\lambda^+$ but instead
+just assure the reader that there is a beautiful formula for the curvature
+\begin{equation*}
+    (\nabla^{BF})^2 = (2\pi i)^{-n/2}\left(\int_{M/B}\hat A(M/B)\ch(E/S)\right)_{[2]},
+\end{equation*}
+where the $[2]$ denotes taking the degree-two differential form component. Here
+$\hat A(M/B)$ is the $A$-hat genus of the vertical tangent bundle, $\ch(E/S)$
+is the relative Chern character of $E$, and the integral denotes fiber integration.
+
 
 \subsubsection{The conformal anomaly}
 
-\subsubsection{Geometric quantization of Chern-Simons theory}
+\subsubsection{Chern-Simons theory}
 
-\section{July 8, 2017}
 
 \subsection{Proof of spectral theorem}
 
