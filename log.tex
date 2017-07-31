@@ -1700,7 +1700,147 @@ is the relative Chern character of $E$, and the integral denotes fiber integrati
 \subsubsection{Chern-Simons theory}
 
 
-\subsection{Proof of spectral theorem}
+\section{July 25, 2017}
+
+\subsection{Dirac operator in odd dimensions}
+
+Here we follow the exposition in FM05 of the determinant line bundle for the
+Dirac operator in odd dimensions. Recall the usual setup (we follow notations from
+above as opposed to those of FM05). Let $\pi:M\to B$ be a family
+of compact oriented Riemannian manifolds and let $H$ be a horizontal distribution
+on this family, i.e. $TM=T(M/B)\oplus H$. Let $E=E^+\oplus E^-\to M$ be a complex Hermitian
+superbundle such that $E$ is a selfadjoint module over the Clifford bundle associated to the
+relative cotangent bundle $T^*(M/B)$. In other words we have a map
+\begin{equation*}
+    c: T^*(M/B) \to \End E
+\end{equation*}
+satisfying
+\begin{equation*}
+    c(\alpha)c(\beta) + c(\beta)c(\alpha) = - 2 \langle\alpha,\beta\rangle
+\end{equation*}
+for $\alpha,\beta\in T^*_p(M/B)$ where $p\in M$ and the inner product is the
+Hermitian metric on $E$. As is usual in the $\Z/2$-graded case, we ask that
+the action be even (even degree elements act as even transformations, etc).
+That $E$ is selfadjoint requires (we assume that $E^+$ and $E^-$ are orthogonal)
+the operators $c(\alpha)$ be skewadjoint.
+\marginnote{Understand the selfadjoint condition better/more explicitly.}
+Finally, we let $\nabla^E$ be a Clifford connection on $E$ compatible with the metric.
+The Clifford condition requires that
+\begin{equation*}
+    [\nabla_X^E, c(\alpha)] = c(\nabla^{T^*(M/B)}\alpha)
+\end{equation*}
+where $\nabla^{T^*(M/B)}$ is the Levi-Civita connection.
+\marginnote{Explain where this connection comes from.}
+This data yields, for each $b\in B$, the Dirac operator
+\begin{equation*}
+    \d_b = \gamma \circ \iota_b^*\nabla^E : \Gamma(M_b, E_b) \to \Gamma(M_b, E_b)
+\end{equation*}
+where $\iota_b: M_b=\pi^{-1}(b)\hookrightarrow M$ is the inclusion. Each Dirac
+operator is clearly an odd first-order differential operator. To check that it deserves
+to be called a Dirac operator we should moreover check that it squares to a generalized
+Laplacian.
+\marginnote{Check that it squares to a generalized Laplacian. Mention complexification somewhere.
+Selfadjointntess of the Dirac operator.}
+One checks that $\d$ is formally selfadjoint.
+
+\begin{example}
+    Spinor bundle in both even and odd cases.
+    \marginnote{Work through this!}
+\end{example}
+Now we restrict to the case where our manifolds $M_b$ are odd-dimensional $n=2m+1$. In this case
+one checks that multiplication by the relative volume form, an odd endomorphism of $E$,
+commutes with Clifford multiplication by any relative cotangent vector. Denote by $\omega$
+the product of $i^{m+1}$ with the relative volume form, so that $\omega^2=1$. By definition
+of the Dirac operator above, it follows that $c(\omega)$ commutes with $\d$ (in the ungraded
+sense). Now the Dirac operator in odd dimensions is defined
+\begin{equation*}
+    \d'=c(\omega)\circ \d
+\end{equation*}
+a first-order even selfadjoint operator. Notice that $(\d')^2 = \d^2$ whence $\d'$ has
+(by heat kernel arguments) a discrete real spectrum with finite multiplicities.
+\marginnote{It looks skewadjoint in half of the odd dimensions..}
+
+\section{July 27, 2017}
+
+I met with Ezra for a bit yesterday and as a result I have the following few goals for the
+near future: (1) understand the fractional Pontryagin class, (2) understand the definition
+and regularity results of eta invariants, (3) understand the Dirac operator in the paper
+of Lukic and Moore in terms of a superconnection. Since the QFT and stable homotopy theory
+conference starts next week, I'll be happy if I can do (1) for now.
+
+\begin{proposition}
+    Let $p_1\in\HH^4(BSO;\Z)$ be the first Pontryagin class and let $\pi: BSpin\to BSO$
+    be the map induced by the double cover. Then there exists a class, which we denote
+    by abuse of notation $\frac{p_1}{2}$, such that
+    \begin{equation*}
+        \pi^*p_1 = 2\cdot \frac{p_1}{2} \in \HH^4(BSpin;\Z).
+    \end{equation*}
+    We call this the (first) fractional Pontryagin class.
+\end{proposition}
+
+To prove this statement we will need a few facts about the homotopy and cohomology groups of
+$BSO$ and $BSpin$. First we notice that $Spin$ is 2-connected, whence $BSpin$ is 3-connected.
+We know by Bott periodicity that $\pi_3(Spin)\cong\Z$ so Hurewicz implies that
+$\pi_4(BSpin)\cong \HH_4(BSpin;\Z)$. Applying the universal coefficient theorem, we find that
+$\HH^4(BSpin;\Z)\cong\Z$. This proves the following.
+
+\begin{lemma}
+    The first few cohomology groups of $BSpin$ are given
+    \begin{align*}
+        \HH^0(BSpin;\Z) &\cong \HH^4(BSpin;\Z) \cong \Z\\
+        \HH^1(BSpin;\Z) &\cong \HH^2(BSpin;\Z)  \cong \HH^3(BSpin;\Z) \cong 0
+    \end{align*}
+\end{lemma}
+
+Next recall that $BSO$ has first nontrivial homotopy group $\pi_2(BSO)\cong\Z/2\Z$.
+Applying Hurewicz we obtain that $\HH_2(BSO;\Z)\cong\Z/2\Z$.
+The universal coefficient theorem shows that $\HH^2(BSO;\Z)\cong0$.
+
+\begin{lemma}
+    The first few cohomology groups of $BSO$ are given
+    \begin{align*}
+        \HH^0(BSO;\Z) & \cong \HH^4(BSO;\Z) \cong \Z\\
+        \HH^1(BSO;\Z) & \cong \HH^2 \cong 0\\
+        \HH^3(BSO;\Z) & \cong \Z/2\Z
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Use the Bockstein spectral sequence.\marginnote{Work through this.}
+\end{proof}
+
+With this data in hand, the proof of the proposition is straightforward (this proof was
+suggested to me by Pax Kivimae). We run the Serre spectral sequence for the fibration
+\begin{equation*}
+    B\Z/2\Z \to BSpin \to BSO
+\end{equation*}
+associated to the short exact sequence of $0\to\Z/2\Z\to Spin\to SO\to0$ of group. The map
+$\pi^*$ arises as an edge homomorphism in degree 4, and the spectral sequence forces
+$\pi^*:\HH^4(BSO;\Z)\cong \Z \to \Z\cong \HH^4(BSpin;\Z)$ to be multiplication by two.
+
+\begin{proof}[Proof of proposition]
+    <spectral sequence arguments here>
+    We conclude that the first map in the extension problem
+    \begin{equation*}
+        0\to \Z \to \HH^4(BSpin;\Z)\cong\Z \to \Z/2\Z \to 0
+    \end{equation*}
+    is multiplication by two.
+
+    Now we argue that the map $\phi$ is precisely the map $\pi^*$ on $\HH^4(BSO;\Z)$.
+    To see this we use the naturality of the Serre spectral sequence. We consider the
+    map of fibrations
+    \begin{equation*}
+        \begin{tikzcd}
+            B\Z/2\Z \rar\dar & BSpin\rar{\pi}\dar{\pi} & BSO\dar\\
+            * \rar & BSO \rar & BSO
+        \end{tikzcd}
+    \end{equation*}
+    If we write $E_r$ for the spectral sequence associated to the first row and
+    $\tilde E_r$ for the one associated to the second row, naturality yields maps
+    $\tilde E^{p,q}_r \to E^{p,q}_r$, commuting with differentials. By the above
+    argument we know that $E_\infty^{0,4}\cong\Z/2\Z$ and $E_\infty^{4,0}\cong\Z$.
+    \marginnote{Finish writing this up.}
+\end{proof}
+
 
 \bibliographystyle{alpha}
 
