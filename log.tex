@@ -1858,7 +1858,7 @@ suitably regularized quantity
     \mathcal{Z}(M,m) = \frac{1}{\sqrt{\det (\Delta + m^2)}}
 \end{equation*}
 
-Let's look at the simple case of the circle, where the operator $\Delta+m^2$ acts on
+Sean and I looked at the simple case of the circle, where the operator $\Delta+m^2$ acts on
 $L^2(S^1)$. Here $\Delta=-\partial_t^2$ and thus the eigenfunctions are $e^{2\pi int/R}$
 with eigenvalues $4\pi^2R^{-2}n^2+m^2$. Let us compute the zeta-regularized determinant of
 $\Delta+m^2$. Recall that this is defined
@@ -1905,15 +1905,15 @@ we find
 \end{equation*}
 Choose a reference mass $m_0>0$ and integrate from $m_0$ to $m>m_0$,
 \begin{equation*}
-    \zeta'(s,\Delta+m^2,0)-\zeta'(s,\Delta+m_0^2,0) = 2\log \frac{m}{m_0} - 2 \cdot \log\frac{\sinh m}{\sinh m_0}
+    \zeta'(s,\Delta+m^2,0)-\zeta'(s,\Delta+m_0^2,0) = 2\log \frac{m}{m_0} - 2 \cdot \log\frac{\sinh(mR/2)}{\sinh(m_0R/2)}
 \end{equation*}
 It follows that
 \begin{align*}
-    \det(\Delta+m^2) = \frac{\sinh^2m/\sinh^2 m_0}{(m/m_0)^2} \cdot \det(\Delta+m_0^2).
+    \det(\Delta+m^2) = \frac{\sinh^2(mR/2)/\sinh^2(m_0R/2)}{(m/m_0)^2} \cdot \det(\Delta+m_0^2).
 \end{align*}
 The partition function as a function of $m$ and $m_0$ is thus computed
 \begin{equation*}
-    \mathcal{Z}(S^1,m,m_0) = \frac{m/m_0}{\sinh m/\sinh m_0}  \cdot \mathcal{Z}(S^1,m_0)
+    \mathcal{Z}(S^1,m,m_0) = \frac{m/m_0}{\sinh(mR/2)/\sinh(m_0R/2)}  \cdot \mathcal{Z}(S^1,m_0)
 \end{equation*}
 We conclude that the partition function vanishes in the large mass limit.
 
@@ -1922,9 +1922,40 @@ group flow (here $m\to\infty$) a quantum field theory should become topological.
 He suggested that in this particular example of the scalar field theory, the topological
 limit should be trivial. I'm not quite sure what ``trivial'' means -- does our
 computation here jive with that expectation? At least in the limit it is clear
-that the partition function is topological -- the only dependence in the metric
-(through the volume $R$) is present in $\mathcal{Z}(S^1,m_0)$, which is killed
-as $m\to\infty$.
+that the partition function is topological, as we just get 0.
+
+Another interesting case might be $S^2$. The free scalar theory here should be conformal
+in the massless limit, so it would be interesting to check whether the zeta-regularization of
+$\mathcal{Z}(S^2,m=0)$ is conformal.
+
+\subsection{The $m=0$ partition function}
+
+Suppose $m=0$ in the above discussion. Then the computation is much easier, as we can
+just use known values of the zeta function. In this case the zeta function is computed
+\begin{equation*}
+    \zeta(s,\Delta,0) = 2(2\pi R^{-1})^{-2s}\sum_{n=1}^\infty n^{-2s} = 2(2\pi R^{-1})^{-2s}\zeta(2s).
+\end{equation*}
+Differentiating, we find
+\begin{align*}
+    \zeta'(s,\Delta,0) &= -4(2\pi R^{-1})^{-2s}\cdot\log(2\pi R^{-1})\zeta(2s)
+    + 4(2\pi R^{-1})^{-2s}\zeta'(2s),
+\end{align*}
+and taking $s=0$, using
+\begin{align*}
+    \zeta(0) = -\frac{1}{2} \qquad \zeta'(0) = -\frac{\log 2\pi}{2},
+\end{align*}
+we obtain
+\begin{equation*}
+    \zeta'(s=0,\Delta,0) = 2\log(2\pi R^{-1}) - 2 \log 2\pi = -\log R^2.
+\end{equation*}
+It follows that
+\begin{equation*}
+    \det \Delta = \exp(-\zeta'(s=0,\Delta,0)) = R^2
+\end{equation*}
+whence
+\begin{equation*}
+    \mathcal{Z}(S^1,m=0) = \frac{1}{R}.
+\end{equation*}
 
 \bibliographystyle{alpha}
 
