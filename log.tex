@@ -7,6 +7,7 @@
 \usepackage{tikz-cd}
 \usepackage{amssymb}
 \usepackage{centernot}
+%\usepackage{spectralsequences} % currently an issue with some fragile macros that I've set
 
 \usepackage{marginnote}
 \renewcommand*{\marginfont}{\scriptsize\color{red}\sffamily}
@@ -1819,28 +1820,111 @@ $\pi^*:\HH^4(BSO;\Z)\cong \Z \to \Z\cong \HH^4(BSpin;\Z)$ to be multiplication b
 
 \begin{proof}[Proof of proposition]
     <spectral sequence arguments here>
+    \marginnote{TeX up the spectral sequences}
     We conclude that the first map in the extension problem
     \begin{equation*}
         0\to \Z \to \HH^4(BSpin;\Z)\cong\Z \to \Z/2\Z \to 0
     \end{equation*}
     is multiplication by two.
 
-    Now we argue that the map $\phi$ is precisely the map $\pi^*$ on $\HH^4(BSO;\Z)$.
-    To see this we use the naturality of the Serre spectral sequence. We consider the
-    map of fibrations
-    \begin{equation*}
-        \begin{tikzcd}
-            B\Z/2\Z \rar\dar & BSpin\rar{\pi}\dar{\pi} & BSO\dar\\
-            * \rar & BSO \rar & BSO
-        \end{tikzcd}
-    \end{equation*}
-    If we write $E_r$ for the spectral sequence associated to the first row and
-    $\tilde E_r$ for the one associated to the second row, naturality yields maps
-    $\tilde E^{p,q}_r \to E^{p,q}_r$, commuting with differentials. By the above
-    argument we know that $E_\infty^{0,4}\cong\Z/2\Z$ and $E_\infty^{4,0}\cong\Z$.
-    \marginnote{Finish writing this up.}
+    This map is the inclusion $E_\infty^{4,0}\hookrightarrow \HH^4(BSpin;\Z)$, which
+    by the naturality of the Serre spectral sequence is precisely the pullback
+    $\pi^*:\HH^4(BSO;\Z)\to \HH^4(BSpin;\Z)$.
+    \marginnote{Explain the edge morphism}
+    %Now we argue that the map $\phi$ is precisely the map $\pi^*$ on $\HH^4(BSO;\Z)$.
+    %To see this we use the naturality of the Serre spectral sequence. We consider the
+    %map of fibrations
+    %\begin{equation*}
+    %    \begin{tikzcd}
+    %        B\Z/2\Z \rar\dar & BSpin\rar{\pi}\dar{\pi} & BSO\dar\\
+    %        * \rar & BSO \rar & BSO
+    %    \end{tikzcd}
+    %\end{equation*}
+    %If we write $E_r$ for the spectral sequence associated to the first row and
+    %$\tilde E_r$ for the one associated to the second row, naturality yields maps
+    %$\tilde E^{p,q}_r \to E^{p,q}_r$, commuting with differentials. By the above
+    %argument we know that $E_\infty^{0,4}\cong\Z/2\Z$ and $E_\infty^{4,0}\cong\Z$.
 \end{proof}
 
+\section{August 2, 2017}
+
+\subsection{Large mass limit of a free scalar field theory}
+
+Andy Neitzke, in his lecture on ``Examples of QFTs,'' discussed the (Euclideanized) free scalar field
+of mass $m$ and posed the following problem: compute the $m\to\infty$ partition function
+for this theory on a closed Riemannian manifold. In particular, one wishes to compute a
+suitably regularized quantity
+\begin{equation*}
+    \mathcal{Z}(M,m) = \frac{1}{\sqrt{\det (\Delta + m^2)}}
+\end{equation*}
+
+Let's look at the simple case of the circle, where the operator $\Delta+m^2$ acts on
+$L^2(S^1)$. Here $\Delta=-\partial_t^2$ and thus the eigenfunctions are $e^{2\pi int/R}$
+with eigenvalues $4\pi^2R^{-2}n^2+m^2$. Let us compute the zeta-regularized determinant of
+$\Delta+m^2$. Recall that this is defined
+\begin{equation*}
+    \det(\Delta+m^2) = \exp(-\zeta'(s=0,\Delta+m^2,\lambda=0)),
+\end{equation*}
+where
+\begin{equation*}
+    \zeta(s,H,\lambda) = \frac{1}{\Gamma(s)}\int_0^\infty \tr(P_{(0,\lambda)}e^{-tH}) t^{s-1} dt.
+\end{equation*}
+Here $e^{-tH}$ is the heat kernel associated to the generalized Laplacian $H$
+and $P$ is the spectral projection. It can be proved using heat kernel methods
+that $\zeta$ extends meromorphically in $s$ to $\C$ and is regular at $s=0$.
+
+In the case of the circle and $H=\Delta+m^2$ we can explicitly compute the determinant.
+Note first that
+\begin{equation*}
+    \zeta(s,\Delta+m^2,0) = 2\sum_{n=1}^\infty (4\pi^2R^{-2}n^2+m^2)^{-s}.
+\end{equation*}
+Let us work for $s$ far enough to the right and then analytically continue.
+We first differentiate the zeta function with respect to $s$ to obtain
+\begin{align*}
+    \zeta'(s,\Delta+m^2,0) &= -2\sum_{n=1}^\infty (4\pi^2R^{-2}n^2+m^2)^{-s}
+    \cdot \log(4\pi^2R^{-2}n^2+m^2).
+\end{align*}
+Differentiating in turn with respect to $m$,
+\begin{align*}
+    \frac{d}{dm}\zeta'(s,\Delta+m^2,0) &= -2\sum_{n=1}^\infty\left(-2ms(4\pi^2R^{-2}n^2+m^2)^{-s-1}
+        \cdot\log(4\pi^2R^{-2}n^2+m^2)\right.\\
+        & \left. + 2m(4\pi^2R^{-2}n^2+m^2)^{-s-1} \right).
+\end{align*}
+and taking $s\to0$ we obtain
+\marginnote{Be a little more careful here.}
+\begin{equation*}
+    \frac{d}{dm}\zeta'(s,\Delta+m^2,0) = -\frac{mR^2}{\pi^2}\sum_{n=1}^\infty (n^2+(mR/4\pi)^2)^{-1}.
+\end{equation*}
+Using the identity
+\begin{equation*}
+    \sum_{n=1}^\infty (n^2+a^2/\pi^2)^{-1} = \frac{\pi^2}{2}\cdot \frac{a\coth a-1}{a^2}
+\end{equation*}
+we find
+\begin{equation*}
+    \frac{d}{dm}\zeta'(s,\Delta+m^2,0) = \frac{2- mR \coth(mR/2)}{m}.
+\end{equation*}
+Choose a reference mass $m_0>0$ and integrate from $m_0$ to $m>m_0$,
+\begin{equation*}
+    \zeta'(s,\Delta+m^2,0)-\zeta'(s,\Delta+m_0^2,0) = 2\log \frac{m}{m_0} - 2 \cdot \log\frac{\sinh m}{\sinh m_0}
+\end{equation*}
+It follows that
+\begin{align*}
+    \det(\Delta+m^2) = \frac{\sinh^2m/\sinh^2 m_0}{(m/m_0)^2} \cdot \det(\Delta+m_0^2).
+\end{align*}
+The partition function as a function of $m$ and $m_0$ is thus computed
+\begin{equation*}
+    \mathcal{Z}(S^1,m,m_0) = \frac{m/m_0}{\sinh m/\sinh m_0}  \cdot \mathcal{Z}(S^1,m_0)
+\end{equation*}
+We conclude that the partition function vanishes in the large mass limit.
+
+A general theme of Andy's lecture was that in a certain limit of renormalization
+group flow (here $m\to\infty$) a quantum field theory should become topological.
+He suggested that in this particular example of the scalar field theory, the topological
+limit should be trivial. I'm not quite sure what ``trivial'' means -- does our
+computation here jive with that expectation? At least in the limit it is clear
+that the partition function is topological -- the only dependence in the metric
+(through the volume $R$) is present in $\mathcal{Z}(S^1,m_0)$, which is killed
+as $m\to\infty$.
 
 \bibliographystyle{alpha}
 
