@@ -1957,6 +1957,62 @@ whence
     \mathcal{Z}(S^1,m=0) = \frac{1}{R}.
 \end{equation*}
 
+
+\section{August 4, 2017}
+
+\subsection{Spherical harmonics}
+
+Let's try a similar calculation as above but one dimension higher. Recall
+that the Laplacian on $L^2(S^2)$ has an orthonormal basis consisting of the
+spherical harmonics, which have eigenvalue $l(l+1)$ with multiplicity $2l+1$.
+The spectral zeta function is thus written
+\begin{equation*}
+    \zeta(s,\Delta,0) = \sum_{l=1}^\infty (2l+1)l^{-s}(l+1)^{-s}.
+\end{equation*}
+Let's attempt to compute the zeta-regularized determinant as we did above.
+In particular, for large real $s$ we might differentiate,
+\begin{equation*}
+    \zeta'(s,\Delta,0) = \sum_{l=1}^\infty -(2l+1)\log(l(l+1)) l^{-s}(l+1)^{-s}.
+\end{equation*}
+We see that we cannot analytically continue to $s=0$, so some other method is
+needed. Of course, abstractly (say by heat kernel techniques) we know that
+the derivative should be regular at $s=0$. There are a few papers that I should
+look into that do these computations.
+
+
+\subsection{Spin manifolds}
+
+I'd like to understand some explicit examples of spin manifolds and spin connections.
+Let's start with the definition.
+\begin{definition}
+    Let $\pi:E\to X$ be an oriented Riemannian vector bundle of rank $n\geqslant 3$.
+    Let $SO(E)\to X$ be the principal bundle of oriented orthonormal frames of $E$.
+    Then a \textbf{spin structure} on $E$ is a principal $Spin_n$-bundle $Spin(E)\to X$
+    together with a double cover
+    \begin{equation*}
+        \xi: Spin(E) \to SO(E)
+    \end{equation*}
+    such that $\xi(pg) = \xi(p)\xi_0(g)$, where $\xi_0:Spin_n\to SO_n$ is the
+    double covering map.
+\end{definition}
+
+\begin{lemma}
+    Spin structures on $E$ are in one-to-one correspondence with 2-sheeted
+    coverings of $SO(E)$ that are nontrivial on the fibers of $\pi$.
+\end{lemma}
+\begin{proof}
+    \marginnote{How to lift the group action?}
+\end{proof}
+
+\begin{theorem}
+    the second stiefel-whitney class vanishes iff spin
+\end{theorem}
+
+equivalent definition of spin structure c.f. Sam Gunningham's talk
+
+Levi-Civita connection on tangent bundle, spin connection on both spin structures
+
+
 \bibliographystyle{alpha}
 
 \bibliography{references}
