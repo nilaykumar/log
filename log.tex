@@ -18,6 +18,8 @@
 \DeclareMathOperator{\Del}{Del} % deligne cohomology
 \newcommand{\fsl}[1]{{\centernot{#1}}}
 \renewcommand\d{\mathsf{D}}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\Sing}{Sing}
 
 \title{Math log}
 \author{Nilay Kumar}
@@ -2075,36 +2077,419 @@ Let's look at some low-dimensional examples.
     Let $V=\R^2$ and $q$ the usual Euclidean quadratic form. Fix an orthonormal basis
     $\{e_1,e_2\}$. Then $e_1^2=e_2^2=-1$ and $e_1e_2=-e_2e_1$. It follows that
     $\cl(V,q)\cong\mathbb{H}$ and $\cl^\times(V,q)=\mathbb{H}^\times$. The unit
-    quaternions is just the unit sphere $S^3\subset\R^4$
+    quaternions is just the unit sphere $S^3\subset\R^4$.
 \end{example}
+
+\section{August 30, 2017}
+
+\subsection{Outline of the local index theorem}
+
+Let's write down a brief high-level overview of the proof of the Atiyah-Singer index
+theorem for a compact oriented Riemannian $(n=2m)$-manifold $M$ without boundary.
+\begin{theorem}[Atiyah-Singer]
+    The index of a Dirac operator on a Clifford module $E$ over $M$ is given
+    by the cohomological formula
+    \begin{equation*}
+        \ind \d = (2\pi i)^{-n/2} \int_M \hat A(M)\ch(E/S).
+    \end{equation*}
+\end{theorem}
+We note that by Dirac operator here we mean any Dirac operator arising from a Clifford
+connection on $E$.
+The proof presented in BGV proceeds in two major steps. The first is to compute
+the index of $\d$ using the heat kernel. This is the beautiful McKean-Singer formula,
+\begin{equation*}
+    \ind \d = \Str(e^{-t\d^2}),
+\end{equation*}
+which is valid for any $t>0$. The supertrace of the heat kernel is something
+relatively computable, at least for small $t$. This is the second step: using the
+small-time asymptotics of the heat kernel in order to compute the right-hand
+side as an integral of certain differential forms. Magically, the differential
+forms arising from the asymptotics are characteristic forms, precisely encoding
+the $\hat A$-genus and the Chern character.
+
+First some setup. Let $E$ be a $\Z/2\Z$-graded Clifford module on $M$
+and $\nabla^E$ be a Clifford connection on $E$, i.e. for $a\in C(M)$,
+\begin{equation*}
+    [\nabla^E, c(a)] = c(\nabla^{LC}a),
+\end{equation*}
+where $\nabla^{LC}$ is the (extension of the) Levi-Civita connection.
+The Dirac operator associated to this connection is defined by
+\begin{equation*}
+    \d^\pm = c\circ \nabla^E: \Gamma(M,E^\pm) \to \Omega^1(M,E^\pm) \to \Gamma(M,E^\mp).
+\end{equation*}
+This operator is an odd-parity first-order differential operator whose
+square is a generalized Laplacian. One can define Dirac operators more generally by 
+these properties, but the corresponding index theorem requires more work to prove.
+We will always assume that our Dirac operators arise from Clifford connections (and
+not Clifford superconnections). Moreover we will suppose that $\d$ is (formally)
+self-adjoint.
+
+\marginnote{Examples of Dirac operators. Existence of heat kernel.}
+
+The index of $\d$ is defined 
+\begin{equation*}
+    \ind \d = \dim \ker \d^+ - \dim \ker \d^-.
+\end{equation*}
+\begin{exercise}
+    Prove that $\ind D = \dim\ker\d^+ - \dim\coker\d^+$. In other words, the above
+    definition of index is the more conventional index of $\d^+$. Hint: use
+    self-adjointness and the Green's operator for $\d^2$.
+\end{exercise}
+
+\begin{theorem}[McKean-Singer]
+    For any $t>0$ we have
+    \begin{equation*}
+        \ind\d = \Str(e^{-t\d^2}).
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    This formula is a simple consequence of the spectral theorem for
+    $\d^2:\Gamma(M,E^\pm)\to\Gamma(M,E^\pm)$.
+    One can show using the heat kernel that the spectrum of $\d^2$ is discrete
+    with finite multiplicity, consisting of nonnegative eigenvalues. Hence
+    $\Gamma(M, E^\pm)$ splits as a direct sum of eigenspaces $H_\lambda^\pm$
+    of dimension $n^\pm$ and the supertrace becomes
+    \begin{equation*}
+        \Str(e^{-t\d^2}) = \sum_{\lambda} (n_\lambda^+ - n_\lambda^-)e^{-t\lambda}.
+    \end{equation*}
+    Now since $\d$ commutes with $\d^2$ it maps $H_\lambda^\pm$ to $H_\lambda^\mp$.
+    Each such map is an isomorphism for $\lambda\neq0$ whence all the terms in the
+    sum cancel except for the zero modes:
+    \begin{equation*}
+        \Str(e^{-t\d^2}) = n_0^+ - n_0^-.
+    \end{equation*}
+    This is precisely the index of $\d$.
+\end{proof}
+From the McKean-Singer formula (together with the existence of heat kernels for
+families of generalized Laplacians) it follows immediately that the index of $\d$ is
+a homotopy invariant. Indeed, given a smooth family of Dirac operators $\d^z$
+the McKean-Singer formula asserts that the index must vary smoothly. As the index
+is integer-valued, it must be constant over the family.
+
+\marginnote{Examples of index}
+
+Now we turn to the computation of the supertrace of the heat kernel. The main
+result is the following.
+\begin{theorem}
+    Let
+    \begin{equation*}
+        k_t(x,x) \sim (4\pi t)^{-n/2} \sum_{i=0}^\infty t^ik_i(x)
+    \end{equation*}
+    be the asymptotic expansion of $k_t(x,x)$. Identifying $\End(E)$ with the tensor
+    product $C(M)\otimes \End_{C(M)}(E)$, the coefficients are
+    \begin{equation*}
+        k_i \in \Gamma(M,C(M)\otimes\End_{C(M)}(E)).
+    \end{equation*}
+    In particular,
+    \begin{enumerate}[(a)]
+        \item the coefficient $k_i$ is a section of the bundle $C_{2i}(M)\otimes\End_{C(M)}(E)$;
+        \item the corresponding endomorphism-valued differential form under the
+            symbol map is given
+            \begin{equation*}
+                \sigma(k)=\sum_{i=0}^{n/2}\sigma_{2i}(k_i) = \mathrm{det}^{1/2}\left( \frac{R/2}{\sinh(R/2)} \right)
+                \exp(-F^{E/S}).
+            \end{equation*}
+    \end{enumerate}
+\end{theorem}
+
+Let us see how this implies the Atiyah-Singer index theorem.
+Recall that each $k_i$ is a section of the bundle $\End E$, which can be
+decomposed as
+\begin{equation*}
+    \End E \cong C(M) \otimes \End_{C(M)} E.
+\end{equation*}
+There is a natural supertrace on $C(M)\otimes\End_{C(M)}E$ given by the product
+of the natural supertrace on $C(M)$ -- the Berezin integral of the top symbol --
+with the relative supertrace
+\begin{equation*}
+    \Str_{E/S}(\phi) = 2^{-n/2}\Str_E(\Gamma \phi): \End_{C(M)}E\to \C.
+\end{equation*}
+Here $\Gamma$ is the chirality element of the complexified Clifford algebra.
+The decomposition respects these supertraces. Notice that $[C(M), C(M)]=C_{n-1}(M)$
+whence the supertrace of $k_i$ vanishes for each $i<n/2$. Hence the supertrace
+of the asymptotic expansion of the heat kernel has no pole at $t=0$ and we may
+take the limit as $t\to0$. Computing the index thus reduces to
+\begin{equation*}
+    \ind \d = (4\pi)^{-n/2}\int_M \Str k_{n/2}(x) dx.
+\end{equation*}
+\marginnote{Understand this decomposition and why the supertraces match!}
+Now the second part of the local index theorem
+reveals that the index is an integral over $M$ of the $n$-form component
+of the supertrace of $\sigma(k)$. But this yields exactly the $\hat A$-genus
+of the (tangent bundle of) $M$ and the relative Chern character of $E$:
+\begin{equation*}
+    \ind \d = (2\pi i)^{-n/2} \int_M \hat A(M) \ch(E/S).
+\end{equation*}
+
+We now turn to the proof of the local index theorem.
+
+
+\section{September 4, 2017}
+
+\subsection{Transgression and Chern-Simons}
+
+I wanted to write down a computation of the Chern-Simons form
+from a transgression formula, which I'd worked through a long time ago but
+never got around to writing down. Let $E\to M$
+be a superbundle and $\A_t$ be a smooth family of superconnections
+\begin{equation*}
+    \A_t: \mathcal{A}^\pm (M,E) \to \mathcal{A}^\mp(M,E).
+\end{equation*}
+for $t\in\R$. Write $\pi:M\times\R\to M$ for the projection, and define the
+superconnection $\tilde\A$ on $\pi^*E$,
+\begin{equation*}
+    \tilde\A = \A_t + dt\wedge \frac{\partial}{\partial t}.
+\end{equation*}
+Recall that for each polynomial $f\in\C[z]$ there is a corresponding characteristic
+differential form. For this family of superconnections we obtain
+\begin{equation*}
+    \Str\left(f(\tilde \A^2)\right) = \Str\left(f\left(\A_t^2 - \frac{\partial \A_t}{\partial t}\wedge dt\right)\right).
+\end{equation*}
+The right hand side can be simplified further:
+\begin{align*}
+    \Str\left( f(\tilde\A^2) \right) &= \Str\left(\sum_{j=0}^n a_j\left(\A_t^2-\frac{\partial \A_t}{\partial t}\wedge dt\right)^j\right)\\
+    &= \Str f(\A_t^2) - \Str\left(\sum_{j=0}^n ja_j(\A_t^2)^{j-1}\wedge \frac{\partial \A_t}{\partial t}\wedge dt\right)\\
+    &= \Str f(\A_t^2) - \Str\left( f'(\A_t^2)\frac{\partial \A_t}{\partial t}\right)\wedge dt.
+\end{align*}
+Applying the exterior derivative to both sides of the equation we find
+\marginnote{Why?}
+that
+\begin{equation*}
+    \frac{\partial}{\partial t}\Str f(\A_t^2)= d\Str\left( f'(\A_t^2)\frac{\partial\A_t}{\partial t}\right)
+\end{equation*}
+as the left hand side vanishes. This is precisely the transgression formula.
+
+The Chern-Simons forms arise from applying the transgression formula
+to a trivial bundle. Let $E\to M$ be a trivial (ungraded) bundle and let
+$\nabla_t$ be a family of connections varying smoothly from the trivial
+connection to an arbitrary connection $\nabla$. In a trivialization this
+is just the data of a family of one-form valued matrices $A_t= tA$.
+\marginnote{What does changing the trivialization do?}
+Let us write $F_A$ for the curvature of the connection $d+A$.
+Integrating the transgression formula above with respect to $t$ an applying
+it to our case using $F_t=tdA+t^2A\wedge A$, we obtain
+\begin{equation*}
+    \tr(f(F_A)) - \tr(f(0)) = \int_{[0,1]}d\tr\left( A\wedge f'(tdA+t^2A\wedge A) \right) dt.
+\end{equation*}
+Let's examine this formula for $f(z)=z^k/k!$ for small $k$. Write $F=A^2$. For $k=1$ we obtain
+\begin{equation*}
+    \tr(F_A) = d \tr A,
+\end{equation*}
+which is obvious. For $k=2$ we obtain
+\begin{align*}
+    \tr(F_A^2/2!) &= \int_{[0,1]} d\tr\left( tA\wedge dA+t^2A\wedge A\wedge A \right)dt \\
+    &= d\left( \frac{1}{2}\tr A\wedge dA+\frac{1}{3}\tr A\wedge A\wedge A \right).
+\end{align*}
+In particular we obtain the differential of what is usually called the Chern-Simons form.
+For $k=3$ we obtain
+\begin{align*}
+    \tr(F_A^3/3!) &= \int_{[0,1]} d\tr\left(  A\wedge \frac{1}{2}(tdA+t^2A\wedge A)^2\right)\\
+    &= d\tr\left( \frac{1}{6}dA\wedge dA\wedge A + \frac{1}{4}dA\wedge A\wedge A\wedge A
+    + \frac{1}{10}A\wedge A\wedge A\wedge A\wedge A\right).
+\end{align*}
+In other words, once we have fixed a connection, for each $k$ we obtain a degree $2k-1$
+differential form whose differential is the degree $k$ component of the Chern character
+of the connection. These are the Chern-Simons forms. Of course, the Chern character of
+a trivial bundle is trivial, whence we see that these forms are closed.
+
+It is worth noting that often people are interested in $\tr (iF_A/2\pi)^k/k!$. We've
+omitted these constants here.
+
+\subsection{K-theory}
+
+Here I just want to write down concretely some of the basic definitions of topological
+$K$-theory so that I might remember them for once. I am following Atiyah's book.
+
+Let $X$ be a space. Then the set of vector bundles $\vect X$ (up to isomorphism)
+on $X$ is an abelian monoid
+under direct sum. We write $K(X)$ for the group completion of this monoid. Recall that
+this abelian group can be constructed by taking the free group on $\vect X$ and
+quotienting by the addition relations in the monoid. Alternatively one can define
+$K(X)$ as the quotient space of $\vect X\times \vect X$ by the image of the diagonal
+map $\vect X\to \vect X\times \vect X$. The inverses arise from the interchange
+of factors.
+
+From the second construction it is clear that every element of $K(X)$ can be
+written as a difference $[E]-[F]$ for bundles $E$ and $F$. In fact, since
+every bundle is a direct summand of a trivial bundle we have
+\begin{equation*}
+    [E]-[F] = [E] + [G] - [G] - [F] = [E] + [G] - n = [H] - n.
+\end{equation*}
+Hence any element can be written as the difference of a vector bundle and a
+trivial bundle. Next suppose that $[E]=[F]$. By definition this means that
+there exists a bundle $G$ such that $E\oplus G\cong F\oplus G$. Of course,
+there exists a $G'$ such that $G\oplus G'\cong n$ whence it follows that
+$E\oplus n\cong F\oplus n$. In conclusion, $[E]=[F]$ if and only if $E$
+and $F$ are stably equivalent. Finally we note that $K$ is a functor from
+spaces to abelian groups, $K:\mathbf{Spaces}^\text{op} \to \mathbf{Ab}$
+as vector bundles pullback. Recall that for $f:X\to Y$ the map $f^*:K(Y)\to K(X)$
+depends only on the homotopy class of $f$.
+\marginnote{Is compactness necessary for this statement?}
+
+
+\section{September 7, 2017}
+
+\subsection{Fourier transforms}
+There is a continuous map $\mathcal{F}:L^1(\R^n)\to L^\infty(\R^n)$ given by the Fourier
+transform
+\begin{equation*}
+    (\mathcal{F}f)(\xi) = (2\pi)^{-n/2} \int f(x) e^{-ix\cdot\xi} dx.
+\end{equation*}
+It is not hard to check that $\mathcal{F}$ sends Schwartz space to
+Schwartz space. We define another map $\mathcal{F}^*$ by
+\begin{equation*}
+    (\mathcal{F}^*f)(\xi) = (2\pi)^{-n/2}\int f(x) e^{ix\cdot \xi} dx
+\end{equation*}
+satisfying the same properties as $\mathcal{F}$ above. It follows that
+\begin{equation*}
+    (\mathcal{F} u, v) =(u, \mathcal{F}^* v)
+\end{equation*}
+for $u,v$ functions in Schwartz space, where the parentheses denote the
+usual $L^2$ inner product (we are working with complex-valued functions).
+
+The first interesting result is the Fourier inversion formula which states
+that $\mathcal{F}$ and $\mathcal{F}^*$ are inverses on Schwartz space.
+
+
+
+\section{November 2, 2017}
+
+\subsection{Refining the spin characteristic class}
+
+%Before thinking about $\eta$-forms and spin structures, let's do a simple computation
+%with Chern-Simons forms. Let $E\to M$ be a trivializable (ungraded) vector bundle with
+%connection $\nabla^E$. A trivialization $Q$ is an isomorphism
+%\begin{equation*}
+%    \begin{tikzcd}
+%        M\times\C^n \ar[rr]{Q}\ar[dr] && E\ar[dl] \\
+%        & M &
+%    \end{tikzcd}
+%\end{equation*}
+%of vector bundles.
+
+%then a connection on $E$ is just the data of an endomorphism-valued one-form $A\in\Omega^1(\End E)$.
+%Then the Chern-Simons one-form is defined
+%\begin{equation*}
+%    \mathsf{CS}_1 = \tr A \in \Omega^1(M).
+%\end{equation*}
+%Suppose 
+
+
+Recall the setup. $(V, h^V, \nabla^V)$ is a real spin vector bundle of rank $n\geq 3$
+over a manifold $M$. A spin trivialization of $V$ is defined to be a trivialization
+of the $Spin(n)$-bundle $Spin(V)\to M$ that defines the spin structure. We write
+this trivialization as $Q:M\times Spin(n)\xrightarrow{\sim}Spin(n)$. Given this data
+we define $\eta$-forms as follows. Let $W=W^+\oplus W^-$ be the $\Z/2$-graded complex
+vector bundle given by
+\begin{equation*}
+    W^+ = V\otimes_\R\C \qquad W^- = \C^n.
+\end{equation*}
+Give $W$ the metric and connection induced from $V$ on $W^+$ and the trivial data on
+$W^-$. The trivialization $Q$ induces a unitary odd involution on $W$ which we will
+denote again by $Q=Q^++Q^-$.
+\begin{definition}
+    Define the rescaled superconnection
+    \begin{equation*}
+        \A_t = t^{1/2}Q + \nabla^W
+    \end{equation*}
+    on $W$. Then the degree $(2k-1)$ eta-form of the data $(V,h^V,\nabla^V,Q)$ above is
+    \begin{align*}
+        \eta_{2k-1}(Q) &= \frac{1}{(2\pi i)^k}\int_0^\infty \Str\left( \partial_t\A_te^{-\A_t^2} \right)_{[2k-1]} dt \in \Omega^{2k-1}(M) \\
+        &= \frac{1}{(2\pi i)^k}\int_0^\infty \Str\left( t^{-1/2}Q\exp\left( -t\id^W-t^{1/2}[Q,\nabla^W]-(\nabla^W)^2 \right) \right)_{[2k-1]}dt.
+    \end{align*}
+\end{definition}
+
+\begin{example}
+    Consider the case $k=1$. Then we get
+    \begin{align*}
+        \eta_1(Q) &= \frac{1}{2\pi i}\int_0^\infty \Str\left( t^{-1/2}Qe^{-\A_t^2} \right)_{[1]} dt\\
+        &= \frac{1}{2\pi i}\int_0^\infty t^{-1/2}\Str\left( Q e^{-t}e^{-t^{1/2}[Q,\nabla^W] - (\nabla^W)^2} \right)_{[1]} dt\\
+        &= -\frac{1}{2\pi i}\int_0^\infty e^{-t}\Str\left( Q[Q,\nabla^W] \right) dt \\
+        &= -\frac{1}{2\pi i}\Str\left( Q[Q,\nabla^W] \right) \\
+        &= -\frac{1}{2\pi i}\Str\left( \nabla^W + Q\nabla^WQ \right).
+    \end{align*}
+    Fix the standard orthonormal frame $\{e_i\}$ for $W^-=M\times\C^n$. We have a
+    corresponding frame $\{q_i:=Q^-e_i\}$ for $W^+$. Now we can compute
+    \begin{equation*}
+        (\nabla^W+Q\nabla^WQ)e_i = \nabla^{W^-}e_i + Q^+\nabla^{W^+}Q^-e_i = Q^+\nabla^{W^+}Q^-e_i
+    \end{equation*}
+    since $\nabla^{W^-}$ is defined to be the trivial connection. Similarly,
+    \begin{equation*}
+        (\nabla^W+Q\nabla^WQ)q_i = \nabla^{W^+}q_i + Q^-\nabla^{W^-}Q^+q_i = \nabla^{W^+}q_i.
+    \end{equation*}
+    Since trace is invariant under conjugation we obtain zero.\marginnote{There's a sign wrong here\ldots}
+    Instead of zero, I'd like to obtain twice the Chern-Simons form\ldots
+\end{example}
+
+
+\section{November 6, 2017}
+
+\subsection{Coherent nerves}
+
+Recall that given a category $\mathcal{C}$ we can associate to it a simplicial set,
+its nerve
+\begin{equation*}
+    N\mathcal{C}_n = \Fun([n], \mathcal{C}).
+\end{equation*}
+The nerve in particular satisfies the weak Kan condition, in that inner horns fill
+(uniquely, in fact) by the composition in the category. In this way, any category
+gives rise, via the nerve, to a quasicategory, i.e. an $\infty$-category.
+What if our original category $\mathcal{C}$ is enriched in spaces or simplicial
+sets? Certainly we can still take the nerve, but this will ignore the enrichment.
+Let's consider first the case of a category $\mathcal{C}$ enriched in $\mathsf{sSet}$.
+The trick will be to replace the poset $[n]$ above with a ``thickening,'' as Lurie
+calls it.
+
+\begin{definition}
+    Let $J$ be a finite nonempty linearly ordered set. The simplicial category
+    $\fr{C}[\Delta^J]$ is defined as follows:
+    \begin{enumerate}
+        \item the objects of $\fr{C}[\Delta^J]$ are the elements of $J$;
+        \item if $i,j\in J$ then
+            \begin{equation*}
+                \Hom_{\fr{C}[\Delta^J]}(i, j) =
+                \begin{cases}
+                    \varnothing & i > j \\
+                    N(P_{i,j}) & i\leq j
+                \end{cases}
+            \end{equation*}
+            where $P_{i,j}$ denotes the partially ordered set
+            \begin{equation*}
+                \{I\subset J \mid (i,j\in I)\wedge (\forall k\in I)[i\leq k\leq j]\};
+            \end{equation*}
+        \item if $i_0\leq i_1 \leq \cdots \leq i_n$ the composition
+            \begin{equation*}
+                \Hom{\fr{C}[\Delta^J]}(i_0,i_1) \times \cdots \Hom{\fr{C}[\Delta^J]}(i_{n-1},i_n)
+            \end{equation*}
+            is induced by the map on partially ordered sets given by the union
+            $(I_1,\ldots,I_n)\mapsto I_1\cup\cdots \cup I_n$.
+    \end{enumerate}
+\end{definition}
+
+Then the simplicial nerve of a simplicial category $\mathcal{C}$ is defined
+\begin{equation*}
+    N(C)_n = \Fun(\fr{C}[\Delta^n], \mathcal{C}).
+\end{equation*}
+One checks that the mapping spaces of $\fr{C}[\Delta^n]$ are homeomorphic to
+cubes whence the obvious map $[n]\to\fr{C}[\Delta^n]$ is an equivalence of
+simplicial categories (viewing the source as a discrete simplicial category).
+Hence the category $\fr{C}[\Delta^n]$ is a thickened version of $[n]$ where
+compositions hold only up to (higher) homotopies. Notice that one can define
+similarly the topological nerve of a topological category $\mathcal{C}$ to be
+the simplicial nerve of $\Sing \mathcal{C}$. Lurie proves that if a simplicial
+category has each hom-space fibrant then the simplicial set resulting from
+taking the simplicial nerve is a quasicategory. This implies, since $\Sing$
+always yields Kan complexes, that the topological nerve always yields quasicategories.
+It is easy to check that, for instance, a two-simplex in the topological nerve
+of a topological category is the data of two composable morphisms $c\to d\to e$,
+a morphism from $c\to e$, and a path in $\mathcal{C}(c,e)$ between the composite
+of the former two and the latter.
 
 
 
 \bibliographystyle{alpha}
 
 \bibliography{references}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
