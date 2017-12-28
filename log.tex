@@ -20,6 +20,8 @@
 \renewcommand\d{\mathsf{D}}
 \DeclareMathOperator{\Fun}{Fun}
 \DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\Ob}{Ob}
+\newcommand{\op}{\text{op}}
 
 \title{Math log}
 \author{Nilay Kumar}
@@ -2271,7 +2273,7 @@ it to our case using $F_t=tdA+t^2A\wedge A$, we obtain
 \begin{equation*}
     \tr(f(F_A)) - \tr(f(0)) = \int_{[0,1]}d\tr\left( A\wedge f'(tdA+t^2A\wedge A) \right) dt.
 \end{equation*}
-Let's examine this formula for $f(z)=z^k/k!$ for small $k$. Write $F=A^2$. For $k=1$ we obtain
+Let's examine this formula for $f(z)=z^k/k!$ for small $k$. For $k=1$ we obtain
 \begin{equation*}
     \tr(F_A) = d \tr A,
 \end{equation*}
@@ -2486,12 +2488,1436 @@ a morphism from $c\to e$, and a path in $\mathcal{C}(c,e)$ between the composite
 of the former two and the latter.
 
 
+\section{November 7, 2017}
 
-\bibliographystyle{alpha}
+\subsection{Locally presentable categories}
 
-\bibliography{references}
+nlab motivates the notion of localy presentability as the analog for categories
+of the notion of a finitely generated module. They give the following example:
+an abelian group $A$ is finitely generated if there is a finite subset $S$ of the
+underlying set $U(A)$ of $A$ such that every element is a sum of such generating
+elements. There are immediately issues of size that come up, but instead of
+ignoring them as usual, let's follow nlab's exposition.
+
+Let $\kappa$ be a regular cardinal. A \textbf{$\kappa$-filtered category} is one
+where every diagram of size $<\kappa$ has a cocone. An example that came up in
+John's class was the opposite category of the poset of opens in $M$. Suppose we
+have a diagram $F:I\to \Op(M)^\op$ where the cardinality of objects of $I$ is finite.
+Then a cocone for $F$ is an object $U\in\Op(M)^\op$ together with maps $F(i)\to U$
+for each $i\in I$ such that the relevant diagrams commute, i.e. for any map
+$i\to j$ the induced map $F(i)\to F(j)\to U$ equals the map $F(i)\to U$.
+It is easy to see that $\Op(M)^\op$ is filtered (i.e. $\Op(M)$ is cofiltered) because
+given any finite collection of opens $\{U_i\}$ one takes $U=\cap U_i$ with
+the unique restrictions $U_i\to U$ as the cocone. The relevant diagrams commute
+due to the fact that $\Op(M)^\op$ is a poset and there is a unique map between
+two objects. We might say that $\Op(M)$ is $\aleph_0$-filtered, or just filtered.
+
+Filtered categories, as John also mentioned, are useful as diagram categories.
+A \textbf{$\kappa$-filtered colimit} is a colimit over a $\kappa$-filtered diagram.
+\begin{proposition}
+    A colimit in $\mathsf{Set}$ is $\kappa$-filtered precisely if it commutes with
+    all $\kappa$-small limits.
+\end{proposition}
+
+\begin{definition}
+    An object $A\in\mathcal{C}$ is a \textbf{$\kappa$-compact object} if it
+    commutes with all $\kappa$-filtered colimits, i.e. for $X:I\to \mathcal{C}$
+    and $\kappa$-filtered diagram, the canonical map
+    \begin{equation*}
+        \colim_I \mathcal{C}(A, X_i) = \mathcal{C}(A, \colim_I X_i)
+    \end{equation*}
+    We say that $A$ is a \textbf{small object} if it is $\kappa$-compact for some
+    regular cardinal $\kappa$.
+\end{definition}
+I guess the idea is that $A$ is ``small enough'' that its map to the colimit
+lands in some smaller stage of the colimit.
+
+\textbf{Question:} Are compact CW complexes compact objects in the category of
+CW complexes?
+
+This brings us to the definition of locally presentable.
+\begin{definition}
+    A locally small category $\mathcal{C}$ is \textbf{$\kappa$-locally presentable} if it
+    is cocomplete and there is a small set $S\hookrightarrow\Ob\mathcal{C}$
+    of $\kappa$-small objects such that the induced full subcategory generates $\mathcal{C}$
+    (in the sense that its cocompletion is $\mathcal{C}$).
+\end{definition}
+\begin{remark}
+    I believe Lurie drops the ``locally'' in locally presentable. The nlab claims
+    that the locally is necessary for pointing out that the definition is objectwise.
+\end{remark}
+
+There's a nice math overflow post I'd like to understand, giving a certain category
+of Banach spaces as an example of an $\aleph_1$-locally presentable category but not
+$\aleph_0$-locally presentable.
+
+\section{November 12, 2017}
+
+\subsection{Tracking down signs}
+
+Let's return to the $k=1$ $\eta$-form. Recall that we have a superbundle $W$ with
+$W^+=V\otimes_\R\C$ and $W^-=\C^n$ where $V$ is real rank $n$. $W^+$ is equipped
+with a Hermitian metric and connection induced from data on $V$ and $W^-$ is equipped
+with the corresponding trivial structures. Given to us as well is a unitary odd
+involution $Q:W\to W$ (corresponding to a spin trivialization of $V$). We are
+interested in computing
+\begin{equation*}
+    \eta^1(Q) = \frac{1}{2\pi i}\int_0^\infty \Str\left( \partial_t\A_t\exp(-\A_t^2) \right)_{[1]} dt
+\end{equation*}
+where
+\begin{equation*}
+    \A_t = t^{1/2}Q + \nabla^W
+\end{equation*}
+is a rescaled superconnection. To compute the $\eta$-form we may as well choose
+a convenient global frame for $W$. For $W^-$ we choose the usual Euclidean frame,
+call it $\{e_i\}_{i=1}^n$. The involution $Q$ yields a frame for $W^+$,
+\begin{equation*}
+    \{f_i=Q^-e_i\}_{i=1}^n.
+\end{equation*}
+In the frame $\{f_i,e_i\}$ we have
+\begin{equation*}
+    Q=
+    \begin{pmatrix}
+        &1\\1&
+    \end{pmatrix}
+    \qquad
+    \nabla^W=d+
+    \begin{pmatrix}
+        A&\\&0
+    \end{pmatrix}
+\end{equation*}
+for a matrix of one-forms $A$ (the connection one-form for $\nabla^{W^-}$ in the chosen
+frame). The square of the superconnection is now computed, using the fact that $d$ is
+a graded derivation,
+\begin{equation*}
+    \A_t^2 = t + t^{1/2}
+    \begin{pmatrix}
+        &A\\A&
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+        F_A&\\&0
+    \end{pmatrix}.
+\end{equation*}
+In the supertrace of the $\eta$-form we now have the one-form component of
+\begin{equation*}
+    \frac{1}{2}t^{-1/2}
+    \begin{pmatrix}
+        &1\\1&
+    \end{pmatrix}
+    \exp\left( -\A_t^2 \right),
+\end{equation*}
+which simplifies to
+\begin{equation*}
+    -\frac{1}{2}e^{-t}
+    \begin{pmatrix}
+        &1\\1&
+    \end{pmatrix}
+    \begin{pmatrix}
+        &A\\A&
+    \end{pmatrix}
+    = -\frac{1}{2}e^{-t}
+    \begin{pmatrix}
+        A&\\&A
+    \end{pmatrix}.
+\end{equation*}
+Taking the supertrace we obtain zero. That's no good\ldots The same problem
+arises if we look at the $k=2$ case of the degree 3 $\eta$-form. My computation
+of $\A_t^2$ must be incorrect, then, as one of the $A$'s in the second term
+should have a sign in front of it, according to Bunke. I don't see where
+the mistake is.
+
+\section{November 13, 2017}
+
+\subsection{Notes on Meinrenken}
+
+I'm starting to read through Meinrenken's paper on the basic equivariant
+gerbe on a compact simple simply-connected Lie group. Unfortunately, I know
+nowhere near enough about gerbes and I've forgotten everything I once knew
+about Lie theory, so it will be a struggle.
+
+Let $G$ be a compact, simple, simply connected Lie group, with Lie algebra
+$\fr g$. Recall that $G$ is called \textbf{simple} if it is nonabelian,
+connected, and has no nontrivial connected normal subgroups. A \textbf{torus}
+$T$ in $G$ is a connected compact abelian subgroup of $G$, and we call it
+maximal if for any other torus $T'$ with $T\subset T'$ we have that $T'=T$.
+
+\subsection{The sign error}
+
+Pax helped me fix the sign error! The point is that $QA$ has a minus sign
+while $AQ$ does not, because $A$ is multiplication by a matrix of one-forms,
+so applying $Q$ after that multiplication forces you to move the $Q$ past
+the one-forms, hence picking up a sign. I now believe that the eta-form
+is just (up to a multiple) the Chern-Simons form. What remains to be shown
+is that changing trivializations changes the Chern-Simons form by an integer.
+To do this we need to show that the change is the usual three-form on $G$
+and, being careful to insert all the proper coefficients back everywhere,
+that this form is in fact integral. I'm not quite sure how to show the latter
+(clearly some multiple will be integral, but how do we figure out what that
+multiple is?). I'll continue thinking about this tomorrow.
+
+\section{November 16, 2017}
+
+\subsection{Deligne vs. Cheeger-Simons}
+
+Met briefly with Ezra today, who asked whether I knew a reference for the
+isomorphism of Deligne cohomology and Cheeger-Simons characters. Brylinski
+in his book refers to two papers which I should look at closer, but there
+might be a slicker proof if we pass through the Hopkins-Singer cochain model
+for differential characters. The ideas is to observe that Deligne cohomology
+can be written as the sheaf hypercohomology of a cone of a morphism between
+complexes of sheaves. The cone, I believe, is some sort of homotopy pullback,
+probably of the cospan
+\begin{equation*}
+    \underline{\Z} \longrightarrow \underline{\R} \longleftarrow \sigma_{\geq n}\Omega^\bullet(-)
+\end{equation*}
+On the other hand, the Hopkins-Singer cochains are precisely a homotopy
+pullback of the cospan
+\begin{equation*}
+    C^\bullet(-,\Z) \longrightarrow C^\bullet(-,\R) \longleftarrow \sigma_{\geq n}\Omega^\bullet(-).
+\end{equation*}
+Perhaps homotopy invariance of homotopy pullbacks will yield the isomorphism?
+I'm a bit confused because cochains aren't sheaves. Something like this should
+work, though.
+
+\subsection{Monads}
+
+Ezra mentioned at some point that sheaf cohomology can be computed as a limit
+via some ``Godement resolution.'' He said some words like ``comonad'' and ``pull-push''.
+Piotr later explained briefly to me the notion of a monad. Let me try to remember what Piotr
+said. Given a category $\mathcal{C}$ we have a category of functors $\Fun(\mathcal{C},\mathcal{C})$.
+This category of functors is monoidal under composition. A monad is supposed
+to be a monoid in $\Fun(\mathcal{C},\mathcal{C})$, so a functor $F:\mathcal{C}\to \mathcal{C}$
+together with a multiplication $m:F\otimes F\to F$ satisfying the usual monoidal
+conditions. An algebra $c$ over this monad is a pair $c\in \mathcal{C}$ and a
+map $X:Fc\to c$. Or something like that. Let's see the example Piotr gave.
+
+Let $R$ be a $k$-algebra and $R\otimes-:\mathsf{Vect}_k\to\mathsf{Vect}_k$ the
+functor. It's clear that we get a monoid. Let's see what an algebra over this
+monad is. It's a vector space together with an action of $R$ on $V$, i.e. an
+$R$-module. Nice.
+
+Piotr also said that adjunctions yield monads, and that all this stuff is really
+classical and can probably be found in MacLane. For instance in the sheaf case
+that Ezra mentioned, the adjoint functors are the pullback and pushforward of
+sheaves along the map $\id:X^\delta\to X$ where $X^\delta$ is $X$ equipped with
+the discrete topology. Wikipedia actually has a page on this. The composition
+$T=\id_*\circ\id^{-1}:\mathsf{Sh}(X)\to\mathsf{Sh}(X)$ induces a monad, whence
+given a sheaf $\mathcal{F}\in\mathsf{Sh}(X)$, we can define a coaugmented cosimplicial
+sheaf with (I think) $n$-simplices being the sheaf $T^{n+1}\mathcal{F}$ and the
+coaugmentation being $\mathcal{F}$. By Dold-Kan we obtain an augmented cochain
+complex. I haven't bothered thinking about it carefully, but it looks like the
+sheaves $T^{n+1}\mathcal{F}$ are flabby whence we obtain a flabby resolution
+for $\mathcal{F}$ which computes the sheaf cohomology of $\mathcal{F}$. This
+resolution is classical and due to Godement (though of course not quite in this
+language). I guess this is different than a bar/cobar resolution, though I don't
+really understand those in generality. Maybe it's not different (c.f. nlab for
+``canonical resolution'').
+
+It would be nice to understand in detail (1) the triangle identity definition
+of adjunctions, (2) how adjunctions yield monads, and (3) bar or two-sided bar
+constructions of such monads. Also, of course, see where these things pop up.
+Some of them were Hochschild homology and/or derived tensor products, homotopy
+colimits, etc. Also I should work through some of the basic adjunctions that
+I know.
+
+\section{November 21, 2017}
+
+\subsection{Presheaves of cochain complexes}
+I've been thinking some more about this possible proof that Deligne cohomology
+is isomorphic to Hopkins-Singer cohomology. It seems like a nice category
+to work in is the category $\mathsf{Psh}(\mathsf{Ch}^{\geq 0}(\mathsf{Ab}))$ of
+presheaves of bounded-below cochain complexes of abelian groups (on the site of
+manifolds with usual open covers). This category inherits a model structure as
+follows. According to nlab, $\mathsf{Ch}^{\geq 0}(\mathsf{Ab})$ has a model structure
+with
+\begin{enumerate}
+    \item weak equivalences are quasiisomorphisms;
+    \item fibrations are degreewise surjections.
+\end{enumerate}
+I believe this is called the projective model structure on cochain complexes.
+This apparently yields a model structure on the category of presheaves
+of such cochain complexes where the weak equivalences and fibrations are
+objectwise. I'm not sure if this is exactly what we want, though, as generally
+one asks for presheaves that weak equivalences be stalkwise\ldots Anyway,
+for now let's suppose we have the correct notion. What we want to do is show
+that the $n$th sheaf hypercohomology of a certain homotopy pullback (so the
+resulting object is a sheaf of abelian groups) is naturally isomorphic to the $n$th
+(cochain) cohomology of a certain homotopy pullback. There is a natural
+map from one homotopy pullback to the other, so what I would like to
+say is: this map induces a map of Mayer-Vietoris sequences (coming from the
+homotopy pullback) and one can apply the five-lemma centered at degree $n$
+to obtain the desired isomorphism. Unfortunately, something here doesn't quite make
+sense: what type of cohomology is the Mayer-Vietoris sequence on? On one
+side it has to be on sheaf hypercohomology but on the other side it has to be the
+usual cohomology of cochain complexes objectwise in the presheaf.
+
+Let me go through more carefully these homotopy pullbacks. I recall working through
+the Hopkins-Singer construction and why it computes the usual Cheeger-Simons
+differential characters (with Sam), so lets focus on the Deligne cohomology side.
+I will be roughly be following the nlab page on Deligne cohomology. One thing that
+bothers me there is that grade their chain complexes homologically --- this is
+convenient for obtaining simplicial objects instead of cosimplicial objects,
+but I think you'd lose any possibility of remembering the algebra structures.
+So for now let's work in $\mathsf{Pre}(\mathsf{Ch}^{\geq 0}(\mathsf{Ab}))$.
+Let's take the projective global model structure: weak equivalences and fibrations
+are objectwise quasiisomorphisms and degreewise surjections. What is a homotopy
+pullback of such presheaves? {\color{red} We claim that homotopy pullbacks are computed
+objectwise.}
+
+Given this claim, let's look at what a homotopy pullback of cochain complexes is.
+For intuition recall the case of spaces. Consider a homotopy pullback of spaces
+\begin{equation*}
+    \begin{tikzcd}
+        A \rar\dar & B\dar\\
+        C \rar & D
+    \end{tikzcd}
+\end{equation*}
+Explicitly $A$ can be constructed as triples $(b,\gamma, c)$ where $b\in B, c\in C$,
+and $\gamma:I\to D$ is a path in $D$ from the image of $b$ to the image of $c$:
+\begin{equation*}
+    A=B\times_D D^I \times_D C
+\end{equation*}
+Notice that under this definition the diagram above commutes up to a canonical
+homotopy (given precisely by the path data).
+
+\section{November 27, 2017}
+
+\subsection{math-ph talk on gerbes}
+
+First, a rough outline of what I'd like to talk/learn about:
+\begin{enumerate}
+    \item line bundles as degree two cohomology classes
+    \item degree two Cheeger-Simons differential characters
+    \item Deligne cohomology in degrees 0, 1 and 2
+    \item sketch proof that Deligne isomorphic to Cheeger-Simons
+    \item exhibit some natural degree 3 Deligne/CS classes
+    \item introduce bundle gerbes
+    \item work through some simple examples: trivial bundle gerbes, points in 3-manifolds, $U(1)$-central extensions (spin-c)
+    \item basic gerbe on a Lie group
+    \item applications: string structures, WZW model
+\end{enumerate}
+
+\section{November 29, 2017}
+
+\subsection{Talk notes}
+
+Recall at the beginning of this seminar we defined a notion of Cheeger-Simons
+differential characters. For $X$ a smooth manifold we defined
+\begin{equation*}
+    \hat H^k(X;\Z) = \{h:Z_{k-1}(M;\Z)\to U(1) \mid \exists \omega\in\Omega^k(M), h\circ\partial = \exp(2\pi i\int_- \omega)\}.
+\end{equation*}
+We interpreted $\hat H^1(X;\Z)$, degree one differential cohomology classes, as
+smooth $U(1)$-valued functions on $X$. Moving one degree higher, we claim that
+degree two differential cohomology classes are in bijection with line bundles with
+connection. \marginnote{Hermitian and unitary connection?} This is not so easy
+to see in the Cheeger-Simons picture, I think, but the idea is that $\omega$ and $h$
+represent the curvature and holonomy of a line bundle.
+
+Let's take a short digression to discuss another model for differential cohomology,
+known as smooth Deligne cohomology, with which it is easier to discuss objects
+glued together along an open cover (such as line bundles, gerbes, etc). The
+\textbf{$k$th Deligne complex} (for $k\geq 1$) is the cochain complex of sheaves
+\begin{equation*}
+    \Z_{D,\infty}(k) = \underline{\Z} \hookrightarrow \Omega^0 \xrightarrow{d} \Omega^1 \to \cdots \to \Omega^{k-1}.
+\end{equation*}
+The \textbf{$k$th Deligne cohomology} is the $k$th sheaf (hyper)cohomology group
+of the $k$th Deligne complex. This is a rather abstract definition, but we can always
+compute these groups by writing a \v Cech resolution of the complex, after choosing
+a fine enough open cover of our manifold $X$.\footnote{Recall that by Riemannian
+geometry we can always find a differentiably good open cover of $X$, i.e. one
+where the opens and all intersections are contractible.}
+
+Let's compute the simplest example. Consider $\Z_{D,\infty}(1)=\underline{\Z}\to\Omega^0$.
+We obtain a double complex coming from (applying global sections to) the \v Cech resolution:
+\begin{equation*}
+    \begin{tikzcd}
+        \check C^0(\Z) \rar\dar & \check C^0(\Omega^0)\dar \\
+        \check C^1(\Z) \rar\dar & \check C^1(\Omega^0)\dar \\
+        \check C^2(\Z) \rar\dar & \check C^2(\Omega^0)\dar \\
+        \vdots & \vdots
+    \end{tikzcd}
+\end{equation*}
+The first sheaf cohomology can now be written as the first cochain cohomology of the
+associated total complex. If we denote the horizontal differential by $d$ and the vertical
+differential by $\delta$, the differential in the total complex is given
+\begin{equation*}
+    D = d + (-1)^p\delta
+\end{equation*}
+where $p$ is the horizontal degree. In particular we compute the cohomology at
+\begin{equation*}
+    \check C^0(\Z) \to \check C^0(\Omega^0) \oplus \check C^1(\Z) \to \check C^1(\Omega^0)\oplus \check C^2(\Z)
+\end{equation*}
+Notice that the second map sends
+\begin{equation*}
+    (f_\alpha, n_{\alpha\beta})\mapsto(f_\alpha-f_\beta + n_{\alpha\beta},n_{\beta\gamma}-n_{\alpha\gamma}+n_{\alpha\beta}).
+\end{equation*}
+Hence the kernel consists of the data of real-valued functions on $U_\alpha$ that
+glue up to an integer, with the integer satisfying the expected cocycle condition.
+This data patches together to yield a smooth map $X\to U(1)$.
+On the other hand, the image of the first map is the data of a locally constant
+integral-valued function on each $U_\alpha$ together with, on overlaps, the
+data of the difference in these integers. According to the interpretation as
+a map to $U(1)$ these yield the trivial map $X\to U(1)$ sending $x\mapsto 1$
+for all $x\in X$. We conclude that
+\begin{equation*}
+    H^1(X; \Z_{D,\infty}(1)) \cong C^\infty(X, U(1)).
+\end{equation*}
 
 
+Let's next try to recover line bundles with connection. We have the complex of sheaves
+\begin{equation*}
+    \Z_{D,\infty}(2) = \underline{\Z}\to \Omega^0\to \Omega^1.
+\end{equation*}
+Again using a \v Cech resolution, we have
+\begin{equation*}
+    \begin{tikzcd}
+        \check C^0(\Z) \rar\dar & \check C^0(\Omega^0)\dar\rar & \check C^0(\Omega^1)\dar\\
+        \check C^1(\Z) \rar\dar & \check C^1(\Omega^0)\dar\rar & \check C^1(\Omega^1)\dar\\
+        \check C^2(\Z) \rar\dar & \check C^2(\Omega^0)\dar\rar & \check C^2(\Omega^1)\dar\\
+        \check C^3(\Z) \rar\dar & \check C^3(\Omega^0)\dar\rar & \check C^3(\Omega^1)\dar\\
+        \vdots & \vdots & \vdots
+    \end{tikzcd}
+\end{equation*}
+We are interested in the cohomology of the total complex at:
+\begin{equation*}
+    \check C^0(\Omega^0)\oplus \check C^1(\Z) \to \check C^0(\Omega^1)\oplus \check C^1(\Omega^0)
+    \oplus \check C^2(\Z) \to \check C^1(\Omega^1) \oplus \check C^2(\Omega^0)\oplus \check C^3(\Z).
+\end{equation*}
+The second map is given
+\begin{equation*}
+    (A_\alpha, f_{\alpha\beta}, n_{\alpha\beta\gamma}) \mapsto (A_\beta-A_\alpha + df_{\alpha\beta},
+    -f_{\beta\gamma} + f_{\alpha\gamma} - f_{\alpha\beta} + n_{\alpha\beta\gamma}, \delta n).
+\end{equation*}
+Let's look first at the second component. The requirement that the second component vanish
+allows us to construct a line bundle $L\to X$ with transition functions given
+$\exp(2\pi i f_{\alpha\beta}):U_\alpha\cap U_\beta\to U(1)$. We now use the one-forms $A_\alpha$
+to construct a connection on this line bundle. Fix trivializing sections $s_\alpha$ on $U_\alpha$.
+By construction we have that
+\begin{equation*}
+    s_\alpha = e^{2\pi i f_{\alpha\beta}} s_\beta.
+\end{equation*}
+Define, on $U_\alpha$ the connection $\nabla_\alpha = d + 2\pi i A_\alpha$. These connections
+glue to a connection on $L$: \marginnote{Fix the sign.}
+\begin{align*}
+    \nabla_\alpha s_\alpha &= (d+2\pi iA_\alpha)(e^{2\pi i f_{\alpha\beta}}s_\beta) = 2\pi idf_{\alpha\beta}e^{2\pi if_{\alpha\beta}}s_\beta
+    + 2\pi iA_\alpha s_\beta \\
+    &= 2\pi iA_\beta e^{2\pi i f_{\alpha\beta}}s_\beta = e^{2\pi if_{\alpha\beta}}\nabla_\beta s_\beta,
+\end{align*}
+as desired. Here we have used that $A_\beta-A_\alpha+df_{\alpha\beta}=0$. To conclude that degree
+two Deligne cohomology computes isomorphism classes of complex line bundles with connection it
+remains to check that the image of the first map yields trivial bundles equipped with trivial
+connection. The map sends
+\begin{equation*}
+    (f_\alpha, n_{\alpha\beta}) \mapsto (df_\alpha, f_\alpha-f_\beta+n_{\alpha\beta}, n_{\beta\gamma} - n_{\alpha\gamma} + n_{\alpha,\beta}).
+\end{equation*}
+The transition functions induced by this data are of the form $\exp(2\pi i(f_\alpha-f_\beta))$.
+Choosing trivializations $s_\alpha$ on $U_\alpha$ we obtain a global trivialization given
+on $U_\alpha$ by $e^{2\pi i f_\alpha}s_\alpha$ because \marginnote{There's a sign issue here\ldots}
+\begin{equation*}
+    e^{2\pi i f_\alpha}s_\alpha = e^{2\pi i f_\alpha} e^{2\pi i(f_\beta-f_\alpha)} s_\beta = e^{2\pi i f_\beta}s_\beta.
+\end{equation*}
+Moreover the connection defined as above, $\nabla_\alpha = d+2\pi idf_\alpha$, is trivial
+on these sections: \marginnote{Another sign wrong\ldots}
+\begin{equation*}
+    \nabla_\alpha(e^{2\pi if_\alpha}s_\alpha) = 0. %2 \cdot 2\pi i df_\alpha e^{2\pi if_\alpha}s_\alpha.
+\end{equation*}
+Thus we conclude that \marginnote{What's up with the hermitian metric?}
+\begin{equation*}
+    H^2(X;\Z_{D,\infty}(2)) \cong \{\text{line bundles with connection}\}/\sim.
+\end{equation*}
 
+These computations show that Deligne cohomology is superior to the Cheeger-Simons
+model for differential cohomology when it comes to explicit local expressions.
+It is moreover easier to understand the product structure on Deligne cohomology
+than on differential characters, though we will not discuss this here. We are
+of course assuming that these two models yield isomorphic cohomology.
+
+\begin{theorem}
+    The Cheeger-Simons differential character groups are naturally isomorphic to
+    the Deligne cohomology groups
+    \begin{equation*}
+        \hat H^k(X;\Z) \cong H^k(X;\Z_{D,\infty}(k)).
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    I don't know a quick proof of this fact. Here's one possible approach:
+    rewrite Cheeger-Simons cohomology as the cochain cohomology of the
+    Hopkins-Singer cochains. These cochains are defined via a homotopy pullback
+    square of cochain complexes. We should be able to think of these as
+    presheaves on the category of manifolds. Similarly I think we can write
+    the Deligne complex as a homotopy pullback of certain presheaves on the
+    category of manifolds. The spans in these two diagrams are pretty much
+    obviously ``equivalent'' (though one needs to work out how to compare
+    sheaf hypercohomology to cochain cohomology) which, together with the
+    homotopy invariance of homotopy pullbacks yields the result. 
+
+    There are various proofs of this theorem in the literature, though I've
+    been too lazy to actually read through them.
+\end{proof}
+
+I quite like the Hopkins-Singer cochain model of differential cohomology, so
+before we start talking about gerbes, let's briefly see how it goes.
+The idea is to literally put singular cohomology and differential forms
+together via the following. Define the $k$th Hopkins-Singer cochain complex
+$\hat C^\bullet(k)(X)$ to be the homotopy pullback
+\begin{equation*}
+    \begin{tikzcd}
+        \hat C^\bullet(k)(X) \rar\dar & \sigma^{\geq k}\Omega^\bullet(X)\dar \\
+        C^\bullet(X;\Z) \rar & C^\bullet(X;\R)
+    \end{tikzcd}
+\end{equation*}
+Here $\sigma^{\geq k}\Omega^\bullet$ represents the ``stupid'' truncation
+\begin{equation*}
+    \sigma^{\geq k}\Omega^\bullet = 0\to\cdots\to0\to\Omega^k \to \Omega^{k+1}\to\cdots
+\end{equation*}
+and the map to real-valued smooth singular cochains $C^\bullet(X;\R)$ is given
+by integration of differential forms along smooth singular chains. Written out
+explicitly one finds that
+\begin{equation*}
+    \hat C(k)^\bullet(X) =
+    \begin{cases}
+        C^\bullet(X;\Z) \oplus C^{\bullet-1}(X;\R) \oplus \Omega^\bullet(X) & \bullet \geq k \\
+        C^\bullet(X;\Z) \oplus C^{\bullet-1}(X;\R) & \bullet < k.
+    \end{cases}
+\end{equation*}
+with differentials given
+\begin{align*}
+        d(c,h,\omega) &= (\delta c,\omega-c-\delta h, d\omega) \\
+        d(c,h) &=
+        \begin{cases}
+            (\delta c,-c-\delta h,0) & (c,h)\in\hat C(k)^{k-1} \\
+            (\delta c, -c-\delta h) & \text{otherwise}.
+        \end{cases}
+\end{align*}
+We wish to construct an isomorphism
+\begin{equation*}
+    H^k(\hat C^\bullet(k)) \cong \hat H^k(X;\Z).
+\end{equation*}
+Notice that a $k$-cocycle in $\hat C^\bullet(k)$ is $(c,h,\omega)$ where
+\begin{equation*}
+    c\in C^k(X;\Z) \quad h\in C^{k-1}(X;\Z) \quad \omega\in\Omega^k(X)
+\end{equation*}
+such that
+\begin{equation*}
+    \delta c = 0 \quad \delta h = \omega - c \quad d\omega = 0.
+\end{equation*}
+Given such a cocycle $(c,h,\omega)$, construct the pair $(\chi,\omega)$ by
+\begin{equation*}
+    \chi(z) = \exp\left( 2\pi ih(z) \right),
+\end{equation*}
+for $z\in Z_{k-1}(X;\Z)$, and taking $\omega$ as $\omega$. Notice that this
+is indeed a differential character---given $b\in B_k(X;\Z)$ we have
+\begin{equation*}
+    \chi(\partial b) = \exp\left(2\pi i\int_b\omega  + 2\pi i c(b)\right) = \exp\left( 2\pi i\int_b\omega \right)
+\end{equation*}
+since $c$ is integral. Hence $\omega$ is the curvature of $\chi$. Next
+notice that a coboundary $(\delta c, -c-\delta h,0)$ yields the trivial differential
+character
+\begin{equation*}
+    \chi(z)=\exp(-2\pi ic(z)-h(\partial z)) = 1.
+\end{equation*}
+It is easy to see that the map is a homomorphism, so it remains to check
+that it is an isomorphism. \marginnote{Finish this check}
+
+Hopkins and Singer use this cochain model to \ldots \marginnote{to do what?}
+
+
+I claimed above that there is a product structure on differential cohomology.
+It is not so easy to write down the product in the Hopkins-Singer model, for
+instance. We would like the product on $\hat C(k)$ to be induced by the product
+structures in the homotopy pullback square. Unfortunately, the square is not
+a diagram of algebras as the integration map from differential forms to singular
+cochains need not preserve products:
+\begin{equation*}
+    \int_-\omega\smile \int_-\eta \neq \int_-\omega\wedge\eta.
+\end{equation*}
+Here's a fun little example: let our manifold be $\R^2$ and take a zero-form
+$f\in\C^\infty(\R^2)$ and the one-form $dx\in\Omega^1(\R^2)$. Evaluate
+the left and the right-hand sides in the equation above on the standard
+one-simplex embedded in $\R^2$.
+By definition of the cup product, the left becomes
+$f(0,1)\int_{\Delta^1}dx=\pm f(0,1)$ whereas the right is $\int_{\Delta^1}f(x,y)dx$.
+\marginnote{I'm not sure about the orientation of the simplex here.}
+Choosing $f$ appropriately we see that these quantities are different.
+
+The product can still be written down, by writing down a homotopy between
+the cup and wedge products, but we will instead focus on the Deligne model,
+following Brylinski. There is a rather straightforward (if somewhat mysterious)
+multiplicative structure on the Deligne complexes:
+\begin{equation*}
+    \smile : \Z_{D,\infty}(k) \otimes \Z_{D,\infty}(\ell) \to \Z_{D,\infty}(k+\ell)
+\end{equation*}
+given by (over an open set)
+\begin{equation*}
+    x\smile y =
+    \begin{cases}
+        x\cdot y & \deg  x = 0 \\
+        x\wedge dy & \deg x>0,\deg y=\ell \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation*}
+There is the slight complication that the tensor product of sheaves need not
+be a sheaf, but we can define the above map as a map of presheaves and since
+the target is a sheaf we obtain an induce a map of sheaves by the universal
+property of sheafification. \marginnote{Does this matter?}
+
+It is a somewhat tedious exercise to check that the cup product is a map
+of complexes, i.e. that it satisfies the (graded) Leibniz rule. Moreover it
+is associative as well as commutative up to homotopy.\marginnote{Check this.}
+This product yields a (graded) commutative product on Deligne cohomology \marginnote{How does this work, abstractly?}
+but it will be instructive, as usual, to write down explicit \v Cech formulas.
+Recall that we can compute $k$th Deligne cohomology as the $k$th cohomology
+of the total complex of a double complex which is a \v Cech resolution of
+the $k$th Deligne complex. In particular we are interested in the cohomology
+at
+\begin{equation*}
+    \cdots \to \bigoplus_{i+j=k-1} \check C^i(\mathcal{U}; \Z_{D,\infty}(k)^j) \to
+    \bigoplus_{i+j=k}\check C^i(\mathcal{U}; \Z_{D,\infty}(k)^j) \to
+    \bigoplus_{i+j=k+1}\check C^i(\mathcal{U}; \Z_{D,\infty}(k)^j) \to \cdots
+\end{equation*}
+where the differentials are the usual combination of the de Rham and \v Cech differentials.
+We obtain a map
+\begin{equation*}
+    \left(\bigoplus_{i+j=k}\check C^i(\mathcal{U};\Z_{D,\infty}(k)^j)\right)\otimes
+    \left( \bigoplus_{i+j=\ell}\check C^i(\mathcal{U};\Z_{D,\infty}(\ell)^j) \right) \to
+    \bigoplus_{i+j+k+\ell}\check C^i(\mathcal{U};\Z_{D,\infty}(k+\ell)^j)
+\end{equation*}
+using (components of) the cup product defined above together with the \v Cech cup
+product. One has to check that the product of cocycles is again a cocycle and that
+multiplying against coboundaries yields coboundaries.
+
+For simplicity and concreteness let us just check this for the case where
+we multiply two degree-one cocycles. Geometrically this will correspond to
+constructing a line bundle (up to isomorphism) from two smooth $U(1)$-valued functions.
+Recall that
+\begin{equation*}
+    \Z_{D,\infty}(1) = \Z \hookrightarrow \Omega^0, \qquad \Z_{D,\infty}(2) = \Z\hookrightarrow \Omega^0 \to \Omega^1.
+\end{equation*}
+Thus we wish to write down explicitly the multiplication map
+\begin{equation*}
+    \left(\check C^0(\mathcal{U};\Omega^0) \oplus \check C^1(\mathcal{U};\Z)\right)^{\otimes 2} \xrightarrow{\smile}
+    \check C^0(\mathcal{U};\Omega^1) \oplus \check C^1(\mathcal{U};\Omega^0) \oplus \check C^2(\mathcal{U};\Z)
+\end{equation*}
+induced by the cup product $\smile$ defined above. Consider an element $(f,n)\otimes(g,m)$
+on the left. Expanding the tensor product we first have a map
+\begin{equation*}
+    \check C^0(\mathcal{U};\Omega^0) \otimes\check C^0(\mathcal{U};\Omega^0) \to \check C^0(\Omega^1)
+\end{equation*}
+which sends $f\otimes g$ to the \v Cech zero-cochain
+\begin{equation*}
+    (f\smile g)_\alpha = f_\alpha \smile g_\alpha = f_\alpha dg_\alpha.
+\end{equation*}
+by the definition of the product above. Next we have a map
+\begin{equation*}
+    \check C^0(\mathcal{U};\Omega^0) \otimes \check C^1(\mathcal{U};\Z) \oplus
+    \check C^1(\mathcal{U};\Z)\otimes \check C^0(\mathcal{U};\Omega^0) \to
+    \check C^1(\mathcal{U};\Omega^0)
+\end{equation*}
+sending $n\otimes g+f\otimes m$ to the \v Cech one-cochain
+\begin{align*}
+    (n\smile g)_{\alpha\beta} &= n_{\alpha\beta}g_\beta \\
+    (f\smile m)_{\alpha\beta} &= 0.
+\end{align*}
+Finally we have a map
+\begin{equation*}
+    \check C^1(\mathcal{U};\Z)\otimes \check C^1(\mathcal{U};\Z) \to \check C^2(\mathcal{U}; \Z)
+\end{equation*}
+given by sending $n\otimes m$ to the \v Cech two-cochain
+\begin{equation*}
+    (n\smile m)_{\alpha\beta\gamma} = n_{\alpha\beta}m_{\beta\gamma}.
+\end{equation*}
+These are the explicit formulas for the product of two Deligne one-cochains.
+Let us check that the product of cocycles is a cocycle. Recall that for
+$(f,n)$ and $(g,m)$ to be cocycles we require that
+\begin{align*}
+    f_\alpha-f_\beta + n_{\alpha\beta} &= 0, \qquad n_{\beta\gamma}-n_{\alpha\gamma}+n_{\alpha\beta}=0 \\
+    g_\alpha-g_\beta + m_{\alpha\beta} &= 0, \qquad m_{\beta\gamma}-m_{\alpha\gamma}+m_{\alpha\beta}=0.
+\end{align*}
+We wish to check that applying the total complex differential to
+$f\smile g + n\smile g + n\smile m$ yields zero. Using the formulas
+for this differential derived above (when computed degree two Deligne cohomology)
+we find that we must have
+\begin{align*}
+    0 &= f_\beta dg_\beta - f_\alpha dg_\alpha  {\color{red} + } n_{\alpha\beta}dg_\beta \\
+    0 &= -n_{\beta\gamma}g_\gamma + n_{\alpha\gamma}g_\gamma - n_{\alpha\beta}g_\beta {\color{red} + } n_{\alpha\beta}m_{\beta\gamma} \\
+    0 &= n_{\beta\gamma}m_{\gamma\delta} - n_{\alpha\gamma}m_{\gamma\delta} + n_{\alpha\beta}m_{\beta\delta} - n_{\alpha\beta}m_{\beta\gamma}.
+\end{align*}
+It is easy to check that these follow from the cocycle conditions for $(f,n)$ and
+$(g,m)$ above. \marginnote{There are some sign errors! Perhaps in the earlier formulas.}
+Finally let us check that the product of a coboundary and a cocycle is a coboundary.
+If $(f,n)$ is a coboundary this means there exists a \v Cech zero-cycle with coefficients
+in the constant sheaf $\Z$, denote it by $a$, such that
+\begin{equation*}
+    f_\alpha = a_\alpha \qquad n_{\alpha\beta} = a_\beta-a_\alpha.
+\end{equation*}
+We thus obtain, using that $(g,m)$ is a cocycle,
+\begin{align*}
+    (f\smile g)_\alpha &= f_\alpha dg_\alpha = a_\alpha dg_\alpha \\
+    (n\smile g)_{\alpha\beta} &= a_\beta g_\beta-a_\alpha g_\beta = a_\beta g_\beta - a_\alpha g_\alpha - a_\alpha m_{\alpha\beta} \\
+    (n\smile m)_{\alpha\beta\gamma} &= n_{\alpha\beta}m_{\beta\gamma} = a_\beta m_{\beta\gamma} - a_\alpha m_{\beta\gamma}.
+\end{align*}
+One checks (again using the formulas from the computation of degree two Deligne cohomology)
+that this defines a coboundary which is the total differential of $(-a_\alpha g_\alpha, -a_\alpha m_{\alpha\beta})$.
+\marginnote{Again, up to some pesky signs.}
+
+Recalling the interpretation of degree one and two Deligne cohomologies as smooth $U(1)$-valued
+functions and line bundles with connection up to isomorphism, we see that the product yields,
+for any two smooth $U(1)$-valued functions, a line bundle with connection. This line bundle
+can be described explicitly using the \v Cech description as above:
+the transition functions are given data $(f,n)$ and $(g,m)$ defining
+$U(1)$-functions, the line bundle has transition functions $n_{\alpha\beta}g_\beta:U_\alpha\cap U_\beta\to U(1)$
+and connection one-forms $2\pi i f_\alpha dg_\alpha$ on $U_\alpha$.
+
+Notice that the product gives us a systematic procedure for constructing higher degree
+classes in Deligne cohomology. The geometric interpretation of these classes is
+somewhat unclear, though. Indeed, for the rest of these notes we will focus only on
+degree three classes, which we will interpret as ``$U(1)$ gerbes with connection''.
+As a first feeble attempt, let's draw out the double complex as usual,
+for $\Z_{D,\infty}(3)=\Z\to\Omega^0\to\Omega^1\to\Omega^2$.
+\begin{equation*}
+    \begin{tikzcd}
+        \check C^0(\Z) \rar\dar & \check C^0(\Omega^0)\dar\rar & \check C^0(\Omega^1)\dar\rar & {\color{blue}\check C^0(\Omega^2)}\dar\\
+        \check C^1(\Z) \rar\dar & \check C^1(\Omega^0)\dar\rar & {\color{blue}\check C^1(\Omega^1)\dar\rar} & \check C^1(\Omega^2)\dar\\
+        \check C^2(\Z) \rar\dar & {\color{blue}\check C^2(\Omega^0)\dar\rar} & \check C^2(\Omega^1)\dar\rar & \check C^2(\Omega^2)\dar\\
+        {\color{blue}\check C^3(\Z) \rar\dar} & \check C^3(\Omega^0)\dar\rar & \check C^3(\Omega^1)\dar\rar & \check C^3(\Omega^2)\dar\\
+        \check C^4(\Z) \rar\dar & \check C^4(\Omega^0)\dar\rar & \check C^4(\Omega^1)\dar\rar & \check C^4(\Omega^2)\dar\\
+        \vdots & \vdots & \vdots & \vdots
+    \end{tikzcd}
+\end{equation*}
+We are interested in the cohomology of the total complex in degree 3, i.e. the kernel of
+\begin{equation*}
+    \check C^0(\Omega^2) \oplus \check C^1(\Omega^1) \oplus \check C^2(\Omega^0) \oplus \check C^3(\Z) \to
+    \check C^1(\Omega^2) \oplus \check C^2(\Omega^1) \oplus \check C^3(\Omega^0) \oplus \check C^4(\Z)
+\end{equation*}
+modulo the image of
+\begin{equation*}
+    \check C^0(\Omega^1) \oplus \check C^1(\Omega^0) \oplus \check C^2(\Z) \to
+    \check C^0(\Omega^2) \oplus \check C^1(\Omega^1) \oplus \check C^2(\Omega^0) \oplus \check C^3(\Z).
+\end{equation*}
+Let us examine the first map, which sends
+\begin{align*}
+    (B_\alpha, A_{\alpha\beta}, f_{\alpha\beta\gamma}, n_{\alpha\beta\gamma\varepsilon}) \mapsto &
+    (B_\alpha-B_\beta+dA_{\alpha\beta}, A_{\beta\gamma}-A_{\alpha\gamma}+A_{\alpha\beta}+df_{\alpha\beta\gamma},\\
+    &-(\delta f)_{\alpha\beta\gamma\varepsilon}+n_{\alpha\beta\gamma\varepsilon},(\delta n)_{\alpha\beta\gamma\varepsilon\zeta}).
+\end{align*}
+Unfortunately it is not immediately clear how to proceed without an a priori geometric
+notion in mind. Hence let us turn to the geometric definition of gerbes. 
+
+\begin{definition}
+    A bundle gerbe $\mathcal{G}$ with connective structure on $X$ is the following data:
+    \begin{enumerate}
+        \item a surjective submersion $U\to X$;
+        \item a line bundle $L\to U^{[2]}$, where $U^{[k]}$ is the $k$th fibered product
+            of $U$ with itself over $X$;
+        \item a connection $\nabla^L$ on $L$ with curvature $F\in\Omega^2(U^{[2]})$;
+        \item an isomorphism
+            \begin{equation*}
+                \mu : \pi_{01}^*L \otimes \pi_{12}^*L \xrightarrow{\sim} \pi_{02}^*L
+            \end{equation*}
+            of line bundles with connection over $U^{[3]}$ satisfying an ``associativity''
+            coherence condition
+            \begin{equation*}
+                \begin{tikzcd}
+                    \pi_{01}^*L \otimes \pi_{12}^*L \otimes \pi_{23}^*L \rar{\pi_{012}^*\mu\otimes\id}\dar{\id \otimes \pi_{123}^*\mu}
+                    & \pi_{02}^*L \otimes \pi_{23}^*L\dar{\pi_{023}^*\mu} \\
+                    \pi_{01}^*L \otimes \pi_{13}^*L \rar{\pi_{013}^*\mu} & \pi_{03}^*L
+                \end{tikzcd}
+            \end{equation*}
+            over $U^{[4]}$;
+        \item a two-form $B\in\Omega^2(U)$ called the curving such that $\pi_0^*B - \pi_1^*B=F$.
+    \end{enumerate}
+\end{definition}
+
+
+This is a lot of data to keep track of, so let's look at some examples. The first is the trivial bundle gerbe.
+\begin{example}[Trivial bundle gerbe]
+    Recall that given a 1-form on $X$ we can construct a topologically trivial line bundle
+    with connection. Now suppose we are given a 2-form $B$ on $X$. Define a bundle gerbe by
+    taking the surjective submersion to be $\id: X\to X$ and the line bundle over $X^{[2]}=X$
+    to be the trivial line bundle $X\times\C\to X$ with trivial connection. The isomorphism
+    $\mu$ is just the identity map between trivial bundles, which of course satisfies the
+    associativity condition. Since $\pi_0=\pi_1$ the condition on $B$, $\pi_0^*B-\pi_1^*B=0$
+    is trivially satisfied.
+\end{example}
+One might say that a bundle gerbe is trivializable if it is isomorphic to a trivial bundle.
+However, morphisms of bundle gerbes are somewhat subtle (in fact, bundle gerbes naturally
+form a 2-category), so we'll refrain from discussing maps for now.
+
+Before we explore more examples, let's sketch why this definition of gerbe matches
+up with the Deligne description above. Given a sufficiently fine open cover of $X$ and a
+Deligne 3-cocycle, i.e. the data of
+$(B_\alpha,A_{\alpha\beta},f_{\alpha\beta\gamma},n_{\alpha\beta\gamma\varepsilon})$
+in the kernel of the map above, let us construct a bundle gerbe with connective
+structure. Denote by $\{U_\alpha\}$ the given open cover and let
+$U=\coprod_\alpha U_\alpha$ with the obvious surjective submersion to $X$.
+Define $L\to U^{[2]}$ to be the trivial line bundle with connection $2\pi i A_{\alpha\beta}$
+over $U_{\alpha\beta}=U_\alpha\cap U_\beta$. Then $-2\pi iB_\alpha\in\Omega^2(U_\alpha)$
+is the curving of the gerbe, as the curvature of $L$ over $U_{\alpha\beta}$ is
+$2\pi idA_{\alpha\beta}$ and the cocycle condition requires that the difference
+in curvings over double overlaps is precisely the curvature of $L$ over that overlap.
+
+Next we require an isomorphism of line bundles with connection
+\begin{equation*}
+    L_{\alpha\beta}\otimes L_{\alpha\gamma}^{-1}\otimes L_{\beta\gamma} \xrightarrow{\mu} U_{\alpha\beta\gamma}\times \C
+\end{equation*}
+over $U_{\alpha\beta\gamma}$ for any $\alpha,\beta,\gamma$. We use
+$f_{\alpha\beta\gamma}\in\Omega^0(U_{\alpha\beta\gamma})$: in particular
+the triple tensor product on the left is trivial (since $L$ is), whence we can
+define $\mu$ as multiplication by $\exp(2\pi if_{\alpha\beta\gamma}):U_{\alpha\beta\gamma}\to U(1)$. 
+It remains to check that $\mu$ is compatible with the connections. Take sections
+$s_{\alpha\beta}, s_{\alpha\gamma}, s_{\beta\gamma}$ of the line bundles on the right
+and denote by $t_{\alpha\beta\gamma}$ the section of $U_{\alpha\beta\gamma}\times\C$
+that is the image under $\mu$:
+\begin{equation*}
+    t_{\alpha\beta\gamma} = e^{2\pi i f_{\alpha\beta\gamma}} s_{\alpha\beta} \otimes s_{\alpha\gamma}^{-1} \otimes s_{\beta\gamma}.
+\end{equation*}
+Then for $\mu$ to be compatible with the connections we must have that
+\begin{equation*}
+    0=\nabla (e^{2\pi i f_{\alpha\beta\gamma}} s_{\alpha\beta} \otimes s_{\alpha\gamma}^{-1} \otimes s_{\beta\gamma})
+\end{equation*}
+since the connection on the trivial bundle is trivial. Differentiating, we find
+\begin{equation*}
+    2\pi i e^{2\pi i f_{\alpha\beta\gamma}} df_{\alpha\beta\gamma} s_{\alpha\beta} \otimes s_{\alpha\gamma}^{-1} \otimes s_{\beta\gamma}
+    + 2\pi ie^{2\pi if_{\alpha\beta\gamma}}(A_{\alpha\beta}-A_{\alpha\gamma}+A_{\beta\gamma}) s_{\alpha\beta} \otimes s_{\alpha\gamma}^{-1} \otimes s_{\beta\gamma}
+    =0,
+\end{equation*}
+which is exactly the cocycle condition on $A_{\alpha\beta}$.
+Finally, the ``associativity'' of the isomorphism $\mu$ on $U^{[4]}$ follows from the
+cocycle condition on $f_{\alpha\beta\gamma}$.
+
+We omit the verification of the converse: that a bundle gerbe with connective
+structure determines a Deligne 3-cocycle. We also will refrain for now from discussing
+isomorphism classes of bundle gerbes.
+
+\begin{example}[Basic gerbe]
+    Let $G$ be a compact, simple, simply-connected Lie group. There is a gerbe on
+    $G$ with curvature 3-form naturally built from the Maurer-Cartan form $\theta$
+    and the (appropriately normalized) invariant bilinear form $\langle-.-\rangle$
+    on the Lie algebra $\fr g$ of $G$. Recall that the Maurer-Cartan form
+    $\theta\in \Omega^1(G;\fr g)$ is the left-invariant $\fr g$-valued one-form on
+    $G$ defined at the identity $T_eG$ as eating a tangent vector and returning it
+    as an element of the Lie algebra. Define, now,
+    \begin{equation*}
+        \eta = \lambda_G \langle \theta, [\theta\wedge \theta] \rangle \in \Omega^3(G).
+    \end{equation*}
+    Here $[\theta\wedge\theta]$ is a combination of the wedge product of forms and
+    the commutator of Lie algebra elements and $\lambda\in\R$ is a constant chosen such
+    that $\eta$ defines an integral cohomology class (notice that this constant will
+    depend on our normalization of bilinear form) $[\eta]\in H^3(G;\Z)\cong\Z$
+    and is the (positive) generator.
+
+    The basic gerbe has many different constructions, some of them related to the lifting
+    gerbe we will discuss later. There is a relatively explicit construction for the case
+    of $SU(d+1)$ due to Gawedzki and Ries that was later generalized to $G$ as above by Meinrenken.
+    We will follow the exposition of Waldorf and Schweigert.
+
+    To form a surjective submersion (in fact an open cover) over $G$ we use the fact that
+    the fundamental alcove $\mathcal{A}$ in $\fr g$ (or equivalently $\fr g^\vee$) is
+    in bijection with the conjugacy classes of $G$. Write $q:G\to \mathcal{A}$ for the
+    quotient map. Writing $\mu_0,\ldots, \mu_d$ for the vertices of $\mathcal{A}$ with
+    $\mu_0=0$, define $V_j=q^{-1}(\mathcal{A}_j)$ where $\mathcal{A}_j$ is the open star
+    at $\mu_j$. The $V_j$ yield an open cover of $G$. To construct line bundles on
+    each $V_j$, 
+    \marginnote{finish}
+\end{example}
+
+
+\begin{example}[Lott's index gerbe]
+    Given a smooth family of (generalized) Dirac operators $\sf D$ on a family of $\Z/2\Z$-graded
+    complex vector bundles
+    over a family of even-dimensional closed manifolds $\mathcal{E}\to M\to B$ one obtains a complex
+    line bundle with Hermitian metric on the parameter space $B$, denoted
+    \begin{equation*}
+        \det(\sf D, \pi_*\mathcal{E}) \to B,
+    \end{equation*}
+    known as the determinant line bundle of the family (constructed originally by Quillen).
+    The name comes from the case when $\ind D=0$, for which there is a section of this line
+    bundle which can be interpreted as the determinant of the family $\sf D$. There is
+    moreover a connection compatible with the Hermitian metric on the determinant line bundle,
+    due to Bismut and Freed. The curvature of this connection happens to be the degree
+    2 component of an inhomogeneous form appearing in the transgression formula for the
+    local Atiyah-Singer family index theorem (due to Bismut).
+    It is thus natural to ask whether the higher degree terms also correspond to geometric
+    objects on $B$.
+
+    Lott, in a 2001 paper, given similar data as above in the odd-dimensional case
+    constructs a bundle gerbe with connective structure over $B$. Whereas the Bismut-Freed
+    connection one-form arises naturally from the determinant, here the relevant
+    quantity will be the eta invariant.
+    I am not very familiar
+    with the relevant odd-dimensional index theory so I will just give a rough outline
+    of the construction. We begin with the geometric setup.
+    Let the fibers of $\pi:M\to B$ be closed odd-dimensional (oriented) manifolds.
+    Suppose we have a spin structure on the vertical tangent bundle and let $\mathcal{E}$
+    be a complex vector bundle (with metric and compatible connection) over $M$ which is 
+    a twist of the spinor bundle by an auxilliary complex vector bundle (with metric and
+    connection). This data yields a smooth family of (generalized) Dirac operators that
+    we will denote $(\sf D_0)_{b \in B}$. \marginnote{We're in odd dimensions\ldots what is this?}
+    Define $\pi_*\mathcal{E}$ to be the infinite-rank vector bundle over $B$ whose fiber
+    at $b\in B$ is the space of smooth sections $\Gamma(M_b, \mathcal{E}|_{M_b})$.
+    If we choose a connection (horizontal distribution) on $M\to B$ we obtain a
+    connection on $\pi_*\mathcal{E}$.
+
+    To define the index gerbe we take our surjective submersion $U\to B$ an open cover of $B$.
+    This open cover is chosen such that $\sf D_0$ can be deformed slightly
+    \begin{equation*}
+        \d_\alpha = \d_0 + h_\alpha(\d_0)
+    \end{equation*}
+    via $h_\alpha\in C^\infty_c(\R)$ such that $D_\alpha$ is invertible over $U_\alpha$.
+    Taking $U=\sqcup_\alpha U_\alpha$, we now wish to provide line bundles with connection
+    on nonempty double overlaps $U_{\alpha\beta}$. To do this we notice that the
+    (pseudo)differential operator
+    \begin{equation*}
+        \frac{\d_\beta}{|\d_\beta|} - \frac{\d_\alpha}{|\d_\alpha|}
+    \end{equation*}
+    has, over any point $b\in B$, only 0 and $\pm 2$ as its eigenvalues. Write $\mathsf{pr}_{\pm}$
+    for the projections to the $\pm 2$ eigenspaces of $\pi_*\mathcal{E}$. It turns
+    out that the images of these projections are finite-rank vector bundles over $U_{\alpha\beta}$.
+    We can thus define the complex line bundle over $U_{\alpha\beta}$
+    \begin{equation*}
+        L_{\alpha\beta} = \Lambda^\text{top}(\mathsf{pr}_+\pi_*\mathcal{E}) \otimes \Lambda^\text{top}(\mathsf{pr}_-\pi_*\mathcal{E})^{-1}.
+    \end{equation*}
+    This line bundle inherits a connection from the connection on $\pi_*\mathcal{E}$ (first
+    induce a connection on the projection as $\mathsf{pr}\circ \nabla\circ \mathsf{pr}$ and
+    then take appropriate exterior powers). It remains to construct the isomorphism $\mu$,
+    which is equivalent to giving a trivialization of
+    $L_{\beta\gamma}\otimes L_{\alpha\gamma}^{-1}\otimes L_{\alpha\beta}$ over $U_{\alpha\beta\gamma}$.
+    There is an obvious such trivialization arising from the following observation.
+    Over the open $U_{\alpha\beta\gamma}$ we have
+    \begin{equation*}
+        \mathsf{pr}_{+} = \mathsf{pr}_{\alpha=-,\beta=+} = \mathsf{pr}_{\alpha=-,\beta=+,\gamma=+}
+        \oplus \mathsf{pr}_{\alpha=-,\beta=+,\gamma=-}.
+    \end{equation*}
+    In other words, the eigenspace on which $\d_\beta/|\d_\beta|$ acts as $+1$ and
+    $\d_\alpha/|\d_\alpha|$ acts as $-1$ splits into a direct sum of spaces where 
+    additionally $\d_\gamma/|\d_\gamma|$ acts as $\pm 1$. This yields a decomposition
+    \begin{equation*}
+        L_{\alpha\beta} \cong \Lambda^\text{top}H_{-++}\otimes\Lambda^\text{top}(H_{-+-})
+        \otimes\Lambda^\text{top}(H_{+-+})^{-1} \otimes \Lambda^\text{top}(H_{+--})^{-1}
+    \end{equation*}
+    where $H_{\alpha\beta\gamma}$ is the eigenspace on which the operators act 
+    by multiplication according to the given sign. A similar decomposition holds for
+    $L_{\beta\gamma}$ and $L_{\alpha\gamma}$, from which it is easy to see that the triple
+    required triple tensor product is canonically trivial. Moreover one can check the
+    associativity condition required on quadruple overlaps.
+    
+    To complete the construction of the index gerbe it remains to specify 2-forms
+    $B_\alpha$ over each $U_\alpha$ such that the difference $B_\beta-B_\alpha$ on
+    $U_{\alpha\beta}$ is equal to the curvature of the connection on $L_{\alpha\beta}$.
+    This is where the eta invariant appears explicitly. Introduce a formal odd variable
+    $\sigma$ and define the rescaled Bismut superconnection
+    \begin{equation*}
+        \A_{\alpha,s} = s\sigma \d + \nabla^{\pi_*\mathcal{E}} + \frac{1}{4s} \sigma c(T)
+    \end{equation*}
+    on $\pi_*\mathcal{E}$ restricted to $U_\alpha$. Here $c(T)$ is Clifford multiplication
+    by the curvature of the connection on $M\to B$. If we write $\tr_\sigma$ for the
+    operator that projects onto coefficients of $\sigma$ and then takes the trace,
+    one can use methods from the proof of the local family index theorem to show that
+    \begin{equation*}
+        \tr_\sigma\left( \frac{d\A_{\alpha,s}}{ds}e^{-\A^2_{\alpha,s}} \right)
+    \end{equation*}
+    has a nice enough asymptotic expansion for $s\to 0$ such that it makes sense to define
+    \begin{equation*}
+        \tilde \eta_\alpha = \text{f.p.}_{t\to 0}\int_t^\infty\tr_{\sigma}\left( \frac{d\A_{\alpha,s}}{ds}e^{-\A^2_{\alpha,s}} \right) ds
+    \end{equation*}
+    an even-degree inhomogeneous differential form on $U_\alpha$. Here we are taking
+    a suitably defined finite part of an otherwise overall divergent quantity (what
+    BGV call a renormalized limit). After some detailed computations, one find that
+    (up to some slightly finicky normalizations)
+    \begin{equation*}
+        (\tilde \eta_\beta - \tilde \eta_\alpha)_{[2]} = F_{\alpha\beta},
+    \end{equation*}
+    where $F_{\alpha\beta}$ is the curvature of $L_{\alpha\beta}$ and $[2]$ represents
+    taking the two-form component. We conclude that the degree two components of the
+    eta-forms yield the curving for Lott's index gerbe, which completes the outline of the
+    construction (up to checking that the choices made in the construction are
+    immaterial). The curvature of this gerbe, by the index theorem, turns out be the
+    three-form component of the Chern character of the family index bundle.
+\end{example}
+
+The following example is more naturally defined as a principal bundle gerbe,
+so we will not go into as much detail, since we have been focusing on gerbes
+defined by line bundles.
+\begin{example}[Lifting bundle gerbe]
+    A certain class of degree 3 cohomology classes, and hence gerbes, arise naturally
+    as obstructions to lifting the structure
+    group of a principal bundle along a central extension. In particular let
+    \begin{equation*}
+        1\to U(1) \to \hat G \xrightarrow{t} G \to 1
+    \end{equation*}
+    be a central extension, i.e. $U(1)\subset Z(\hat G)$. Suppose we are given a
+    principal $G$-bundle $P\to X$. A lifting of structure group to $\hat G$ is the
+    data of a principal $\hat G$-bundle $\hat P\to X$ together with a bundle map
+    $\phi:\hat P\to P$ such that
+    \begin{equation*}
+        \phi(\hat p\cdot \hat g)=\phi(\hat p)\cdot t(\hat g).
+    \end{equation*}
+    The existence of a such a lift is given by a class in $H^2(X, U(1))$ as can be
+    checked via \v Cech methods. Fix a good open cover $\mathcal{U}$ and denote by
+    $g_{\alpha\beta}:U_{\alpha\beta}\to G$ the transition functions of $P$. As the opens
+    $U_{\alpha\beta}$ are contractible, the $g_{\alpha\beta}$ can be lifted (the
+    $U(1)$-bundle $\hat G\to G$ is trivial over $U_{\alpha\beta}$ so we need only choose
+    a section) to $\hat G$,
+    call them $\hat g_{\alpha\beta}:U_{\alpha\beta}\to\hat G$. Notice that although
+    $g_{\alpha\beta}$ satisfies the cocycle condition, the lift $\hat g_{\alpha\beta}$
+    need not. Define
+    \begin{equation*}
+        \varepsilon_{\alpha\beta\gamma} = \hat g_{\beta\gamma}\hat g_{\alpha\gamma}^{-1}\hat g_{\alpha\beta}
+    \end{equation*}
+    and note that $t(\varepsilon_{\alpha\beta\gamma})=1$ whence $\varepsilon_{\alpha\beta\gamma}$ is
+    a $U(1)$-valued 2-cochain. A simple computation reveals that
+    \begin{align*}
+        (\delta\varepsilon)_{\alpha\beta\gamma\delta} &= \varepsilon_{\beta\gamma\delta}\varepsilon_{\alpha\gamma\delta}^{-1}
+        \varepsilon_{\alpha\beta\delta}\varepsilon_{\alpha\beta\gamma}^{-1} \\
+        &= 1.
+    \end{align*}
+    whence $\varepsilon$ defines a \v Cech cocycle for a class in $H^2(X; \underline{U(1)})$.
+    Changing our choice of lifts $\hat g_{\alpha\beta}$ to $\hat g_{\alpha\beta}'$ is harmless,
+    as it changes this cocycle by a coboundary: we can write $\hat g_{\alpha\beta}'=\hat g_{\alpha\beta}h_{\alpha\beta}$
+    for $h_{\alpha\beta}:U_{\alpha\beta}\to U(1)$. Then, since $U(1)\subset Z(\hat G)$,
+    \begin{equation*}
+        \varepsilon_{\alpha\beta\gamma}' = \varepsilon_{\alpha\beta\gamma}h_{\beta\gamma}h^{-1}_{\alpha\gamma}h_{\alpha\beta}
+    \end{equation*}
+    which differs from $\varepsilon_{\alpha\beta\gamma}$ by the coboundary $\delta h$.
+    We conclude that the bundle $P$ lifts to $\hat P$ if $\varepsilon$ is trivial. Indeed,
+    it is easy to see that we may as well assume $\varepsilon=1$, whence the $\hat g_{\alpha\beta}$
+    define a principal $\hat G$-bundle constructed as a quotient of the disjoint union
+    $\coprod_\alpha U_\alpha\times \hat G$. The morphism $t:\hat G\to G$ yields a map
+    $\coprod_\alpha U_\alpha\times \hat G\to\coprod_\alpha U_\alpha\times G$ that descends
+    to quotients because $t(\hat g_{\alpha\beta})=g_{\alpha\beta}$.
+
+    Notice that from the short exact sequence of sheaves of abelian groups
+    \begin{equation*}
+        0\to \Z \hookrightarrow \Omega^0 \xrightarrow{\exp(2\pi i\cdot)} U(1) \to 0
+    \end{equation*}
+    (where $U(1)$ means the sheaf of $U(1)$-valued functions) and the fact that $\Omega^0$
+    is fine (admits partitions of unity) and thus has no higher cohomology, we deduce
+    that $H^2(X;U(1))\cong H^3(X;\Z)$. Let us construct a bundle gerbe corresponding to
+    the class $\varepsilon$ (really we will be constructing a principal bundle gerbe).
+    The surjective submersion is given by the map $\pi:P\to X$. To obtain a $U(1)$-bundle
+    $Q$ over $P^{[2]}$ we consider $\hat G\to G$ as a principal $U(1)$-bundle and pull it back
+    along the map $g:P^{[2]}\to G$ defined by
+    \begin{equation*}
+        p\cdot g(p,p')= p',
+    \end{equation*}
+    i.e. we have
+    \begin{equation*}
+        \begin{tikzcd}
+            Q \rar\dar &  \hat G\dar{t} \\
+            P^{[2]} \rar{g} & G
+        \end{tikzcd}
+    \end{equation*}
+    The isomorphism
+    \begin{equation*}
+        \mu: \pi_{01}^*Q\otimes \pi_{12}^*Q \xrightarrow{\sim} \pi_{02}^*Q
+    \end{equation*}
+    is the data of  \marginnote{Finish this}
+\end{example}
+
+The example above of Lott's index gerbe is not directly to anomaly theory
+(as this generally refers to the determinant or Pfaffian of an index-zero family of Dirac
+operators being a section of a nontrivial bundle). Gerbes do however make
+an appearance in the Hamiltonian approach to anomalies.
+\begin{example}[The Faddeev anomaly]
+    {\color{red} read about this!}
+\end{example}
+
+\begin{example}[Bunke's string anomaly]
+    {\color{red} read about this!}
+\end{example}
+
+applications: WZW, faddeev-mickelsson, string structures
+
+Next I want to discuss the important notion of transgression. This is the
+transfer of topological or geometric structures from a manifold $X$ to its
+free loop space $\mathcal{L}X$. For instance, one expects there to be some
+sort of correspondence between complex line bundles on $\mathcal{L}X$ and
+bundle gerbes on $X$. \marginnote{What about iterated free loop spaces?}
+More generally one would like to compare data related to the Whitehead tower
+of $O(n)$, e.g. relationships between spin structures on $X$ and
+orientations on $\mathcal{L}X$. Before we can do this however, it will be
+important to understand gerbes more categorically than we have been.
+
+\section{November 30, 2017}
+
+\subsection{Deligne cohomology and Cheeger-Simons differential characters}
+
+Let $X$ be a smooth manifold.
+We record here a short proof that the (smooth) Deligne cohomology groups,
+\begin{equation*}
+    H^k(X;\Z_{D,\infty}(k)),
+\end{equation*}
+defined as the hypercohomology of the cochain complex of sheaves
+\begin{equation*}
+    \Z_{D,\infty}(k)=\underline{\Z}\hookrightarrow\Omega^0\to\Omega^1\to\cdots\to \Omega^{k-1},
+\end{equation*}
+computes the Cheeger-Simons differential characters,
+\begin{equation*}
+    \hat H^k(X;\Z) := \left\{h\in Z_{k-1}(X; \Z)\to U(1) \mid \exists \omega\in\Omega^k(X), h\circ\delta=\exp(2\pi i\int\omega)\right\}.
+\end{equation*}
+The idea is to recognize both as (cohomologies of) homotopy pullbacks
+of weakly equivalent spans of certain presheaves on the category of
+opens of our manifold.
+
+Model categorical nonsense
+
+Deligne cohomology as a homotopy pullback
+
+Cheeger-Simons differential characters as Hopkins-Singer homotopy pullback
+
+Show that the spans are weakly equivalent
+
+Conclude that the cohomologies are isomorphic: this is the hard part. On
+one side we have sheaf hypercohomology, on the other we have cochain cohomology
+of global sections.
+
+\section{December 12, 2017}
+
+I've been having trouble understand Meinrenken's construction of the basic
+(equivariant) gerbe on a compact simple simply-connected Lie group $G$, so
+I thought I'd start with just trying to understand his construction in the
+case where $G=SU(2)$.
+
+\subsection{Background on $SU(2)$}
+Recall that $SU(2)$ is the matrix group of 2-by-2 complex-valued matrices $A$ such
+that $A^\dagger A = I = AA^\dagger$ and $\det A$. Here $A^\dagger$ is the conjugate
+transpose (Hermitian conjugate). A quick computation reveals that matrices in $SU(2)$
+are of the form
+\begin{equation*}
+    \begin{pmatrix}
+        \alpha & \beta \\
+        -\bar\beta & \bar \alpha
+    \end{pmatrix}
+\end{equation*}
+for $\alpha,\beta\in\C$ such that
+\begin{equation*}
+    \lVert \alpha\rVert^2 + \lVert \beta\rVert^2 = 1.
+\end{equation*}
+Thus, as a smooth manifold, $SU(2)$ is diffeomorphic to the 3-sphere $S^3$.
+Hence $SU(2)$ is compact (more generally one might use that it is closed
+and bounded in the affine space of 2-by-2 complex matrices). Moreover
+it is connected, as can be seen by the following. Any unitary matrix $A$ is
+diagonalizable (via say the spectral theorem for normal operators) and
+its eigenvalues are $e^{i\theta_1}, e^{i\theta_2}$. Hence we have
+\begin{equation*}
+    A = V^\dagger
+    \begin{pmatrix}
+        e^{i\theta_1} & \\ & e^{i\theta_2}
+    \end{pmatrix}
+    V,
+\end{equation*}
+but replacing $\theta_1$ and $\theta_2$ with $t\theta_1$ and $t\theta_2$ for
+$t\in[0,1]$ yields a path $A(t)$ in $SU(2)$ from $A$ to the identity. Hence
+$SU(2)$ is path-connected. That it is simply connected is clear from the fact
+that it is diffeomorphic to the sphere. Finally, recall we call a Lie group
+simple if it is connected and its Lie algebra is simple, i.e. is nonabelian
+with no nontrivial ideals. So let us turn to the Lie algebra $\fr{su}(2)$ of $SU(2)$.
+Examining a curve through the identity of $M_2(\C)$,
+\begin{equation*}
+    A(t) = I + tM
+\end{equation*}
+and differentiating the condition $A(t)^\dagger A(t) = I$ at $t=0$ we find that
+$M = -M^\dagger$. Similarly, differentiating the condition that $\det A(t)=1$
+(using the fact that the log of the determinant is the trace of the logarithm)
+we find that $\tr M=0$. In other words, $\fr{su}(2)$ is the space of 2-by-2 traceless,
+skew-Hermitian matrices, equipped with the usual commutator. In particular,
+any element can be written
+\begin{equation*}
+    \xi =
+    \begin{pmatrix}
+        ia & \beta \\ -\bar\beta & -ia
+    \end{pmatrix}
+\end{equation*}
+for $a\in\R$ and $\beta\in\C$. There is an obvious basis we can write for
+$\fr{su}(2)$ (as a real Lie algebra),
+\begin{equation*}
+    L_1 = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        i & \\ & -i
+    \end{pmatrix}
+    \qquad
+    L_2 = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+         & 1\\ -1&
+    \end{pmatrix}
+    \qquad
+    L_3 = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+         & i\\ -i&
+    \end{pmatrix}.
+\end{equation*}
+Computing commutators, one finds that
+\begin{equation*}
+    [L_1, L_2] = L_3 \qquad [L_3, L_1] = L_2 \qquad [L_2, L_3] = L_1
+\end{equation*}
+(here we see the rationale behind the normalization constants).
+We can see that $\fr{su}(2)$ is simple directly by noting that any proper
+ideal must be one- or two-dimensional. One shows easily that for dimensional
+reasons any such ideal $\fr h$ is solvable. The same argument applies for
+$\fr{su}(2)/\fr h$, which implies that $\fr{su}(2)$ must be solvable.
+Our computation of commutators, however, shows that
+$[\fr{su}(2),\fr{su}(2)] = \fr{su}(2)$, which would be a contradiction.
+Notice that one could show the weaker property of semisimplicity
+by writing out explicitly the Killing form, checking that it is nondegenerate,
+and applying Cartan's criterion. We conclude that $SU(2)$ is simple.
+
+\section{December 21, 2017}
+
+\subsection{2-categories}
+
+We've looked at a number of examples of bundle gerbes (with connective structure) but
+we haven't defined what a morphism of gerbes is. Indeed, as $U(1)$-functions
+form a set and line bundles form a category, we expect bundle gerbes to form a
+2-category. Waldorf defines notions of 1- and 2-morphisms of bundles gerbes 
+such that they form a strict 2-category.
+
+Let us first recall the
+notion of a strict 2-category. A strict 2-category $\mathcal{C}$ has objects as usual but the
+(1-)morphisms between two objects form a category instead of a set. The objects
+of this category are the morphisms between our original two objects and the morphisms
+are the 2-morphisms between 1-morphisms. Composition of 1-morphisms is accomplished
+by the data of a composition functor $\Hom(A,B)\times\Hom(B,C)\to \Hom(A,C)$ which
+we require to be strictly associative (as opposed to associative up to isomorphism).
+Given any object $A\in\mathcal{C}$ we have an identity map $\id_A\in\Hom(A,A)$ and
+for any 1-morphism $f:A\to B$ we have natural 2-isomorphisms
+\marginnote{I accidentally flipped $\rho,\lambda$ from Waldorf's notation}
+\begin{equation*}
+    \rho_f: f \circ \id_A \implies f \qquad \lambda_f: \id_B\circ f\implies f
+\end{equation*}
+such that given any triple $A\xrightarrow{f} B\xrightarrow{g} C$, we have an equality
+\begin{equation*}
+    \rho_g \circ \id_f = \id_g\circ\lambda_f
+\end{equation*}
+of natural transformations $g\circ \id_B\circ f \implies g \circ f$.
+Finally we require that these 2-isomorphisms are natural, i.e. for any 2-morphism
+$\beta:f\implies f'$ between 1-morphisms $f,f':A\to B$, we have the following
+commutative squares
+\begin{equation*}
+    \begin{tikzcd}
+        \id_B\circ f \ar[r, Rightarrow, "\lambda_f"]\ar[d, Rightarrow, swap, "\id_{\id_B}\circ\beta"] & f \ar[d, Rightarrow, "\beta"] \\
+        \id_B\circ f \ar[r, Rightarrow, "\lambda_{f'}"] & f'
+    \end{tikzcd}
+    \qquad
+    \begin{tikzcd}
+        f\circ\id_A \ar[r, Rightarrow, "\lambda_f"] \ar[d, Rightarrow, swap, "\beta\circ\id_{\id_A}"] & f \ar[d, Rightarrow, "\beta"] \\
+        f'\circ \id_A \ar[r, Rightarrow, "\lambda_g"] & f'
+    \end{tikzcd}
+\end{equation*}
+
+Strict 2-categories seem to be rather rare. The only example I can think of offhand
+is $\sf Cat$, the 2-category of categories, functors, and natural transformations.
+In this example the composition functor is indeed associative on the nose. The
+natural 2-isomorphisms $\rho_F$ and $\lambda_F$ associated to a functor $F:\mathcal{C}\to\mathcal{D}$
+are described as follows. First notice that $\rho_F:F\circ\id_\mathcal{C}\implies F$
+is the data of isomorphisms $\rho_F(c):F(c)\to F(c)$ for each $c\in C$ satisfying
+the usual naturality condition. We simply take $\rho_F(c) = \id_{F(c)}$. Similarly
+$\lambda_F:\id_\mathcal{D}\circ F\implies F$ is the data of isomorphisms
+$\lambda_F(c):F(c)\to F(c)$ and we again take $\lambda_f(c)=\id_{F(c)}$. Now if
+we have a composition $\mathcal{C}\xrightarrow{F}\mathcal{D}\xrightarrow{G}\mathcal{E}$,
+we see that for each $c\in \mathcal{C}$ we have
+\begin{equation*}
+    \rho_G(F(c)) = \id_{G(F(c))} = G(\id_{F(c)}) = G(\lambda_F(c)),
+\end{equation*}
+as required. The naturality conditions are easy to check, whence $\mathsf{Cat}$ forms a strict 2-category.
+
+Another natural 2-category is the fundamental 2-groupoid associated to a topological space $X$,
+consisting of points, continuous paths, and continuous homotopies. This category does not
+have an associative composition law: when composing three paths in the two different ways,
+one composition will travel the first path for $t\in[0,1/2]$ whereas the other will travel
+it for $t\in[0,1/4]$ (if we define composition to double the speed and concatenate). Notice,
+by the way, that all 2-morphisms are invertible, as homotopies can be traversed backwards in time.
+Moreover all 1-morphisms are invertible up to homotopy as the composition of a path
+with its backwards path is a contractible path.
+
+\section{December 23, 2017}
+
+\subsection{Morphisms between gerbes}
+
+Let's work through Waldorf's definition of morphisms of bundle gerbes. He
+remarks that all maps of vector bundles will be maps of hermitian vector bundles
+with connection. In other words, given a map $f:V\to W$ of vector bundles we must
+have $f^*\nabla^W=\nabla^V$ and $f^*h^W=h^V$. By the latter we mean that given
+$s_1,s_2\in\Gamma(M, V)$, we have an equality of functions $h^V(s_1,s_2)=h^W(f(s_1),f(s_2))$
+on $M$. Indeed, all gerbes will be assumed to be bundle gerbes with connective structure.
+
+Let $\mathcal{G}_1=(Y_1, L_1, C_1, \mu_1)$ and $\mathcal{G}_2=(Y_2, L_2, C_2, \mu_2)$
+be two bundle gerbes. A 1-morphism $(\zeta, A, \alpha):\mathcal{G}_1\to \mathcal{G}_2$
+consists of
+\begin{enumerate}
+    \item a surjective submersion $\zeta: Z\to Y_1\times_M Y_2$;
+    \item a rank $n$ vector bundle $A$ over $Z$;
+    \item an isomorphism
+        \begin{equation*}
+            \alpha : L_1\otimes \zeta_2*A \to \zeta_1^*A\otimes L_2
+        \end{equation*}
+        of vector bundles over $Z\times_MZ$
+\end{enumerate}
+such that the curvature $F^A$ of the vector bundle $A$ satisfies
+\begin{equation*}
+    \tr F^A = n(C_2-C_1)
+\end{equation*}
+and the isomorphism $\alpha$ is compatible with the isomorphisms $\mu_1$ and $\mu_2$
+in the sense that the diagram
+\marginnote{Insert diagram here.}
+commutes. Here we are implicitly pulling back the bundles $L_1, L_2$ to $Z\times_M Z$
+along the map $Z\times_MZ\to Y_1\times_M Y_2$ (using the map $\zeta$), and by $C_1,C_2$
+we similarly mean the pullback to $Z$.
+
+\section{December 26, 2017}
+
+\subsection{Bundle gerbes as Lie groupoids}
+
+Let $(Y,L,\mu)$ be a bundle gerbe (without connective structure) on $X$. The bundle
+gerbe determines a Lie groupoid $\mathcal{G}$ in the following manner. The objects
+are points $y\in Y$, and the set of morphisms between $y_1, y_2$ is empty if
+$\pi(y_1)\neq \pi(y_2)$ in $X$ and the vector space $L_{(y_1,y_2)}$ otherwise.
+Now let $z_1:y_1\to y_2$, $z_2:y_2\to y_3$ be two morphisms. The composition
+$z_2\circ z_1:y_1\to y_3$ is defined by the morphism $\mu$---recall that
+we have
+\begin{equation*}
+    \mu: \pi_{12}^*L \otimes \pi_{23}^*L \xrightarrow{\sim} \pi_{13}^*L
+\end{equation*}
+on $Y^{[3]}$ which induces a map $\mu_{(y_1,y_2,y_3)}:L_{(y_1,y_2)}\otimes L_{(y_2,y_3)}\to L_{(y_1,y_3)}$.
+Thus $z_1,z_2$ determine a morphism $z_3\in L_{(y_1,y_3)}$ which we define to be
+the composition of $z_1$ and $z_2$. Composition is associative by the associativity
+condition on $\mu$ (over $Y^{[4]}$). Finally we check that morphisms are invertible:
+given a map $z:y_1\to y_2$, maps $w:y_2\to y_1$ are in bijective correspondence
+via $\mu$ with maps $y_1\to y_1$. Hence there is a unique map $w:y_2\to y_1$
+such that $w\circ z = \id_{y_1}$ (and similarly for the other composition).
+According to nlab this allows us to think of a bundle gerbe as the total space
+of a (bundle associated to) a $BU(1)$-principal 2-bundle. Here $BU(1)$ is thought
+of as a 2-group. In particular we can interpret the cohomological classification
+of gerbes as coming from the following: given a cocycle $g:X\to B^2U(1)$ representing
+the class of the gerbe in $H^3(X;\Z)$, there is a pullback diagram in the $\infty$-category
+of $\infty$-Lie groupoids
+\begin{equation*}
+    \begin{tikzcd}
+        \mathcal{G} \rar\dar & *\dar \\
+        X \rar{g} & B^2U(1)
+    \end{tikzcd}
+\end{equation*}
+
+
+\section{December 28, 2017}
+
+\subsection{Review of parallel transport}
+
+Before discussing the holonomy of gerbes let us recall the basics in the case
+of line bundles. Let $L\to X$ be a Hermitian line bundle with (compatible) connection.
+There is a basic notion of parallel transport, which allows us to move between fibers.
+Let $\gamma:I\to X$ be a smooth curve in $X$ from $\gamma(0)$ to $\gamma(1)$. Consider
+the pullback $\gamma^*L$ of $L$ to $I$, which is trivializable. Choose a trivialization
+$s:I\to\gamma^*L$, i.e. a nonvanishing global section. Then any section of $\gamma^*L$
+can be written as $\sigma(t) = a(t)s(t)$ for $a(t)$ a smooth function on the interval.
+Note that the connection $\nabla^L$ on $L$ induces a connection $\nabla^{\gamma^*L}$,
+which allows us to write the parallel transport equation
+\begin{equation*}
+    \nabla^{\gamma^*L}_{\partial_t} \sigma = 0.
+\end{equation*}
+Here $\partial_t=\partial/\partial t$ is the usual constant vector field on $I$.
+
+This equation can be more explicitly written in coordinates. To do this, let's first recall
+the construction of the pullback connection $\nabla^{\gamma^*L}$.
+\marginnote{Is there a better, coordinate-invariant construction?}
+Fix an open cover
+$\{U_i\}$ of $X$ over which $L$ is trivializable and choose trivializations (local
+frames) $\tilde s_i:U_i\to L$. We obtain an open cover $\{\gamma^*U_i\}$ of the
+interval $I$ and pullback sections $s_i = \tilde s_i \circ \gamma:\gamma^*U_i\to \gamma^*L$.
+Define the pullback connection on $\gamma^*U_i$ by
+\begin{equation*}
+    \nabla^{\gamma^*L|_{\gamma^*U_i}}s_i := \gamma^*(\nabla^L \tilde s_i) \in \Omega^1(I; \gamma^*L)
+\end{equation*}
+extending linearly according to the Leibniz rule. It is easy to check that this connection
+glues to a connection on $\gamma^*L$ (and that the construction is unchanged under
+the choice of $U_i, s_i$).
+
+Given trivialization data for $L\to X$ as in the last paragraph, we will consider
+the parallel transport equation on the open patch $\gamma^*U_i$ and glue the
+solutions together. This open cover admits a finite subcover $V_i$ of cardinality
+$m$ by the compactness of the interval. We may as well assume that the $V_i$ are
+connected whence intervals and that they are ordered left to right. In particular
+$V_0=[t_0^0=0, t_0^1), V_1=(t_1^0,t_1^1),\ldots, V_{m-1}=(t_{m-1}^0, t_{m-1}^1=1]$.
+
+We first wish to find a section $\sigma_0\in\Gamma(V_0,\gamma^*L)$ that is covariant constant
+along the vector field $\partial_t$. As $\gamma^*L$ is trivial over $V_0$ via
+the trivialization $s_0$ we write $\sigma_0(t) = a_0(t)s_0(t)$. We now have
+\begin{align*}
+    (\nabla^{\gamma^*L}\sigma_0)(t) &= \nabla^{\gamma^*L}(a_0(t)s_0(t)) \\
+    &= \dot a_0(t) dt \otimes s_0(t) + a_0(t) \nabla^{\gamma^*L}s_0(t) \\
+    &= \dot a_0(t) dt \otimes s_0(t) + a_0(t) (\gamma^*(\nabla^L \tilde s_0))(t) \\
+    &= \dot a_0(t) dt \otimes s_0(t) + a_0(t) A_0(t)s_0(t).
+\end{align*}
+Here we write $A_0(t) dt=\gamma^*\tilde A_0$ where $\tilde A_0$ is the connection
+one-form for $\nabla^L$ over the appropriate open. The parallel transport
+equation thus becomes the first-order ordinary differential equation
+\begin{equation*}
+    \dot a(t) = - a(t) A_0(t).
+\end{equation*}
+If we now fix an initial condition $\sigma(0)=a(0)s_0(0)$, we obtain a unique smooth solution
+\begin{equation*}
+    \sigma(t) = \frac{\sigma(0)}{s_0(0)} \exp\left(-\int_0^{t} A_0(\tau) d\tau\right) s_0(t) \in \Gamma(V_0, \gamma^*L).
+\end{equation*}
+We now iterate this procedure over the sets in our finite cover. More explicitly,
+choose $t_0=0, t_1, t_2, t_3, \cdots, t_m=1$ such that for $i\neq0,m$ we have $t_i$
+lies in the intersection $V_{i-1}\cap V_i$. The first parallel transport, over $V_0$, takes
+\begin{equation*}
+    \sigma(0) \mapsto \frac{\sigma(0)}{s_0(0)}\exp\left( -\int_0^{t_1} A_0(\tau) d\tau \right) s_0(t_1) \in (\gamma^*L)_{t_1}.
+\end{equation*}
+Next we parallel transport over $V_1$ to obtain
+\begin{equation*}
+    \frac{\sigma(0)}{s_0(0)s_1(t_1)}\exp\left( -\int_0^{t_1}A_0(\tau)d\tau - \int_{t_1}^{t_2} A_1(\tau) d\tau \right) s_1(t_2) \in (\gamma^*L)_{t_2}.
+\end{equation*}
+Iterating, we find the explicit formula, given $\sigma(0)$ as the initial vector,
+\begin{equation*}
+    \frac{\sigma(0)}{\prod_{i=0}^{m-1} s_i(t_i)}\exp\left( -\sum_{i=0}^{m-1}\int_{t_i}^{t_{i+1}} A_i(\tau) d\tau \right) s_{m-1}(1) \in (\gamma^*L)_1.
+\end{equation*}
+It remains to check that this vector is independent of the various choices
+made in the construction, which we will not do.
+
+Notice that parallel transport is linear in the initial condition $\sigma(0)$
+whence we obtain a linear map
+\begin{equation*}
+    \mathcal{P}(\gamma): (\gamma^*L)_{\gamma(0)} \to (\gamma^*L)_{\gamma(1)}.
+\end{equation*}
+From the formula it is clear the this map is injective and surjective, whence
+a linear isomorphism. Moreover parallel transport on a concatenation of (piecewise-smooth)
+paths is given by composition of the parallel transport maps. From this viewpoint,
+given a line bundle with connection we obtain a functor from the (piecewise-smooth)
+path groupoid of $X$ to the groupoid of complex lines.
+\marginnote{How does parallel transport act over homotopic paths?}
+We should mention that if we take $\tilde s_i$ to be unit length with respect
+to the metric on $L$ then parallel transport reduces to multiplication by
+an element of $U(1)$ instead of $\C$ in general (the compatibility of the connection
+guarantees that the connection one-form is purely imaginary).
+
+Incidentally, Elden mentioned that parallel transport should in fact yield
+a functor of $\infty$-categories from the path $\infty$-category of $X$ to
+an appropriate $\infty$-category of vector spaces. This target category should
+probably be something like the following: (the topological nerve of) the
+topological groupoid where $\Hom(V,W)$ is thought of as the appropriate space of
+unitary isomorphisms with the usual topology (e.g. $U(1)$). This seems not
+to be the way recent papers think about the subject, however. It might be
+worth looking into papers of Schreiber and Waldorf.
+
+Suppose now that $\gamma:I\to X$ is in fact a loop, i.e. $p=\gamma(0)=\gamma(1)$.
+Then parallel transport yields a unitary isomorphism $(\gamma^*L)_p\to(\gamma^*L)_p$,
+which can be written as multiplication by an element of $U(1)$. This element is
+known as the holonomy $h(\gamma)$ of $\nabla^L$ over the loop $\gamma$. There are various ways
+of viewing this data: most directly, holonomy provides a map $h:\mathcal{L}X\to U(1)$
+from the free loop space of $X$ to $U(1)$. \marginnote{What can we say about the regularity
+of this map?} From another perspective, it provides a degree one differential character
+as, at least in the abelian case (where differential cohomology can be easily defined),
+the holonomy along a boundary can be computed (via Stokes' theorem) by integrating
+the curvature.
+
+\subsection{Holonomy of bundle gerbes}
+
+With that review of parallel transport out of the way, let's see how to make
+similar definitions for $U(1)$ bundle gerbes.
+
+
+%\bibliographystyle{alpha}
+%\bibliography{references}
 \end{document}
 
