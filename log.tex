@@ -3898,7 +3898,9 @@ probably be something like the following: (the topological nerve of) the
 topological groupoid where $\Hom(V,W)$ is thought of as the appropriate space of
 unitary isomorphisms with the usual topology (e.g. $U(1)$). This seems not
 to be the way recent papers think about the subject, however. It might be
-worth looking into papers of Schreiber and Waldorf.
+worth looking into papers of Schreiber and Waldorf, where the authors approach
+defining connective structure on higher bundles by defining higher parallel
+transport functors.
 
 Suppose now that $\gamma:I\to X$ is in fact a loop, i.e. $p=\gamma(0)=\gamma(1)$.
 Then parallel transport yields a unitary isomorphism $(\gamma^*L)_p\to(\gamma^*L)_p$,
@@ -3914,7 +3916,134 @@ the curvature.
 \subsection{Holonomy of bundle gerbes}
 
 With that review of parallel transport out of the way, let's see how to make
-similar definitions for $U(1)$ bundle gerbes.
+similar definitions for $U(1)$ bundle gerbes. The basic idea is the following.
+We compute holonomy of a principal $U(1)$-bundle or complex line bundle by
+pulling the bundle back to the circle and running parallel transport on this
+trivializable bundle to obtain an element of $U(1)$.
+This suggests that we pull a bundle gerbe back along
+a map $\Sigma\to X$ for $\Sigma$ a closed oriented surface to a trivializable bundle gerbe.
+Recall that a trivial bundle gerbe is completely determined by a 2-form; the
+holonomy along $\Sigma$ is given essentially as the exponential of 
+the integral of this 2-form over $\Sigma$. It then remains to check that this holonomy
+is independent of the choice of trivialization.  This definition of surface
+holonomy for bundle gerbes is explained in Waldorf's paper on morphisms of gerbes.
+
+To understand this definition we will have to understand various details about
+bundle-gerbes: stable isomorphisms, 1- and 2- morphisms in general, and pullbacks
+of bundle gerbes (the monoidal structure may not be necessary).
+
+\section{January 1, 2018}
+
+\subsection{Anomaly cancellation for the spinning particle}
+
+Let $X$ be an oriented Riemannian manifold. The field content of the theory of
+the spinning particle (on $X$) consists of bosonic fields $x: \R \to X$ that are
+smooth maps and fermionic fields $\psi\in\Gamma(\R, S\otimes x^*TX)$ along the
+worldline. Here $S$ is the spinor bundle on $\R$. Witten in fact takes the
+fermionic fields to be anticommuting (perhaps using $\Pi TX$ instead of $TX$),
+but let us stick with this for now. It is well-known that upon quantization
+this theory has an anomaly unless $X$ admits a spin structure. I can't seem to
+find a mathematical reference for this fact, so it is maybe a good first example
+in anomaly theory to understand myself. We will interpret the anomaly as a
+geometric object: a line bundle with connection over the space of bosonic fields.
+In particular, we would like to show that the class (differential) cohomology
+class of this bundle is trivial upon choice of a spin structure on $X$.
+
+Mathematically we consider the following setup. Let $\pi:E\to B$ be a smooth family of
+odd-dimensional (oriented) spin Riemannian manifolds and let $V\to E$ be a real
+rank $r$ vector bundle over $E$ with metric and connection.
+Denote by $S$ the vertical spinor bundle on $E$
+associated to the smooth family of spin structures on the fibers of $\pi$.
+There is a natural connection on the twisted spinors $S\otimes V$. Notice that
+in odd dimensions the spinor bundle is not graded, so to obtain the usual notion
+of a Dirac operator (an odd first-order differential operator squaring to a
+generalized Laplacian) we define $W=(S\oplus S)\otimes V$ with the grading
+according to the direct sum. The Dirac operator (on a given fiber) is defined
+to be the composition of the ungraded Dirac operator with Clifford multiplication
+by the (vertical) volume form. Hence we obtain a family of Dirac operators
+parameterized by $B$. The usual constructions of Bismut-Freed now yield a 
+Hermitian line bundle with connection on the parameter space $(L,Q,\nabla^L)\to B$
+(suppose we are given a horizontal connection on $E\to B$).
+Our goal is to compute the isomorphism class of this geometric object, i.e.
+compute the differential Chern class
+\begin{equation*}
+    \hat c_1(L) \in \hat H^2(B; \Z)
+\end{equation*}
+in the case where $E\to B$ is a family of (connected) one-dimensional manifolds
+(the case of $S^1$ being of particular interest, as $\R$ cannot necessarily be
+integrating along).
+
+Bunke has computed the corresponding class in the case of two-dimensional fibers,
+where the object of interest is the ``relative Pfaffian line bundle'' of the
+family of Dirac operators. The goal there is to show that a string structure
+is necessary for anomaly cancellation. Let us review his results, keeping our notation from above.
+\begin{theorem}[Bunke]
+    Suppose $V$ has a spin structure that is fiberwise trivial. Then
+    \begin{equation*}
+        \hat c_1(L) = - \int_{E/B} \frac{\hat p_1}{2}(V),
+    \end{equation*}
+    where $\hat p_1/2$ is the differential refinement of the first fractional
+    Pontryagin class (the spin characteristic class).
+\end{theorem}
+
+\begin{theorem}[Bunke]
+    A geometric string structure on $V$ (suppose $r\geq 3$) yields a unit-norm
+    global section $s\in\Gamma(B, L)$. In other words, a string structure on
+    $V$ provides a canonical geometric trivialization of the anomaly.
+\end{theorem}
+
+\marginnote{What is the relevance of the fiberwise triviality condition?}
+Notice that the first fractional Pontryagin class is an obstruction to the
+existence of string structures.
+
+Let us try to adapt these results in our situation. As the fibers of $E\to B$
+are one-dimensional for us, if we are to express $\hat c_1(L)$ as the fiber
+integral of some class on $E$ then we need a differential cohomology class
+of degree 3 in $\hat H^3(E;\Z)$. Such a class would be a refinement of a
+class coming from $BSO$, as $V$ is assumed to be oriented. Moreover, it
+would likely have to be the refinement of an integral class, as I'm not
+sure how to talk about differential cohomology with values in $\Z/2\Z$, for instance.
+The only characteristic class that seems to fit the bill is the 3rd integral
+Stiefel-Whitney class. Recall that given the short exact sequence
+\begin{equation*}
+    \begin{tikzcd}
+        0\rar & \Z \rar & \Z \rar & \Z/2\Z \rar & 0
+    \end{tikzcd}
+\end{equation*}
+we obtain a long exact sequence on cohomology groups
+\begin{equation*}
+    \begin{tikzcd}
+        \cdots \rar & H^2(B; \Z) \rar & H^2(B; \Z/2\Z) \rar{\beta} & H^3(B;\Z) \rar & \cdots
+    \end{tikzcd}
+\end{equation*}
+The second Stiefel-Whitney class $w_2\in H^2(B;\Z/2\Z)$ is mapped under the Bockstein
+homomorphism $\beta$ to a class
+\begin{equation*}
+    W_3=\beta(w_2)\in H^3(B;\Z)
+\end{equation*}
+called the third integral Stiefel-Whitney class.
+
+In analogy with the two-dimensional case of Bunke, then, one might conjecture
+that for a family of one-dimensional manifolds the determinant line bundle
+is classified up to isomorphism roughly by
+\begin{equation*}
+    \hat c_1(L) \overset{?}{=} \int_{E/B} \hat W_3(V)
+\end{equation*}
+where $\hat W_3(V)$ is some differential refinement of the third integral Stiefel-Whitney
+class. This leads to the following questions/problems:
+\begin{enumerate}
+    \item construct explicitly a differential refinement of the integral Stiefel-Whitney classes;
+    \item construct a line bundle classified by the fiber integral above;
+    \item show that this line bundle is isomorphic to the determinan line bundle;
+    \item describe how a spin structure on $V$ provides a geometric trivialization of $L$.
+\end{enumerate}
+
+For exploring the first point: there are various constructions of currents
+that represent the Stiefel-Whitney classes of a vector bundle. These constructions
+may be related to the approach to differential cohomology using currents, and
+provides maybe the first avenue of investigation. Another relatively doable place
+to start would be to understand Bunke's construction of the line bundle corresponding
+to the fiber integral of the first fractional Pontryagin class.
 
 
 %\bibliographystyle{alpha}
