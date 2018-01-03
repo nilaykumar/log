@@ -3992,7 +3992,7 @@ is necessary for anomaly cancellation. Let us review his results, keeping our no
     $V$ provides a canonical geometric trivialization of the anomaly.
 \end{theorem}
 
-\marginnote{What is the relevance of the fiberwise triviality condition?}
+See tomorrow for notes on the hypothesis of fiberwise spin triviality.
 Notice that the first fractional Pontryagin class is an obstruction to the
 existence of string structures.
 
@@ -4043,7 +4043,89 @@ that represent the Stiefel-Whitney classes of a vector bundle. These constructio
 may be related to the approach to differential cohomology using currents, and
 provides maybe the first avenue of investigation. Another relatively doable place
 to start would be to understand Bunke's construction of the line bundle corresponding
-to the fiber integral of the first fractional Pontryagin class.
+to the fiber integral of the first fractional Pontryagin class, to get a sense
+of what might be involved in the second point.
+
+\section{January 2, 2018}
+
+\subsection{Fiberwise triviality}
+
+Recall that in Bunke's paper we require that the real vector bundle $V\to E$
+have a fiberwise trivial spin structure. This means that we require for each
+$b\in B$ that the $\Spin(r)$ principal bundle of $V|_{\pi^{-1}(b)}$ be trivial.
+In particular we see that $V|_{\pi^{-1}(b)}$ is trivial for each $b\in B$.
+In the case of the sigma model where $E=\Maps(\Sigma, X)\times \Sigma$
+and $V=\ev^*TX$, this hypothesis is satisfied, Bunke claims, if $X$ has a string
+structure. I believe this comes from an obstruction theoretic view of string
+structures (maybe a string structure yields the data of spin trivializations
+along two-dimensional submanifolds), but I'll have to look into it more closely.
+
+If we return to the case of a family of circles we are interested in what
+happens when $X$ has a spin structure. My guess is that similarly $f^*TX$
+will in this case be fiberwise $SO(n)$-trivial which is the same as just
+fiberwise trivial. In other words, a spin structure probably yields a trivialization
+of $TX$ over the 1-skeleton of $X$. This should be a basic interpretation
+of a spin structure that will be easy to find.
+
+\subsection{The differential (integral) Stiefel-Whitney class}
+
+In the case where $V$ is indeed fiberwise trivial we wish to construct a line bundle
+$L$ with connection that will be isomorphic to the determinant line bundle. Let's
+return to Bunke's construction of $L$, which is sheaf-theoretic. He defines a
+set valued presheaf $I:\mathsf{Opens}(B)^\op\to\mathsf{Set}$ by
+\begin{equation*}
+    I(U) := \{Q:\Spin(V|_{\pi^{-1}(U)}) \xrightarrow{\sim} \pi^{-1}(U) \times\Spin(n)\}.
+\end{equation*}
+In words: to an open set $U\subset B$ we assign the set of spin-trivializations
+of $V$ over $U$. Notice that if $U\subset B$ is contractible then $I(U)\neq\varnothing$
+by hypothesis that $V$ is fiberwise spin-trivial. To define the transition
+cocycles and the connection one-forms Bunke uses the $\eta$-forms associated
+to the connection on $V$ as well as spin-trivializations from the opens.
+We'd like to do something similar with the third integral Stiefel-Whitney class.
+
+There is a construction of a differential refinement of the integral Stiefel-Whitney
+classes due to Zweck. The construction is done in the formalism (due to Harvey, Lawson,
+and Zweck) of sparks, which is a model of differential cohomology involving
+currents (distribution-valued forms on manifolds). In particular, Zweck
+defines a differential character
+\begin{equation*}
+    \hat W_k(V)(z) = \exp(2\pi i\int_z S_k(\alpha)).
+\end{equation*}
+Here $S_k(\alpha)$ is the Stiefel-Whitney spark and $\alpha$ is certain data
+needed to define it that does not change the equivalence class in differential
+cohomology. Zweck claims that the curvature form of this character is
+zero and that its underlying cohomology class is the usual integral Stiefel-Whitney
+class. Thinking geometrically, this differential cohomology class represents
+a bundle gerbe with connective structure whose associated curvature three-form
+is trivial. This is a bit worrying---we wish to obtain the first differential
+Chern class of the determinant line bundle as the fiber integral (over $E/B$)
+of $\hat W_3(V)$. Fiber integration of differential characters is compatible
+with the usual fiber integration of differential forms in the sense that
+the curvature form of the pushforward is the pushforward of the fiber integral
+(at least according to Bar-Becker). Hence if we have the formula
+\begin{equation*}
+    \hat c_1(L) \overset{?}{=} \int_{E/B} \hat W_3(V)
+\end{equation*}
+then we must have that the determinant line bundle is flat, i.e. the Bismut-Freed
+connection has zero curvature. Let's see if that's true (notice that we can't
+use the usual index-theoretic formulas for the curvature and holonomy of the
+determinant line bundle due to Bismut and Freed, as the proofs rely crucially
+on the family consisting of even dimensional manifolds).
+
+\subsection{The determinant line bundle in odd dimensions}
+
+Here we follow Freed and Moore's paper ``Setting the quantum integrand for M-theory''
+and their description of the determinant line bundle associated to a family
+of Dirac operators in the closed, odd-dimensional, spin case. Here the
+spinor bundle is not naturally $\Z/2\Z$-graded, so one defines $S=S^+\oplus S^-$
+to be simply be two copies of the ungraded (vertical) spinor bundle. We equip this bundle
+with the resulting metric and connection. Now if $V$ is a real vector bundle
+with metric connection on the total space of the family $E$, we write
+$W=S\otimes_\R V$ for the resulting $\Z/2\Z$-graded complex vector bundle
+(with metric connection) on $E$. Denote the resulting family of Dirac operators
+as $\mathsf{D}_b$ for $b\in B$. The usual constructions of Bismut and
+Freed for first-order odd elliptic differential operators now yields a determinant
+line bundle $(L^{BF}, Q, \nabla^{BF})\to B$ with metric connection.
 
 
 %\bibliographystyle{alpha}
