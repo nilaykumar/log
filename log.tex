@@ -4122,10 +4122,83 @@ to be simply be two copies of the ungraded (vertical) spinor bundle. We equip th
 with the resulting metric and connection. Now if $V$ is a real vector bundle
 with metric connection on the total space of the family $E$, we write
 $W=S\otimes_\R V$ for the resulting $\Z/2\Z$-graded complex vector bundle
-(with metric connection) on $E$. Denote the resulting family of Dirac operators
-as $\mathsf{D}_b$ for $b\in B$. The usual constructions of Bismut and
+(with metric connection) on $E$. Postcompose the (ungraded even) Dirac operator 
+with Clifford multiplication by the (vertical) volume form to obtain a family of (odd) Dirac
+operators $\mathsf{D}_b$ for $b\in B$. The usual constructions of Bismut and
 Freed for first-order odd elliptic differential operators now yields a determinant
 line bundle $(L^{BF}, Q, \nabla^{BF})\to B$ with metric connection.
+
+There is an alternate, somewhat simpler, construction that uses the $\eta$-invariant
+to define this bundle, which we now outline. Recall we denote by $\pi_*^\pm W$ the
+infinite-rank superbundle on $B$ induced by $W$.  Consider the open cover
+$\{V_\alpha\}_{\alpha\in\R}$ of $B$ given by
+\begin{equation*}
+    V_\alpha = \{ b\in B \mid b\notin \Spec \mathsf{D}_b^+ \}.
+\end{equation*}
+This is indeed a cover since the spectrum of the Dirac operator is discrete, and
+each $V_\alpha$ is open since the complement of the spectrum is open (which is
+probably most easily seen via resolvents). The $\eta$-invariant on $V_\alpha$
+is a smooth real-valued function
+\begin{equation*}
+    \eta_\alpha: V_\alpha \to \R
+\end{equation*}
+whose definition we will postpone (as it requires some nontrivial analysis) satisfying
+\begin{equation*}
+    \frac{1}{2}\eta_\beta(b) = \frac{1}{2}\eta_\alpha(b) - |\{\lambda\in\Spec \mathsf{D}_b^+ \mid \alpha < \lambda < \beta\}|
+\end{equation*}
+over $V_\alpha\cap V_\beta$ for $\alpha<\beta$. This property shows that the
+eta-invariants differ by integer valued functions on overlaps, which by
+continuity are locally constant integers. Thus we obtain a smooth
+function $\tau_{\mathsf{D}}:B\to U(1)$ locally defined by
+\begin{equation*}
+    \tau_{\mathsf{D}}(b) = \exp(\pi i \eta_\alpha(b)).
+\end{equation*}
+In other words, we obtain a degree one differential character on the parameter
+space $B$ of the family $\mathsf{D}$.
+
+To construct a degree two differential character---a complex line bundle with
+connection--- we use spectral data of $\mathsf{D}$ to first construct a principal
+$\Z$-bundle over $B$ as follows. Consider the \v Cech 1-cocycle given
+\begin{equation*}
+    g_{\alpha\beta}: V_\alpha\cap V_\beta \to \Z
+\end{equation*}
+defined by
+\begin{equation*}
+    g_{\alpha\beta}(b) = \frac{1}{2}\eta_\alpha(b) - \frac{1}{2}\eta_\beta(b)
+\end{equation*}
+which is an integer and satisfies the cocycle condition due to the relation above.
+This $\Z$-bundle induces a $\Z/2\Z$-bundle by reducing mod 2 the transition functions
+to obtain $(-1)^{\frac{1}{2}(\eta_\alpha(b)-\eta_\beta(b))}$.
+Under the sign representation of $\Z/2\Z$ we obtain an associated complex
+line bundle $L$ on $B$. Notice that $L\otimes L$ is canonically trivial.
+I don't quite understand the rest of this section of Freed's paper, unfortunately.
+
+\section{January 3, 2017}
+
+\subsection{Useful references}
+
+Upon digging for references I've found two treatments of the very problem
+I've been thinking about (Freed's ``Anomalies and invertible field theories''
+and Freed and Witten's ``Anomalies in string theory with D-branes''). I've
+started reading the first paper and indeed it seems that the anomaly line
+bundle is computed as a transgression of the second Stiefel-Whitney class.
+Notice that this means we are working with real line bundles, which seems
+to be coming from the fact that the anomaly bundle should be a Pfaffian
+instead of a determinant. This is something to think about more carefully.
+Up to these details it seems like my hunch above about computing the anomaly
+as a transgression was correct.
+The proof, at least in the case where the target is even-dimensional and
+oriented, seems to be an application of index theory. I don't think I
+know enough $K$-theory at the moment to understand it.
+
+What is really confusing me at the moment is why one expects a Pfaffian
+line bundle in the one-dimensional case. Maybe I will ignore that for the
+moment, and try to just understand the usual determinant line bundle.
+I roughly understand Freed's argument describing the isomorphism between
+$L^{BF}$ and $L$ the two different line bundles on $B$ arising from the
+family of Dirac operators on an odd-dimensional family. Unfortunately
+I don't understand the construction of the real structure, metric, and
+connection on $L$.
 
 
 %\bibliographystyle{alpha}
